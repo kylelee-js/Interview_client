@@ -31,12 +31,13 @@ export default function Uploader() {
     const fileData = new FormData();
     if (event.target.files) {
       // FIXME: formData.append 시 키와 벨류로 저장을 해야하는데 벨류 타입이 스트링이다. -> 검색 좀 더 하기
-
-      fileData.append("file", "" + event.target.files);
+      fileData.append("file", "" + event.target.files[0]);
     }
 
     // TODO: 여기서 서버로 비동기 통신 = 파일 전송
+    // onFileUpload(fileData);
   };
+
   return (
     <>
       {/* display : none을 주고 추가 버튼으로 위에 창 내려오게 디자인? */}

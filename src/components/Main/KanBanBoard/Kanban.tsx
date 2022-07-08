@@ -2,8 +2,8 @@ import React, { useCallback, useState } from "react";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import Board from "./Board";
 // import GeneratorBtn from "../BoardGenerator/GeneratorBtn";
-import { useDispatch } from "react-redux";
 import { onCardDrag, onBoardDrag } from "./kanbanSlice";
+import { useAppDispatch } from "../../../store";
 
 export type CardCoordinateType = {
   destId: string;
@@ -13,7 +13,7 @@ export type CardCoordinateType = {
 };
 
 export default function KanBan() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   // TODO: 여기 함수에 순서 변경 Dispatch 넣어주기
   const onDragEnd = useCallback(

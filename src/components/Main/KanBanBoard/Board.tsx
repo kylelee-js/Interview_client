@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
-import { RootState } from "../../../store";
+import { RootState, useAppSelector } from "../../../store";
 import Card from "./Card";
 
 const BoardDiv = styled.div`
@@ -10,7 +10,7 @@ const BoardDiv = styled.div`
 `;
 
 export default React.memo(function Boards() {
-  const fakeData = useSelector((state: RootState) => state.kanban);
+  const fakeData = useAppSelector((state) => state.kanban);
 
   // FIXME: droppableId 수정하기!!
   return (
