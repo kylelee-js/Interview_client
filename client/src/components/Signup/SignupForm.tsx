@@ -8,7 +8,7 @@ import {
   Input,
   ValidationMessage,
 } from "../../styles/formStyle";
-import { useDispatch } from "react-redux";
+import { useNavigate } from "react-router-dom";
 
 export type RegisterFormData = {
   name: string;
@@ -27,14 +27,12 @@ export default function SignupForm() {
     formState: { errors },
     watch,
   } = useForm<RegisterFormData>();
-
-  const dispatch = useDispatch();
+  const navigate = useNavigate();
 
   const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
     console.log(data);
     sendSignUp(data);
-    // TODO: dispatch 추가하기!!
-    // dispatch();
+    navigate("./login");
   };
   console.log(errors);
 

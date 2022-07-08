@@ -1,5 +1,5 @@
-import KanBan from "../components/Main/KanBanBoard/Kanban";
+import Main from "../components/Main/Main";
 
 export default function MainPage() {
-  return <KanBan />;
+  return <Main />;
 }
