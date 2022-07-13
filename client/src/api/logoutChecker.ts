@@ -8,7 +8,7 @@ import axios, { AxiosResponse } from "axios";
  */
 
 // TODO: 로그아웃을 하려면 우선 로그인이 먼저 되어있어야한다 => 로그인 상태 설정하기
-// TODO: 로그아웃 시에는 localStorage에 저장된 access token 삭제해야함!
+
 export const onLogout = async () => {
   try {
     const isLogout = await axios.post("/user/logout/");

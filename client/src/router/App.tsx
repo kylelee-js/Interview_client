@@ -34,6 +34,8 @@ const ProtectedRoute = ({ isLogin = false, outlet }: RouteType) => {
 function App() {
   let isLogin = useAppSelector((state) => state.auth.authenticated);
   const dispatch = useAppDispatch();
+
+  // FIXME: useLayoutEffect를 대신 사용하나?
   useEffect(() => {
     // TODO: react-persist 설치 후 localStorage에 access token 저장
     // 로그인 상태와 비로그인 상태 구분
@@ -43,7 +45,7 @@ function App() {
     if (isLogin) {
       const reAuth = async () => {
         const res = await onSilentRefresh();
-        dispatch(onAuth(res.access));
+        dispatch(onAuth(res));
       };
       reAuth();
     }
