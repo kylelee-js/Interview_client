@@ -30,12 +30,21 @@ export default function ApplicantUploadForm() {
   const {
     register,
     handleSubmit,
+    setError,
     formState: { errors },
     watch,
   } = useForm<ApplicantFormData>();
 
   const onSubmit: SubmitHandler<ApplicantFormData> = (data) => {
     console.log(data);
+    // PDF 파일 확장자 regex 검사기
+    if (data.file[0].type != "application/pdf") {
+      setError("file", {
+        type: "filetype",
+        message: "PDF 파일만 제출 가능합니다.",
+      });
+      return;
+    }
     const fileData = new FormData();
     fileData.append("name", data.name);
     fileData.append("birth", data.birth);
@@ -45,19 +54,6 @@ export default function ApplicantUploadForm() {
     onFileUpload(fileData);
   };
   console.log(errors);
-
-  // const onUploadFile = async (event: React.ChangeEvent<HTMLInputElement>) => {
-  //   const fileData = new FormData();
-  //   if (event.target.files) {
-  //     // FIXME: formData.append 시 키와 벨류로 저장을 해야하는데 벨류 타입이 스트링이다. -> 검색 좀 더 하기
-  //     fileData.append("file", event.target.files[0] );
-  //     console.log(event.target.files[0]);
-  //     console.log(fileData.has("file"));
-  //   }
-
-  //   // TODO: 여기서 서버로 비동기 통신 = 파일 전송
-  //   // onFileUpload(fileData);
-  // };
 
   return (
     <FormWrapper>
@@ -97,7 +93,7 @@ export default function ApplicantUploadForm() {
           })}
         />
 
-        {/* TODO: file uploade  r */}
+        {/* TODO: file upload */}
         <input
           // ref={fileUploader}
           {...register("file", {
@@ -108,6 +104,9 @@ export default function ApplicantUploadForm() {
           accept="pdf/*"
           // onChange={onUploadFile}
         />
+        {errors.file && (
+          <div style={{ color: "red" }}> {errors.file?.message}</div>
+        )}
         <SubmitButton type="submit" value={"지원자 등록"} />
       </Form>
     </FormWrapper>

@@ -1,9 +1,7 @@
-// Toast 에디터
-import { Editor } from "@toast-ui/react-editor";
-import "@toast-ui/editor/dist/toastui-editor.css";
-
-import React, { useEffect, useRef } from "react";
+// Quill 에디터
 import styled from "styled-components";
+import ReactQuill, { Quill } from "react-quill";
+import "react-quill/dist/quill.snow.css";
 
 const Wrapper = styled.div`
   /* display: flex; */
@@ -12,28 +10,12 @@ const Wrapper = styled.div`
   min-width: 300px;
 `;
 
+// TODO: 위에는 기존의 평가를 확인하는 뷰어를 제공해야함!
 export default function ApplicantReviewEditor() {
-  // Toast-UI Editor DOM
-  const editorRef = useRef();
-
-  // Toast-UI Editor 에 HTML 표시
-  // useEffect(() => {
-  //   // 1. DB에서 가져온 HTML이라고 가정
-  //   const htmlString = '<h1>h1 제목</h1> <p>p 내용</p>';
-
-  //   // 2. Editor DOM 내용에 HTML 주입
-  //   editorRef.current?.getInstance().setHTML(htmlString);
-  // }, []);
-
   return (
     <Wrapper>
-      <Editor
-        // ref={editorRef}
-        previewStyle="vertical"
-        height="400px"
-        initialEditType="wysiwyg"
-        toolbarItems={[["bold", "italic", "strike"]]}
-      ></Editor>
+      {/* min-height는 글로벌 스타일에서 정의되어 있음! */}
+      <ReactQuill />
     </Wrapper>
   );
 }

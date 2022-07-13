@@ -1,7 +1,7 @@
 import axios, { AxiosResponse } from "axios";
 import { LoginFormData } from "../components/Login/LoginForm";
 
-// 5분 밀리세컨드
+// 만료시간 : 5분 밀리세컨드
 const JWT_EXPIRY_TIME = 5 * 60 * 1000;
 
 export const onLogin = async (data: LoginFormData) => {

@@ -23,11 +23,12 @@ type RouteType = {
   isLogin: boolean;
   outlet: JSX.Element;
 };
+
+// PrivateRoute 구현
 const ProtectedRoute = ({ isLogin = false, outlet }: RouteType) => {
   if (!isLogin) {
     return <Navigate to="/login" replace />;
   }
-
   return outlet;
 };
 
@@ -37,11 +38,6 @@ function App() {
 
   // FIXME: useLayoutEffect를 대신 사용하나?
   useEffect(() => {
-    // TODO: react-persist 설치 후 localStorage에 access token 저장
-    // 로그인 상태와 비로그인 상태 구분
-    // 먼저 isLogin - UserAuthState 정보를 localStorage에서 가져온다.
-
-    // 그 다음
     if (isLogin) {
       const reAuth = async () => {
         const res = await onSilentRefresh();
