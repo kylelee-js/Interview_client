@@ -35,11 +35,18 @@ function App() {
   let isLogin = useAppSelector((state) => state.auth.authenticated);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    const reAuth = async () => {
-      const res = await onSilentRefresh();
-      dispatch(onAuth(res.access));
-    };
-    reAuth();
+    // TODO: react-persist 설치 후 localStorage에 access token 저장
+    // 로그인 상태와 비로그인 상태 구분
+    // 먼저 isLogin - UserAuthState 정보를 localStorage에서 가져온다.
+
+    // 그 다음
+    if (isLogin) {
+      const reAuth = async () => {
+        const res = await onSilentRefresh();
+        dispatch(onAuth(res.access));
+      };
+      reAuth();
+    }
   }, []);
 
   return (

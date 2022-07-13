@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import ApplicantPDFViewer from "./ApplicantPDFViewer";
+import ApplicantReview from "./ApplicantReview";
 
 const Wrapper = styled.div`
   display: flex;
-
-  height: 100%;
-  width: 100%;
+  width: 100vw;
+  gap: 60px;
 `;
 const Box = styled.div`
   background-color: green;
@@ -19,7 +19,7 @@ export default function Applicant() {
     <Wrapper>
       {/* FIXME: 리액트 뷰어 실험 중 */}
       <ApplicantPDFViewer />
-      <Box></Box>
+      <ApplicantReview />
     </Wrapper>
   );
 }

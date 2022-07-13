@@ -1,4 +1,4 @@
-import Applicant from "../components/Applicant/ApplicantPDFViewer";
+import Applicant from "../components/Applicant/Applicant";
 
 export default function ApplicantPage() {
   return (

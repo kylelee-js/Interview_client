@@ -1,12 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type UserState = {
-  id: number;
-  name: string;
-  nickname: string;
-  isLogin: boolean;
-};
-
 type AuthState = {
   authenticated: boolean;
   token: string | null;
@@ -17,17 +10,25 @@ type AuthActionState = {
   access: string;
 };
 
-const fakeUser: UserState = {
-  id: 1,
-  name: "김철수",
-  nickname: "친구",
-  isLogin: true,
-};
+// type UserAuthState = {
+//   name: string;
+//   nickname: string;
+//   isLogin: boolean;
+//   accessToken: string | null;
+// };
+
+// const initialUserState: UserAuthState = {
+//   // userId : 필수?
+//   name: "",
+//   nickname: "",
+//   isLogin: false,
+//   accessToken: null,
+// };
 
 const fake_Auth: AuthState = {
   // local에서 로그인 할때 설정
   authenticated: true,
-  token: null,
+  token: "asdads",
 };
 
 const authSlice = createSlice({

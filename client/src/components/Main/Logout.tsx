@@ -12,11 +12,8 @@ export default function Logout() {
   const navigate = useNavigate();
   const onLogoutClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     dispatch(onDeauth());
-    onLogout();
 
-    // dispatch(onDeauth());
-    // ProtectedRoute로 감싸서 더이상 강제 리다이렉트는 필요없어 보인다
-    // navigate("/login");
+    onLogout();
   };
   return <button onClick={onLogoutClick}>로그아웃</button>;
 }

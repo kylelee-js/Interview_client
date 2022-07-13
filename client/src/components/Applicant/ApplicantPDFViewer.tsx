@@ -1,6 +1,33 @@
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
+import styled from "styled-components";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
+
+const Wrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  /* FIXME: 너비 나중에 수정하기 */
+  max-width: 700px;
+  padding: 5px;
+  background-color: grey;
+`;
+
+const PaginationMenu = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 20px;
+`;
+const PageButton = styled.button`
+  background-color: grey;
+  padding: 5px;
+  color: white;
+  border-style: none;
+  border-radius: 5px;
+  cursor: pointer;
+`;
 
 export default function ApplicantPDFViewer() {
   // TODO: pdf 뷰어 설치하기
@@ -12,32 +39,31 @@ export default function ApplicantPDFViewer() {
     setNumPages(numPages);
   }
   return (
-    <div>
+    <Wrapper>
       {/* TODO: 서버에서 불러온 PDF 파일 데이터 연결해서 렌더하기 */}
       <Document file="sample.pdf" onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />
       </Document>
-      <p>
-        //이전 페이지 보기
-        <span
+      <PaginationMenu>
+        <PageButton
           onClick={() =>
             pageNumber > 1 ? setPageNumber(pageNumber - 1) : null
           }
         >
-          &lt;
-        </span>
+          이전 페이지 보기
+        </PageButton>
         <span>
           Page {pageNumber} of {numPages}
         </span>
-        //다음 페이지 보기
-        <span
+
+        <PageButton
           onClick={() =>
             pageNumber < numPages ? setPageNumber(pageNumber + 1) : null
           }
         >
-          &gt;
-        </span>
-      </p>
-    </div>
+          다음 페이지 보기
+        </PageButton>
+      </PaginationMenu>
+    </Wrapper>
   );
 }
