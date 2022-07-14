@@ -5,3 +5,14 @@
 
 
 ### [백엔드 레포](https://github.com/vicente97p4/interview_server)
+
+
+새로운 기술들을 많이 사용해봤다
+
+ RTK & RTK Query + 컨테이너 구조
+ 
+ [Axios vs Fetch api](https://velog.io/@eunbinn/Axios-vs-Fetch#%EA%B2%B0%EB%A1%A0)
+ 
+ React Portals
+ 
+ 
