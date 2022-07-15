@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import ApplicantPDFViewer from "./ApplicantPDFViewer";
 import ApplicantReview from "./ApplicantReview";
+import ReviewViewer from "./ReviewViewer";
 
 const Wrapper = styled.div`
   display: flex;
@@ -18,8 +19,12 @@ export default function Applicant() {
   return (
     <Wrapper>
       {/* FIXME: 리액트 뷰어 실험 중 */}
+      {/* TODO: 각 지원자 정보를 받아오는 통신은 컨테이너에서 받아온다 */}
       <ApplicantPDFViewer />
-      <ApplicantReview />
+      <div>
+        <ReviewViewer />
+        <ApplicantReview />
+      </div>
     </Wrapper>
   );
 }

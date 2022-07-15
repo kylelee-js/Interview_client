@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-import KanBan from "./KanBanBoard/Kanban";
+import KanBanContainer from "../../container/KanBanContainer";
 import Logout from "./Logout";
 
 const AdHocMenu = styled.div`
@@ -17,9 +17,8 @@ export default function Main() {
       <Logout />
       <AdHocMenu>
         <Link to="/pool">인재 풀 보러가기</Link>
-        <Link to="/applicant">지원서 보러가기</Link>
       </AdHocMenu>
-      <KanBan />
+      <KanBanContainer />
     </>
   );
 }

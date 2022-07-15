@@ -8,7 +8,7 @@ export type ApplicantCardType = {
   status: string;
 };
 
-type ApplicantBoardType = {
+export type ApplicantBoardType = {
   boardId: number;
   boardName: string;
   contents: ApplicantCardType[];
@@ -179,8 +179,8 @@ const kanbanSlice = createSlice({
       const destinationBoard = [...state[+destId].contents];
       const sourceBoard = [...state[+sourceId].contents];
       const sourceCard = sourceBoard[sourceIndex];
-      // 채용상태 변경
-      sourceCard.status = state[+destId].boardName;
+      // 채용상태 변경 -> 보드이름으로? 채용상태 테이블 따로?
+      sourceCard.status = "" + state[+destId].boardId;
       sourceBoard.splice(sourceIndex, 1);
       destinationBoard.splice(destIndex, 0, sourceCard);
       state[+destId].contents = destinationBoard;
@@ -192,6 +192,9 @@ const kanbanSlice = createSlice({
       const { status, applicantIndex } = action.payload;
       const applicantList = [...state[+status].contents];
       applicantList.splice(applicantIndex, 1);
+      // TODO: 프로퍼티 추가해서 확인
+      // applicantList[applicantIndex].isFailed = true;
+      // applicantList[applicantIndex].draggable = false;
       state[+status].contents = applicantList;
       return state;
     },

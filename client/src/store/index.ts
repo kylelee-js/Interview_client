@@ -4,13 +4,15 @@ import { TypedUseSelectorHook, useDispatch } from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
 import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
 // 각 슬라이스의 리듀서들
-import kanban from "../components/Main/KanBanBoard/kanbanSlice";
+import kanban from "../components/KanBanBoard/kanbanSlice";
 import auth from "../components/Login/authSlice";
+import review from "../components/Applicant/ApplicantSlice";
 
 // 루트리듀서 - 모든 리듀서 하나로
 const rootReducer = combineReducers({
   kanban: kanban,
   auth: auth,
+  review: review,
 });
 
 // 로컬스토리지 저장 - redux-persist

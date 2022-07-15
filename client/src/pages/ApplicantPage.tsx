@@ -1,9 +1,9 @@
-import Applicant from "../components/Applicant/Applicant";
+import ApplicantContaier from "../container/ApplicantContainer";
 
 export default function ApplicantPage() {
   return (
     <>
-      <Applicant />
+      <ApplicantContaier />
     </>
   );
 }

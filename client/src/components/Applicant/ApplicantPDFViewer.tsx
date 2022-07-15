@@ -39,7 +39,7 @@ export default function ApplicantPDFViewer() {
     setNumPages(numPages);
   }
   return (
-    <Wrapper>
+    <Wrapper onContextMenu={(e) => e.preventDefault()}>
       {/* TODO: 서버에서 불러온 PDF 파일 데이터 연결해서 렌더하기 */}
       <Document file="sample.pdf" onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />

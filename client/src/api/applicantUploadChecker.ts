@@ -1,5 +1,5 @@
 import axios, { AxiosResponse } from "axios";
-import { ApplicantFormData } from "../components/Pool/ApplicantUploadForm";
+import { ApplicantFormData } from "../components/Upload/ApplicantUploadForm";
 
 // FIXME: 파일 업로더 -> createAsyncThunk?
 /**

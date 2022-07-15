@@ -40,6 +40,7 @@ export default React.memo(function Card({
   tags,
   status,
 }: CardProps) {
+  // FIXME: 이것도 컨테이너로 빼야하나?
   const navigate = useNavigate();
   const onClick = () => {
     navigate("/applicant");
@@ -47,7 +48,13 @@ export default React.memo(function Card({
 
   return (
     // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
-    <Draggable key={name} index={index} draggableId={"" + name}>
+    <Draggable
+      key={name}
+      index={index}
+      draggableId={"" + name}
+      // TODO: 이 옵션 크고 끄게 할 수 있도록
+      // isDragDisabled={true}
+    >
       {(provided, snapshot) => {
         const style = {
           cursor: snapshot.isDragging ? "grab" : "pointer",
