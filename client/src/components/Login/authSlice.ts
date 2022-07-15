@@ -1,46 +1,32 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-type AuthState = {
-  authenticated: boolean;
+type UserState = {
+  pk: number;
+  name: string;
+  nickname: string;
+  isLogin: boolean;
+};
+
+type UserAuthState = {
+  user: UserState | null;
   token: string | null;
 };
 
-type AuthActionState = {
-  isLogin: boolean;
-  access: string;
-};
-
-// type UserAuthState = {
-//   name: string;
-//   nickname: string;
-//   isLogin: boolean;
-//   accessToken: string | null;
-// };
-
-// const initialUserState: UserAuthState = {
-//   // userId : 필수?
-//   name: "",
-//   nickname: "",
-//   isLogin: false,
-//   accessToken: null,
-// };
-
-const fake_Auth: AuthState = {
+const fake_User: UserAuthState = {
   // local에서 로그인 할때 설정
-  authenticated: true,
-  token: "asdads",
+  user: { pk: 0, name: "김철수", nickname: "떡잎", isLogin: true },
+  token: "fake_token_on_local",
 };
 
 const authSlice = createSlice({
   name: "AUTH_STATE",
-  initialState: fake_Auth,
+  initialState: fake_User,
   reducers: {
-    onAuth(state, action: PayloadAction<AuthActionState>) {
-      state.authenticated = action.payload.isLogin;
-      state.token = action.payload.access;
+    onAuth(state, action: PayloadAction<UserAuthState>) {
+      state = action.payload;
     },
     onDeauth(state) {
-      state.authenticated = false;
+      state.user = null;
       state.token = null;
     },
   },

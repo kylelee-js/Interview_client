@@ -6,6 +6,8 @@ export type ApplicantCardType = {
   name: string;
   tagNote: string[] | [];
   status: string;
+  isFailed?: boolean;
+  isFixed?: boolean;
 };
 
 export type ApplicantBoardType = {
@@ -14,7 +16,7 @@ export type ApplicantBoardType = {
   contents: ApplicantCardType[];
 };
 
-type ApplicantRemoveActionType = {
+type ApplicantActionType = {
   status: string;
   // FIXME: 일단은 인덱스로 -> 나중에 고유 식별 값으로 교체 (applicantId)
   applicantIndex: number;
@@ -187,14 +189,45 @@ const kanbanSlice = createSlice({
       state[+sourceId].contents = sourceBoard;
       return state;
     },
-    onRemoveApplicant(state, action: PayloadAction<ApplicantRemoveActionType>) {
+    onRemoveApplicant(state, action: PayloadAction<ApplicantActionType>) {
       // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
       const { status, applicantIndex } = action.payload;
       const applicantList = [...state[+status].contents];
-      applicantList.splice(applicantIndex, 1);
+      // applicantList.splice(applicantIndex, 1);
       // TODO: 프로퍼티 추가해서 확인
-      // applicantList[applicantIndex].isFailed = true;
-      // applicantList[applicantIndex].draggable = false;
+      applicantList[applicantIndex].isFailed = true;
+      applicantList[applicantIndex].isFixed = true;
+      state[+status].contents = applicantList;
+      return state;
+    },
+    onRollbackApplicant(state, action: PayloadAction<ApplicantActionType>) {
+      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
+      const { status, applicantIndex } = action.payload;
+      const applicantList = [...state[+status].contents];
+      // applicantList.splice(applicantIndex, 1);
+      // TODO: 프로퍼티 추가해서 확인
+      applicantList[applicantIndex].isFailed = false;
+      applicantList[applicantIndex].isFixed = false;
+      state[+status].contents = applicantList;
+      return state;
+    },
+    onFixApplicant(state, action: PayloadAction<ApplicantActionType>) {
+      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
+      const { status, applicantIndex } = action.payload;
+      const applicantList = [...state[+status].contents];
+      // applicantList.splice(applicantIndex, 1);
+      // TODO: 프로퍼티 추가해서 isFixed
+      applicantList[applicantIndex].isFixed = true;
+      state[+status].contents = applicantList;
+      return state;
+    },
+    onUnfixApplicant(state, action: PayloadAction<ApplicantActionType>) {
+      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
+      const { status, applicantIndex } = action.payload;
+      const applicantList = [...state[+status].contents];
+      // applicantList.splice(applicantIndex, 1);
+      // TODO: 프로퍼티 추가해서 isFixed
+      applicantList[applicantIndex].isFixed = false;
       state[+status].contents = applicantList;
       return state;
     },
@@ -202,5 +235,11 @@ const kanbanSlice = createSlice({
 });
 
 export default kanbanSlice.reducer;
-export const { onInBoardDrag, onCrossBoardDrag, onRemoveApplicant } =
-  kanbanSlice.actions;
+export const {
+  onInBoardDrag,
+  onCrossBoardDrag,
+  onRemoveApplicant,
+  onRollbackApplicant,
+  onFixApplicant,
+  onUnfixApplicant,
+} = kanbanSlice.actions;

@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
-import useConfirm from "../../hooks/useConfirm";
+import useMenu from "../../hooks/useMenu";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
@@ -12,6 +12,7 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
 import ConfirmPortals from "../Confirm/ConfirmPortal";
 import ConfirmPopup from "../Confirm/ConfirmPopup";
+import { useNavigate } from "react-router-dom";
 
 const RedSpan = styled.span`
   color: red;
@@ -21,13 +22,27 @@ type MenuType = {
   status: string;
   // FIXME: 일단은 인덱스로 -> 나중에 고유 식별 값으로 교체 (applicantId)
   applicantIndex: number;
+  // FIXME: 일단은 undefined 허용 -> 나중에 더미 데이터 수정
+  isFailed: boolean | undefined;
+  isFixed: boolean | undefined;
 };
 
 export default React.memo(function KebabMenu({
   status,
   applicantIndex,
+  isFailed,
+  isFixed,
 }: MenuType) {
   const [popupOpened, setPopupOpened] = useState(false);
+  const { handleFail, handleFix, handleRollBack, handleUnfix } = useMenu(
+    status,
+    applicantIndex
+  );
+  const navigate = useNavigate();
+  const onNavigate = () => {
+    navigate(`/applicant/${2}`);
+  };
+
   const togglePopupOpen = () => {
     setPopupOpened((prev) => !prev);
     setAnchorEl(null);
@@ -40,6 +55,11 @@ export default React.memo(function KebabMenu({
   };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const removeApplicant = () => {
+    // onPopupClose();
+    togglePopupOpen();
+    handleFail();
   };
 
   return (
@@ -76,29 +96,58 @@ export default React.memo(function KebabMenu({
         }}
       >
         {/* TODO: 만약 Pool 페이지라면 태그 추가가 아닌 지원자 등록처리 메뉴가 있어야한다. */}
+        <MenuItem onClick={onNavigate}>지원자 리뷰작성</MenuItem>
         <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
-        <MenuItem onClick={togglePopupOpen}>
-          <RedSpan>지원자 탈락처리</RedSpan>
-        </MenuItem>
-        <MenuItem onClick={handleClose}>
-          <b>지원자 이동잠금</b>{" "}
-        </MenuItem>
+        {isFailed ? (
+          <>
+            <MenuItem
+              onClick={() => {
+                handleRollBack();
+                handleClose();
+              }}
+            >
+              <RedSpan>지원자 탈락철회</RedSpan>
+            </MenuItem>
+            {/* <MenuItem
+              onClick={() => {
+                handleClose();
+                handleFix(status, applicantIndex);
+              }}
+            >
+              <b>지원자 이동잠금</b>{" "}
+            </MenuItem> */}
+          </>
+        ) : (
+          <>
+            <MenuItem onClick={togglePopupOpen}>
+              <RedSpan>지원자 탈락처리</RedSpan>
+            </MenuItem>
+
+            {isFixed ? (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleUnfix();
+                }}
+              >
+                <b>지원자 잠금해제</b>{" "}
+              </MenuItem>
+            ) : (
+              <MenuItem
+                onClick={() => {
+                  handleClose();
+                  handleFix();
+                }}
+              >
+                <b>지원자 이동잠금</b>{" "}
+              </MenuItem>
+            )}
+          </>
+        )}
       </Menu>
 
-      {/* FIXME: 조건문으로 감싸면 - 렌더링이 줄어든다! 하지만 애니메이션은 어떻게?? */}
-      {popupOpened && (
-        <ConfirmPortals>
-          <ConfirmPopup
-            isShown={popupOpened}
-            onPopupClose={togglePopupOpen}
-            status={status}
-            applicantIndex={applicantIndex}
-          />
-        </ConfirmPortals>
-      )}
-
-      {/* FIXME: 너무 MUI에 의존적임..  */}
-      {/* <Dialog
+      {/* FIXME: 컴포넌트 추출하기 */}
+      <Dialog
         open={popupOpened}
         onClose={togglePopupOpen}
         aria-labelledby="alert-dialog-title"
@@ -114,11 +163,28 @@ export default React.memo(function KebabMenu({
         </DialogContent>
         <DialogActions>
           <Button onClick={removeApplicant}>탈락 처리</Button>
-          <Button onClick={handleClose} autoFocus>
+          <Button
+            onClick={() => {
+              togglePopupOpen();
+              handleClose();
+            }}
+            autoFocus
+          >
             아니오
           </Button>
         </DialogActions>
-      </Dialog> */}
+      </Dialog>
+      {/* FIXME: 조건문으로 감싸면 - 렌더링이 줄어든다! 하지만 애니메이션은 어떻게?? */}
+      {/* {popupOpened && (
+        <ConfirmPortals>
+          <ConfirmPopup
+            isShown={popupOpened}
+            onPopupClose={togglePopupOpen}
+            status={status}
+            applicantIndex={applicantIndex}
+          />
+        </ConfirmPortals>
+      )} */}
     </div>
   );
 });

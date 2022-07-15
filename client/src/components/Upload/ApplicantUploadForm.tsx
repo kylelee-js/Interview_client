@@ -23,7 +23,7 @@ export type ApplicantFormData = {
   // state: string;
 };
 export default function ApplicantUploadForm() {
-  let isLogin = useAppSelector((state) => state.auth.authenticated);
+  let isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   console.log(isLogin);
   const token = useAppSelector((state) => state.auth.token);
   console.log(token);

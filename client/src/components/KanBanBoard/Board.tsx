@@ -42,9 +42,10 @@ export default React.memo(function Board({
               <Card
                 key={person.name}
                 index={index}
-                name={person.name}
-                status={person.status}
-                tags={person.tagNote}
+                // name={person.name}
+                // status={person.status}
+                // tags={person.tagNote}
+                {...contents[index]}
               />
             ))}
             {provided.placeholder}

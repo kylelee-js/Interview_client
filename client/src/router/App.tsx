@@ -33,7 +33,7 @@ const ProtectedRoute = ({ isLogin = false, outlet }: RouteType) => {
 };
 
 function App() {
-  let isLogin = useAppSelector((state) => state.auth.authenticated);
+  let isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   const dispatch = useAppDispatch();
 
   // FIXME: useLayoutEffect를 대신 사용하나?

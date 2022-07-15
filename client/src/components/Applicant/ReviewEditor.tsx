@@ -2,33 +2,34 @@
 import styled from "styled-components";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import React, { ReactHTMLElement, useRef, useState } from "react";
-import { useAppDispatch } from "../../store";
-import { onReview } from "./ApplicantSlice";
+import React, { ReactHTMLElement, useEffect, useRef, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store";
+import { onReview } from "./reviewSlice";
 
 const Wrapper = styled.div`
   /* display: flex; */
   width: 100%;
   max-width: 700px;
   min-width: 300px;
+  margin: 10px;
 `;
 
-// TODO: 위에는 기존의 평가를 확인하는 뷰어를 제공해야함!
-export default function ApplicantReviewEditor() {
+export default function ReviewEditor() {
   const QuillRef = useRef<ReactQuill>();
   const [review, setReview] = useState("");
+  const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
 
   const onClick = () => {
-    // TODO: 제출 시 useRef를 통해 내용 빈칸으로 만들기
+    // FIXME: 이걸 왜 검사해야하는가?
     const text = "" + QuillRef.current?.getEditor().root.innerHTML;
-    // const text = "" + QuillRef.current?.getEditor().getText();
-    dispatch(onReview({ id: 12, name: "문복", review: text }));
+    console.log(user);
+    // FIXME: authSlice에서 사용자 정보 불러와서 입력해주기! + 리뷰 아이디 고유 아이디 입력하기
+    dispatch(onReview({ id: user!.pk, name: user!.name, review: text }));
   };
-  const onChange = (content: string) => {
-    // console.log(content);
-    // setReview(content);
-  };
+
+  useEffect(() => {}, []);
+
   return (
     <Wrapper>
       {/* min-height는 글로벌 스타일에서 정의되어 있음! */}
@@ -38,7 +39,9 @@ export default function ApplicantReviewEditor() {
             QuillRef.current = element;
           }
         }}
-        value={review}
+        // value={review}
+        defaultValue={review}
+        // FIXME: onchange시 한글 깨짐 문제 발생.. 그냥 전체 innerHTML을 읽어오는 걸로..
         // onChange={(content, delta, source, editor) =>
         //   onChange(editor.getHTML())
         // }

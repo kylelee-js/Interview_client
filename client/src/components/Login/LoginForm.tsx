@@ -34,6 +34,7 @@ export default function LoginForm() {
   // TODO: createAsyncThunk로 다시 만들기
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     const res = await onLogin(data);
+
     if (res) {
       dispatch(onAuth(res));
     }

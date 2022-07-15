@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import styled from "styled-components";
-import useConfirm from "../../hooks/useConfirm";
+import useMenu from "../../hooks/useMenu";
 import { useAppSelector } from "../../store";
 import { Confirm, ConfirmWrapper, Overlay } from "../../styles/confirmStyle";
 
@@ -22,10 +22,10 @@ export default React.memo(function ConfirmPopup({
   const name = useAppSelector(
     (state) => state.kanban[+status].contents[applicantIndex].name
   );
-  const { handleFail } = useConfirm();
+  const { handleFail } = useMenu(status, applicantIndex);
   const removeApplicant = () => {
     onPopupClose();
-    handleFail(status, applicantIndex);
+    handleFail();
   };
   return (
     <ConfirmWrapper isShown={isShown}>

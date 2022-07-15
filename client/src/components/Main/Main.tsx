@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 import KanBanContainer from "../../container/KanBanContainer";
-import Logout from "./Logout";
+import Logout from "../Login/Logout";
 
 const AdHocMenu = styled.div`
   padding: 5px;
