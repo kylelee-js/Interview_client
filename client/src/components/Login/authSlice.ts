@@ -24,11 +24,12 @@ const authSlice = createSlice({
   initialState: fake_User,
   reducers: {
     onAuth(state, action: PayloadAction<UserAuthState>) {
-      state = action.payload;
+      return action.payload;
     },
     onDeauth(state) {
       state.user = null;
       state.access = null;
+      return state;
     },
   },
 });
