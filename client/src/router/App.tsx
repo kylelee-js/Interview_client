@@ -7,7 +7,7 @@ import {
   Navigate,
 } from "react-router-dom";
 import { onSilentRefresh } from "../api/loginChecker";
-import { onAuth } from "../components/Login/authSlice";
+import { onAuth, onReauth } from "../components/Login/authSlice";
 import LoginPage from "../pages/LoginPage";
 import MainPage from "../pages/MainPage";
 import ApplicantPage from "../pages/ApplicantPage";
@@ -47,7 +47,7 @@ function App() {
     if (isLogin) {
       const reAuth = async () => {
         const res = await onSilentRefresh();
-        dispatch(onAuth(res));
+        dispatch(onReauth(res));
       };
       reAuth();
     }
