@@ -8,9 +8,9 @@ export const onLogin = async (data: LoginFormData) => {
   try {
     const res = await axios.post("/user/login/", data);
     await onLoginSuccess(res);
-    const { token } = res.data;
+    const { access } = res.data;
     const { isLogin, name, nickname, pk } = res.data;
-    return { user: { isLogin, name, nickname, pk }, token };
+    return { user: { isLogin, name, nickname, pk }, access };
   } catch (error) {
     console.log(error);
   }
