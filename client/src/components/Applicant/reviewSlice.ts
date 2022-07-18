@@ -33,12 +33,14 @@ const reviewSlice = createSlice({
   reducers: {
     onReview(state, action: PayloadAction<ReviewDataType>) {
       state.push(action.payload);
+      return state;
     },
     onRemove(state, action: PayloadAction<{ id: number }>) {
       const editReviewIndex = state.findIndex(
         (review) => review.id == action.payload.id
       );
       state.splice(editReviewIndex, 1);
+      return state;
     },
     onEdit(state, action: PayloadAction<ReviewDataType>) {
       const editReviewIndex = state.findIndex(
@@ -46,6 +48,7 @@ const reviewSlice = createSlice({
       );
       state.splice(editReviewIndex, 1);
       state.splice(editReviewIndex, 0, action.payload);
+      return state;
     },
   },
 });

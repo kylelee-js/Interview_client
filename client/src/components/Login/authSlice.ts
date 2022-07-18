@@ -31,8 +31,16 @@ const authSlice = createSlice({
       state.access = null;
       return state;
     },
+    onReauth(
+      state,
+      action: PayloadAction<{ isLogin: boolean; access: string }>
+    ) {
+      state.user!.isLogin = action.payload.isLogin;
+      state.access = action.payload.access;
+      return state;
+    },
   },
 });
 
 export default authSlice.reducer;
-export const { onAuth, onDeauth } = authSlice.actions;
+export const { onAuth, onDeauth, onReauth } = authSlice.actions;
