@@ -14,8 +14,8 @@ type UserAuthState = {
 
 const fake_User: UserAuthState = {
   // local에서 로그인 할때 설정
-  // user: { pk: 0, name: "김철수", nickname: "떡잎", isLogin: true },
-  user: null,
+  user: { pk: 0, name: "김철수", nickname: "떡잎", isLogin: true },
+  // user: null,
   token: "fake_token_on_local",
 };
 

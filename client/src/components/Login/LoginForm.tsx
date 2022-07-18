@@ -34,11 +34,14 @@ export default function LoginForm() {
   // TODO: createAsyncThunk로 다시 만들기
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     const res = await onLogin(data);
+    console.log(res);
     if (res) {
       dispatch(onAuth(res));
+      console.log("on Success");
     }
 
-    navigate("/");
+    navigate("/pool");
+    console.log("on Navigate Success");
   };
 
   const onClick = () => {

@@ -8,15 +8,21 @@ import {
 } from "react-router-dom";
 import { onSilentRefresh } from "../api/loginChecker";
 import { onAuth } from "../components/Login/authSlice";
+import LoginPage from "../pages/LoginPage";
+import MainPage from "../pages/MainPage";
+import ApplicantPage from "../pages/ApplicantPage";
+import SignupPage from "../pages/SignupPage";
+import PoolPage from "../pages/PoolPage";
+// import UploadPage from "../pages/SignupPage";
 
 import NotFoundPage from "../pages/NotFoundPage";
 import { useAppDispatch, useAppSelector } from "../store";
 
-const LoginPage = React.lazy(() => import("../pages/LoginPage"));
-const MainPage = React.lazy(() => import("../pages/MainPage"));
-const ApplicantPage = React.lazy(() => import("../pages/ApplicantPage"));
-const PoolPage = React.lazy(() => import("../pages/PoolPage"));
-const SignupPage = React.lazy(() => import("../pages/SignupPage"));
+// const LoginPage = React.lazy(() => import("../pages/LoginPage"));
+// const MainPage = React.lazy(() => import("../pages/MainPage"));
+// const ApplicantPage = React.lazy(() => import("../pages/ApplicantPage"));
+// const PoolPage = React.lazy(() => import("../pages/PoolPage"));
+// const SignupPage = React.lazy(() => import("../pages/SignupPage"));
 const UploadPage = React.lazy(() => import("../pages/UploadPage"));
 
 type RouteType = {
