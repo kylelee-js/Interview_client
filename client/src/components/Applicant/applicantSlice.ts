@@ -1,37 +1,39 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { useAppSelector } from "../../store";
+import { ReviewDataType } from "./reviewSlice";
+
+export type ApplicantDataType = {
+  id: number;
+  name: string;
+  tagNote: string[] | [];
+  status: string;
+  isFailed?: boolean;
+  isFixed?: boolean;
+};
 
 // 면접관 리뷰 정보
-export type ReviewDataType = {
-  id: number | null;
-  name: string | null;
-  review: string;
+export type ApplicantType = {
+  applicant: ApplicantDataType;
+  review: ReviewDataType;
 };
 
 // TODO: 각 지원자 데이터의 리뷰 정보를 initial state로 설정해준다.
+//  지금은 칸반에서 불러오고 있지만... -> 나중에는 api로 가져와야한다.
+const applicant = useAppSelector((state) => state.kanban);
+const review = useAppSelector((state) => state.review);
 
-const fakeReviewDate: ReviewDataType[] = [
+const fakeApplicantData: ApplicantType[] = [
   {
-    id: 12,
-    name: "신짱구",
-    review: "ㅋㅋㅋ",
-  },
-  // {
-  //   id: 0,
-  //   name: "김철수",
-  //   review: "수정요망",
-  // },
-  {
-    id: 10,
-    name: "김유리",
-    review: "아래 리뷰",
+    applicant: applicant[0].contents[0],
+    review: review[0],
   },
 ];
 
 const applicantSlice = createSlice({
   name: "APPLICANT",
-  initialState: fakeReviewDate,
+  initialState: fakeApplicantData,
   reducers: {
-    onReview(state, action: PayloadAction<ReviewDataType>) {
+    onReview(state, action: PayloadAction<ApplicantType>) {
       state.push(action.payload);
     },
   },

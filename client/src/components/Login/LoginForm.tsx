@@ -37,6 +37,8 @@ export default function LoginForm() {
     if (res) {
       dispatch(onAuth(res));
     }
+
+    navigate("/");
   };
 
   const onClick = () => {
