@@ -99,30 +99,19 @@ export default React.memo(function KebabMenu({
         <MenuItem onClick={onNavigate}>지원자 리뷰작성</MenuItem>
         <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
         {isFailed ? (
-          <>
-            <MenuItem
-              onClick={() => {
-                handleRollBack();
-                handleClose();
-              }}
-            >
-              <RedSpan>지원자 탈락철회</RedSpan>
-            </MenuItem>
-            {/* <MenuItem
-              onClick={() => {
-                handleClose();
-                handleFix(status, applicantIndex);
-              }}
-            >
-              <b>지원자 이동잠금</b>{" "}
-            </MenuItem> */}
-          </>
+          <MenuItem
+            onClick={() => {
+              handleRollBack();
+              handleClose();
+            }}
+          >
+            <RedSpan>지원자 탈락철회</RedSpan>
+          </MenuItem>
         ) : (
-          <>
+          <div>
             <MenuItem onClick={togglePopupOpen}>
               <RedSpan>지원자 탈락처리</RedSpan>
             </MenuItem>
-
             {isFixed ? (
               <MenuItem
                 onClick={() => {
@@ -142,7 +131,7 @@ export default React.memo(function KebabMenu({
                 <b>지원자 이동잠금</b>{" "}
               </MenuItem>
             )}
-          </>
+          </div>
         )}
       </Menu>
 
