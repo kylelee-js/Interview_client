@@ -57,7 +57,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/" element={isLogin ? <MainPage /> : <LoginPage />} />
           <Route
-            path="/applicant"
+            path="/applicant/:applicantId"
             element={isLogin ? <ApplicantPage /> : <LoginPage />}
           />
           <Route

@@ -1,52 +1,87 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import styled from "styled-components";
-import { useAppSelector } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import parse from "html-react-parser";
 import ReviewEditor from "./ReviewEditor";
+import { onRemove } from "./reviewSlice";
+
+const ReviewDiv = styled.div``;
+
 export default function ReviewViewer() {
   const [editorShown, setEditorShown] = useState<boolean>(false);
-  const [editShown, setEditShown] = useState<boolean>(false);
+  const [editShown, setEditShown] = useState<boolean>(true);
+  const [reviewButton, setReviewButton] = useState<boolean>(true);
+  const [isReviewExist, setIsReviewExist] = useState<boolean>(true);
+  const reviewData = useAppSelector((state) => state.review);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
+  const user = useAppSelector((state) => state.auth.user);
+  const dispatch = useAppDispatch();
 
-  const toggleShown = () => {
+  useEffect(() => {
+    if (reviewData.find((review) => review.id == user?.pk)) {
+      console.log("upload");
+      setEditShown(false);
+      setEditorShown(false);
+    }
+    if (reviewData.length == 1 && reviewData[0].name == null) {
+      setIsReviewExist(false);
+    } else {
+      setIsReviewExist(true);
+    }
+  }, [reviewData]);
+
+  const toggleShownEditor = () => {
+    setReviewButton((prev) => !prev);
     setEditorShown((prev) => !prev);
   };
-  const reviewData = useAppSelector((state) => state.review);
-  // FIXME: 초기 initialState가 렌더 되고 있음...
-  // reviewData.shift();
-  console.log(reviewData);
-
-  const onClick = (event: React.MouseEvent<HTMLElement>) => {
-    // FIXME: 유니크 키가 있으면 그냥 reviewSlice에서 값으로 가져오면 그만인데..
-    console.log(event.currentTarget.parentElement?.childNodes[0]);
+  const onEditClick = (id: number) => {
+    setIsEdit(true);
   };
-  const onClickTwo = (index: number) => {
-    setEditorShown(false);
-    setEditShown(true);
-    console.log(reviewData[index].review);
+  const onDeleteClick = (id: number) => {
+    dispatch(onRemove({ id }));
   };
   return (
     <>
-      {reviewData.length == 0 ? (
-        <>아직 리뷰가 없습니다.</>
+      {isReviewExist ? (
+        reviewData.map((review) => {
+          return isEdit && review.id == user?.pk ? (
+            <ReviewEditor
+              key={review.id}
+              defaultText={review.review}
+              isEdit={true}
+              setisEdit={setIsEdit}
+            />
+          ) : (
+            <ReviewDiv key={review.id}>
+              {review.name}
+              <div>
+                {parse(review.review)}
+
+                {review.id == user?.pk && (
+                  <>
+                    <button onClick={() => onEditClick(review.id as number)}>
+                      리뷰 수정하기
+                    </button>
+                    <button onClick={() => onDeleteClick(review.id as number)}>
+                      리뷰 삭제하기
+                    </button>
+                  </>
+                )}
+              </div>
+            </ReviewDiv>
+          );
+        })
       ) : (
-        reviewData.map((review, index) => (
-          // FIXME: unique key 부여하기
-          <>
-            {review.name}
-            <div>
-              {editShown ? <ReviewEditor /> : <div>{parse(review.review)}</div>}
-
-              <button onClick={onClick}>리뷰 수정하기 by target</button>
-              <button onClick={() => onClickTwo(index)}>
-                리뷰 수정하기 by id
-              </button>
-            </div>
-          </>
-        ))
+        <>아직 리뷰가 없습니다.</>
       )}
-
-      <button onClick={toggleShown}>리뷰 작성하기</button>
-      {editorShown && <ReviewEditor />}
+      {editShown && (
+        <button onClick={toggleShownEditor}>
+          {reviewButton ? "리뷰 작성하기" : "리뷰창 닫기"}
+        </button>
+      )}
+      {editorShown && (
+        <ReviewEditor defaultText="" isEdit={false} setisEdit={setIsEdit} />
+      )}
     </>
   );
 }

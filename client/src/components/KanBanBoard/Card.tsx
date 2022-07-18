@@ -43,6 +43,7 @@ interface CardProps extends ApplicantCardType {
 }
 
 export default React.memo(function Card({
+  id,
   name,
   index,
   tagNote,
@@ -52,8 +53,8 @@ export default React.memo(function Card({
 }: CardProps) {
   // FIXME: 이것도 컨테이너로 빼야하나?
   const navigate = useNavigate();
-  const onClick = () => {
-    navigate("/applicant");
+  const onClick = (id: number) => {
+    navigate(`/applicant/${id}`);
   };
 
   return (
@@ -72,7 +73,7 @@ export default React.memo(function Card({
           ...provided.draggableProps.style,
         };
         return (
-          <Wrapper onDoubleClick={onClick}>
+          <Wrapper onDoubleClick={() => onClick(id)}>
             <Box
               sx={{ minWidth: 275 }}
               ref={provided.innerRef}
