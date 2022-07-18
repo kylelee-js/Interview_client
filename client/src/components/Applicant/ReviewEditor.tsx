@@ -35,6 +35,9 @@ export default function ReviewEditor() {
       setReview("");
     }
   };
+  //   # dist
+  // # dist-ssr
+  // # *.local
 
   useEffect(() => {}, []);
 
