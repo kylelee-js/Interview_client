@@ -37,7 +37,7 @@ export default function LoginForm() {
     console.log(res);
     if (res) {
       dispatch(onAuth(res));
-      console.log("on Success");
+      console.log("on Dispatch");
     }
 
     navigate("/pool");
