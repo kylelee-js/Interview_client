@@ -37,11 +37,6 @@ export default function LoginForm() {
     if (res) {
       dispatch(onAuth(res));
     }
-
-    // FIXME: 성공해야만 라우팅 되도록
-    // if()
-    navigate("/");
-    console.log(data);
   };
 
   const onClick = () => {

@@ -23,23 +23,28 @@ type RouteType = {
   isLogin: boolean;
   outlet: JSX.Element;
 };
+
+// PrivateRoute 구현
 const ProtectedRoute = ({ isLogin = false, outlet }: RouteType) => {
   if (!isLogin) {
     return <Navigate to="/login" replace />;
   }
-
   return outlet;
 };
 
 function App() {
-  let isLogin = useAppSelector((state) => state.auth.authenticated);
+  let isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   const dispatch = useAppDispatch();
+
+  // FIXME: useLayoutEffect를 대신 사용하나?
   useEffect(() => {
-    const reAuth = async () => {
-      const res = await onSilentRefresh();
-      dispatch(onAuth(res.access));
-    };
-    reAuth();
+    if (isLogin) {
+      const reAuth = async () => {
+        const res = await onSilentRefresh();
+        dispatch(onAuth(res));
+      };
+      reAuth();
+    }
   }, []);
 
   return (
@@ -52,7 +57,7 @@ function App() {
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/" element={isLogin ? <MainPage /> : <LoginPage />} />
           <Route
-            path="/applicant"
+            path="/applicant/:applicantId"
             element={isLogin ? <ApplicantPage /> : <LoginPage />}
           />
           <Route
