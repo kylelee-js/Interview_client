@@ -40,7 +40,7 @@ export default function LoginForm() {
       console.log("on Dispatch");
     }
 
-    navigate("/pool");
+    navigate("/");
     console.log("on Navigate Success");
   };
 
