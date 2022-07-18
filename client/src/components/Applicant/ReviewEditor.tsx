@@ -16,6 +16,7 @@ const Wrapper = styled.div`
 
 export default function ReviewEditor() {
   const QuillRef = useRef<ReactQuill>();
+  const [placeholder, setPlaceholder] = useState("공정한 리뷰를 작성해주세요.");
   const [review, setReview] = useState("");
   const user = useAppSelector((state) => state.auth.user);
   const dispatch = useAppDispatch();
@@ -23,9 +24,16 @@ export default function ReviewEditor() {
   const onClick = () => {
     // FIXME: 이걸 왜 검사해야하는가?
     const text = "" + QuillRef.current?.getEditor().root.innerHTML;
-    console.log(user);
-    // FIXME: authSlice에서 사용자 정보 불러와서 입력해주기! + 리뷰 아이디 고유 아이디 입력하기
-    dispatch(onReview({ id: user!.pk, name: user!.name, review: text }));
+
+    // console.log(text);
+    if (text == "<p><br></p>") {
+      setPlaceholder("리뷰를 작성하고 올려주세요");
+      // TODO: 에러 팝업 띄우기
+    } else {
+      // FIXME: authSlice에서 사용자 정보 불러와서 입력해주기! + 리뷰 아이디 고유 아이디 입력하기
+      dispatch(onReview({ id: user!.pk, name: user!.name, review: text }));
+      setReview("");
+    }
   };
 
   useEffect(() => {}, []);
@@ -39,14 +47,9 @@ export default function ReviewEditor() {
             QuillRef.current = element;
           }
         }}
-        // value={review}
-        defaultValue={review}
-        // FIXME: onchange시 한글 깨짐 문제 발생.. 그냥 전체 innerHTML을 읽어오는 걸로..
-        // onChange={(content, delta, source, editor) =>
-        //   onChange(editor.getHTML())
-        // }
-        // onChange={(editor) => setReview(editor)}
-        placeholder="공정한 리뷰를 작성해주세요."
+        value={review}
+        // defaultValue={review}
+        placeholder={placeholder}
       />
       <button onClick={onClick}>작성</button>
     </Wrapper>
