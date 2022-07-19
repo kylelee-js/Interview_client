@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { CardCoordinateType } from "./Kanban";
 
 export type ApplicantCardType = {
@@ -6,6 +7,8 @@ export type ApplicantCardType = {
   name: string;
   tagNote: string[] | [];
   status: string;
+  department: string;
+  job: string;
   isFailed?: boolean;
   isFixed?: boolean;
 };
@@ -13,7 +16,7 @@ export type ApplicantCardType = {
 export type ApplicantBoardType = {
   boardId: number;
   boardName: string;
-  contents: ApplicantCardType[];
+  contents: ApplicantDataType[];
 };
 
 type ApplicantActionType = {
@@ -29,31 +32,39 @@ const fakeBoards: ApplicantBoardType[] = [
     boardName: "서류합격",
     contents: [
       {
-        id: 0,
-        name: "Kyle",
+        applicantId: 0,
+        applicantName: "Kyle Lee",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
+        department: "개발",
+        job: "QA",
         status: "0",
       },
       {
-        id: 1,
-        name: "David",
+        applicantId: 1,
+        applicantName: "David Kim",
         // date: new Date(),
         tagNote: ["#zxc", "#hfdghsd"],
+        department: "개발",
+        job: "데브옵스",
         status: "0",
       },
       {
-        id: 2,
-        name: "Paul",
+        applicantId: 2,
+        applicantName: "Paul Shelby",
         // date: new Date(),
         tagNote: ["#zxcxcc", "#q2123"],
+        department: "개발",
+        job: "기획",
         status: "0",
       },
       {
-        id: 3,
-        name: "Susan",
+        applicantId: 3,
+        applicantName: "Susan Carson",
         // date: new Date(),
         tagNote: ["#zxcvvd", "#fasdf"],
+        department: "개발",
+        job: "프론트",
         status: "0",
       },
     ],
@@ -63,31 +74,30 @@ const fakeBoards: ApplicantBoardType[] = [
     boardName: "1차합격",
     contents: [
       {
-        id: 0,
-        name: "철수",
+        applicantId: 0,
+        applicantName: "김철수",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
+        department: "개발",
+        job: "프론트",
         status: "1",
       },
       {
-        id: 1,
-        name: "영희",
+        applicantId: 1,
+        applicantName: "박영희",
         // date: new Date(),
         tagNote: ["#zxc", "#hfdghsd"],
+        department: "개발",
+        job: "백엔드",
         status: "1",
       },
       {
-        id: 2,
-        name: "맹구",
+        applicantId: 2,
+        applicantName: "권지용",
         // date: new Date(),
         tagNote: ["#zxcxcc", "#q2123"],
-        status: "1",
-      },
-      {
-        id: 3,
-        name: "훈이",
-        // date: new Date(),
-        tagNote: ["#zxcvvd", "#fasdf"],
+        department: "개발",
+        job: "데브옵스",
         status: "1",
       },
     ],
@@ -97,31 +107,21 @@ const fakeBoards: ApplicantBoardType[] = [
     boardName: "2차합격",
     contents: [
       {
-        id: 0,
-        name: "레드",
+        applicantId: 0,
+        applicantName: "송하영",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
+        department: "개발",
+        job: "프론트엔드",
         status: "2",
       },
       {
-        id: 1,
-        name: "블루",
+        applicantId: 1,
+        applicantName: "유재석",
         // date: new Date(),
         tagNote: ["#zxc", "#hfdghsd"],
-        status: "2",
-      },
-      {
-        id: 2,
-        name: "그린",
-        // date: new Date(),
-        tagNote: ["#zxcxcc", "#q2123"],
-        status: "2",
-      },
-      {
-        id: 3,
-        name: "핑크",
-        // date: new Date(),
-        tagNote: ["#zxcvvd", "#fasdf"],
+        department: "마케팅",
+        job: "디자이너",
         status: "2",
       },
     ],
@@ -131,31 +131,12 @@ const fakeBoards: ApplicantBoardType[] = [
     boardName: "최종합격",
     contents: [
       {
-        id: 0,
-        name: "애플",
+        applicantId: 0,
+        applicantName: "권숙",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
-        status: "3",
-      },
-      {
-        id: 1,
-        name: "삼성",
-        // date: new Date(),
-        tagNote: ["#zxc", "#hfdghsd"],
-        status: "3",
-      },
-      {
-        id: 2,
-        name: "LG",
-        // date: new Date(),
-        tagNote: ["#zxcxcc", "#q2123"],
-        status: "3",
-      },
-      {
-        id: 3,
-        name: "구글",
-        // date: new Date(),
-        tagNote: ["#zxcvvd", "#fasdf"],
+        department: "개발",
+        job: "기획",
         status: "3",
       },
     ],

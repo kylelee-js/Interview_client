@@ -19,6 +19,7 @@ const RedSpan = styled.span`
 `;
 
 type MenuType = {
+  id: number;
   status: string;
   // FIXME: 일단은 인덱스로 -> 나중에 고유 식별 값으로 교체 (applicantId)
   applicantIndex: number;
@@ -28,6 +29,7 @@ type MenuType = {
 };
 
 export default React.memo(function KebabMenu({
+  id,
   status,
   applicantIndex,
   isFailed,
@@ -40,7 +42,7 @@ export default React.memo(function KebabMenu({
   );
   const navigate = useNavigate();
   const onNavigate = () => {
-    navigate(`/applicant/${2}`);
+    navigate(`/applicant/${id}`);
   };
 
   const togglePopupOpen = () => {

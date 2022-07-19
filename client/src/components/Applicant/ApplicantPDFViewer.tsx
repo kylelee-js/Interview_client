@@ -29,7 +29,13 @@ const PageButton = styled.button`
   cursor: pointer;
 `;
 
-export default function ApplicantPDFViewer() {
+type ApplicantPDFViewerPropsType = {
+  filePath: string;
+};
+
+export default function ApplicantPDFViewer({
+  filePath,
+}: ApplicantPDFViewerPropsType) {
   // TODO: pdf 뷰어 설치하기
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
@@ -41,7 +47,7 @@ export default function ApplicantPDFViewer() {
   return (
     <Wrapper onContextMenu={(e) => e.preventDefault()}>
       {/* TODO: 서버에서 불러온 PDF 파일 데이터 연결해서 렌더하기 */}
-      <Document file="/sample.pdf" onLoadSuccess={onDocumentLoadSuccess}>
+      <Document file={filePath} onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />
       </Document>
       <PaginationMenu>

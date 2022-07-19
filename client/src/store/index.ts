@@ -7,6 +7,7 @@ import storage from "redux-persist/lib/storage"; // defaults to localStorage for
 import kanban from "../components/KanBanBoard/kanbanSlice";
 import auth from "../components/Login/authSlice";
 import review from "../components/Applicant/reviewSlice";
+import applicants from "../components/Applicant/applicantSlice";
 import { queryApi } from "../api/queryApi";
 
 // 루트리듀서 - 모든 리듀서 하나로
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   kanban: kanban,
   auth: auth,
   review: review,
+  applicants: applicants,
 });
 
 // 로컬스토리지 저장 - redux-persist

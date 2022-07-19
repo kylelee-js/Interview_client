@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Draggable } from "react-beautiful-dnd";
-import Box from "@mui/material/Box";
+import { Box } from "@mui/material/";
 import MuiCard from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -10,7 +10,7 @@ import BlockIcon from "@mui/icons-material/Block";
 import KebabMenu from "./KebabMenu";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ApplicantCardType } from "./kanbanSlice";
+import { ApplicantDataType } from "../Applicant/applicantSlice";
 
 const Wrapper = styled.div`
   position: relative;
@@ -30,26 +30,23 @@ const MenuButtonDiv = styled.div`
   right: 0px;
 `;
 
-// type CardProps = {
-//   name: string;
-//   index: number;
-//   tags: string[] | [];
-//   status: string;
-// };
+const myPageBoards = ["서류합격", "1차합격", "2차합격", "최종합격"];
+const poolPageBoards = ["개발", "마케팅", "경영지원", "디자인"];
 
-interface CardProps extends ApplicantCardType {
-  // name: string;
+interface CardProps extends ApplicantDataType {
   index: number;
 }
 
 export default React.memo(function Card({
-  id,
-  name,
+  applicantId,
+  applicantName,
   index,
   tagNote,
+  department,
+  job,
   status,
-  isFailed,
-  isFixed,
+  isFailed = false,
+  isFixed = false,
 }: CardProps) {
   // FIXME: 이것도 컨테이너로 빼야하나?
   const navigate = useNavigate();
@@ -60,9 +57,9 @@ export default React.memo(function Card({
   return (
     // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
     <Draggable
-      key={name}
+      key={applicantName}
       index={index}
-      draggableId={"" + name}
+      draggableId={"" + applicantName}
       // TODO: 이 옵션 크고 끄게 할 수 있도록
       isDragDisabled={isFixed}
     >
@@ -73,7 +70,7 @@ export default React.memo(function Card({
           ...provided.draggableProps.style,
         };
         return (
-          <Wrapper onDoubleClick={() => onClick(id)}>
+          <Wrapper onDoubleClick={() => onClick(applicantId)}>
             <Box
               sx={{ minWidth: 275 }}
               ref={provided.innerRef}
@@ -88,10 +85,10 @@ export default React.memo(function Card({
                     color="text.secondary"
                     gutterBottom
                   >
-                    지원자
+                    {department} - {job}
                   </Typography>
                   <Typography variant="h5" component="div">
-                    {name}{" "}
+                    {applicantName}{" "}
                     {isFailed && (
                       <BlockIcon
                         color="error"
@@ -101,7 +98,7 @@ export default React.memo(function Card({
                     {isFixed && <LockIcon sx={{ verticalAlign: "text-top" }} />}
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    adjective
+                    {myPageBoards[+status]}
                   </Typography>
                   <Typography variant="body2">
                     {/* TODO: 태그노트 스타일링하기!! */}
@@ -116,6 +113,7 @@ export default React.memo(function Card({
                 <MenuButtonDiv>
                   <CardActions>
                     <KebabMenu
+                      id={applicantId}
                       status={status}
                       applicantIndex={index}
                       isFailed={isFailed}

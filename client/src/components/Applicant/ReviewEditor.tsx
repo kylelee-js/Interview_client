@@ -2,7 +2,13 @@
 import styled from "styled-components";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import React, { ReactHTMLElement, useEffect, useRef, useState } from "react";
+import React, {
+  Dispatch,
+  ReactHTMLElement,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { onEdit, onReview } from "./reviewSlice";
 import Box from "@mui/material/Box";
@@ -33,14 +39,16 @@ const popupStyle = {
 
 type ReviewEditorPropsType = {
   defaultText: string;
-  isEdit: boolean;
-  setisEdit: (isEdit: boolean) => void;
+  applicantStatus: string;
+  setIsEditMode: Dispatch<React.SetStateAction<boolean>>;
+  isEditMode: boolean;
 };
 
 export default function ReviewEditor({
   defaultText,
-  isEdit,
-  setisEdit,
+  applicantStatus,
+  isEditMode,
+  setIsEditMode,
 }: ReviewEditorPropsType) {
   const QuillRef = useRef<ReactQuill>();
   const [review, setReview] = useState(defaultText);
@@ -55,11 +63,31 @@ export default function ReviewEditor({
     const text = "" + QuillRef.current?.getEditor().root.innerHTML;
     if (text == "<p><br></p>") {
       handleOpen();
-    } else if (isEdit) {
-      dispatch(onEdit({ id: user!.pk, name: user!.name, review: text }));
-      setisEdit(false);
+    } else if (isEditMode) {
+      dispatch(
+        onEdit({
+          applicantStatus: applicantStatus,
+          statusReviewData: {
+            userId: user?.pk!,
+            userName: user!.name,
+            userNickname: user!.nickname,
+            reviewText: text,
+          },
+        })
+      );
+      setIsEditMode(false);
     } else {
-      dispatch(onReview({ id: user!.pk, name: user!.name, review: text }));
+      dispatch(
+        onReview({
+          applicantStatus: applicantStatus,
+          statusReviewData: {
+            userId: user!.pk,
+            userName: user!.name,
+            userNickname: user!.nickname,
+            reviewText: text,
+          },
+        })
+      );
       setReview("");
     }
   };

@@ -2,8 +2,8 @@ import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { ApplicantDataType } from "../Applicant/applicantSlice";
 import Card from "./Card";
-import { ApplicantCardType } from "./kanbanSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -22,7 +22,7 @@ const BoardDiv = styled.div`
 type BoardPropsType = {
   name: string;
   index: number;
-  contents: ApplicantCardType[];
+  contents: ApplicantDataType[];
   droppableId: string;
 };
 
@@ -40,7 +40,7 @@ export default React.memo(function Board({
             {contents.map((person, index) => (
               // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
               <Card
-                key={person.name}
+                key={person.applicantName}
                 index={index}
                 // name={person.name}
                 // status={person.status}

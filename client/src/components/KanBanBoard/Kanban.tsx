@@ -57,6 +57,7 @@ export default React.memo(function KanBan({ kanbanSlice }: KanBanPropsType) {
       // TODO: 이 기능은 Pool 페이지에서는 사용불가능해야함
       dispatch(onCrossBoardDrag(cardCoordinate));
     }
+    // TODO: 여기서에서 api 콜 보내기
   }, []);
 
   // FIXME: 새 보드 생성 기능<GeneratorBtn /> 은 일단 개발팀만 사용한다고 판단 -> 추후 관리자 기능으로 통제가능하도록 하자

@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 import styled from "styled-components";
+import { useAppDispatch, useAppSelector } from "../../store";
 import ApplicantPDFViewer from "./ApplicantPDFViewer";
-import ReviewEdior from "./ReviewEditor";
-import ReviewViewer from "./ReviewViewer";
+import ReviewAccordion from "./ReviewAccordion";
+import { onInit } from "./reviewSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -16,13 +18,31 @@ const Box = styled.div`
 `;
 
 export default function Applicant() {
+  const param = useParams();
+  const applicantId = param.applicantId as string;
+  const dispatch = useAppDispatch();
+  const applicants = useAppSelector((state) => state.applicants);
+  const applicant = applicants.find(
+    (applicant) => applicant.applicantInfo.applicantId == +applicantId
+  );
+  console.log(applicant?.applicantReview!);
+  dispatch(onInit(applicant?.applicantReview!));
+  // useEffect(() => {
+  //   console.log(applicant?.reviews!);
+  //   dispatch(onInit(applicant?.reviews!));
+  // }, []);
+
+  console.log("filePath : ", applicant?.applicantInfo.filePath);
+
   return (
     <Wrapper>
       {/* FIXME: 리액트 뷰어 실험 중 */}
       {/* TODO: 각 지원자 정보를 받아오는 통신은 컨테이너에서 받아온다 */}
-      <ApplicantPDFViewer />
+      <ApplicantPDFViewer filePath={applicant?.applicantInfo.filePath!} />
+      {/* <ApplicantPDFViewer /> */}
       <div style={{ width: "100%" }}>
-        <ReviewViewer />
+        {/* FIXME: 타입 단언 제거하기 */}
+        <ReviewAccordion />
       </div>
     </Wrapper>
   );
