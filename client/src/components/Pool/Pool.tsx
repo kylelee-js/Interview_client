@@ -7,7 +7,7 @@ export default function Pool() {
     <>
       {/* TODO: Pool 페이지에서는 다른 props를 제공해야한다 */}
       <Link to="/upload">지원자 신규 등록하기</Link>
-      <KanBanContainer />
+      <KanBanContainer type="pool" />
     </>
   );
 }

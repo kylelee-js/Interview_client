@@ -3,16 +3,19 @@ import { useAppSelector } from "../../store";
 import { ApplicantReviewDataType, ReviewDataType } from "./reviewSlice";
 
 export type ApplicantDataType = {
-  applicantId: number;
+  id: number;
   applicantName: string;
   birth?: string;
-  tagNote: string[] | [];
+  tagNote?: string[] | [];
   department: string;
   job: string;
   status: string;
   filePath?: string;
   isFailed?: boolean;
+  board?: number[];
+  interviewer?: string[];
   isFixed?: boolean;
+  order?: number;
 };
 
 // 면접관 리뷰 정보
@@ -26,7 +29,7 @@ export type ApplicantType = {
 const fakeApplicantData: ApplicantType[] = [
   {
     applicantInfo: {
-      applicantId: 0,
+      id: 0,
       applicantName: "Kyle Lee",
       // date: new Date(),
       tagNote: ["#asd", "#qwe"],
@@ -93,7 +96,7 @@ const fakeApplicantData: ApplicantType[] = [
   },
   {
     applicantInfo: {
-      applicantId: 1,
+      id: 1,
       applicantName: "David Kim",
       // date: new Date(),
       tagNote: ["#zxc", "#hfdghsd"],
@@ -160,7 +163,7 @@ const fakeApplicantData: ApplicantType[] = [
   },
   {
     applicantInfo: {
-      applicantId: 2,
+      id: 2,
       applicantName: "Paul Shelby",
       // date: new Date(),
       tagNote: ["#zxcxcc", "#q2123"],
@@ -231,8 +234,12 @@ const applicantSlice = createSlice({
   name: "APPLICANT",
   initialState: fakeApplicantData,
   reducers: {
-    onSetState(state, action: PayloadAction<ApplicantType>) {
-      state.push(action.payload);
+    // onSetState(state, action: PayloadAction<ApplicantType>) {
+    //   state = [action.payload];
+    //   return state;
+    // },
+    onSetState(state, action: PayloadAction<ApplicantDataType>) {
+      state[0].applicantInfo = action.payload;
       return state;
     },
   },

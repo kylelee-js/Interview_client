@@ -2,9 +2,6 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewCard from "./ReviewCard";
 import ReviewEditor from "./ReviewEditor";
-import ReviewEditorMenu, {
-  ReviewEditorMenuPropsType,
-} from "./ReviewEditorMenu";
 import { ReviewDataType, StatusReviewDataType } from "./reviewSlice";
 
 type ReviewViewPropsType = {
@@ -29,27 +26,28 @@ export default React.memo(function ReviewView({
     }
   }, []);
 
-  return isReviewExist ? (
-    isEditMode ? (
-      <ReviewEditor
-        applicantStatus={data.applicantStatus}
-        defaultText={statusReviewData.reviewText}
-        isEditMode={isEditMode}
-        setIsEditMode={setIsEditMode}
-      />
-    ) : (
+  if (!isReviewExist)
+    return (
       <>
-        <ReviewCard
-          applicantStatus={data.applicantStatus}
-          setIsEditMode={setIsEditMode}
-          userPk={userPk}
-          statusReviewData={statusReviewData}
-        />
+        <div>아직 리뷰가 없습니다.</div>
       </>
-    )
+    );
+
+  return isEditMode ? (
+    <ReviewEditor
+      applicantStatus={data.applicantStatus}
+      defaultText={statusReviewData.reviewText}
+      isEditMode={isEditMode}
+      setIsEditMode={setIsEditMode}
+    />
   ) : (
     <>
-      <div>아직 리뷰가 없습니다.</div>
+      <ReviewCard
+        applicantStatus={data.applicantStatus}
+        setIsEditMode={setIsEditMode}
+        userPk={userPk}
+        statusReviewData={statusReviewData}
+      />
     </>
   );
 });

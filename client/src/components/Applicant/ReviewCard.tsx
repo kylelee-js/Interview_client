@@ -4,6 +4,10 @@ import parse from "html-react-parser";
 import { onRemove, StatusReviewDataType } from "./reviewSlice";
 import { useAppDispatch } from "../../store";
 import { Typography } from "@mui/material";
+import { IconButton } from "@mui/material/";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
+import { Tooltip } from "@mui/material";
 
 type ReviewCardPropsType = {
   applicantStatus: string;
@@ -26,19 +30,33 @@ export default function ReviewCard({
   };
   return (
     <>
+      {/* TODO: 작성자 이름 + 호 */}
       {statusReviewData.userName}
       <div>
         <Typography>{parse(statusReviewData.reviewText)}</Typography>
         {userPk == statusReviewData.userId && (
           <>
-            <button onClick={() => setIsEditMode(true)}>리뷰 수정하기</button>
-            <button
-              onClick={() =>
-                onDeleteClick(applicantStatus, statusReviewData.userId!)
-              }
-            >
-              리뷰 삭제하기
-            </button>
+            <Tooltip title="리뷰 수정하기">
+              <IconButton
+                aria-label="edit"
+                onClick={() => setIsEditMode(true)}
+                size="small"
+              >
+                <EditIcon />
+              </IconButton>
+            </Tooltip>
+
+            <Tooltip title="리뷰 삭제하기">
+              <IconButton
+                aria-label="delete"
+                onClick={() =>
+                  onDeleteClick(applicantStatus, statusReviewData.userId!)
+                }
+                size="small"
+              >
+                <DeleteIcon />
+              </IconButton>
+            </Tooltip>
           </>
         )}
       </div>

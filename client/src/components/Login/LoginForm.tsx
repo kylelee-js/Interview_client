@@ -22,7 +22,12 @@ export type LoginFormData = {
 };
 
 export default function LoginForm() {
-  const { register, handleSubmit } = useForm<LoginFormData>();
+  const {
+    register,
+    handleSubmit,
+    setError,
+    formState: { errors },
+  } = useForm<LoginFormData>();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
@@ -37,15 +42,17 @@ export default function LoginForm() {
     console.log(res);
     if (res) {
       dispatch(onAuth(res));
-      console.log("on Dispatch");
+    } else {
+      setError("password", {
+        type: "value",
+        message: "잘못된 아이디 또는 비밀번호입니다.",
+      });
     }
-
-    navigate("/");
-    console.log("on Navigate Success");
+    navigate("/", { replace: true });
   };
 
   const onClick = () => {
-    navigate("/signup");
+    navigate("/signup", { replace: true });
   };
 
   return (
@@ -64,7 +71,9 @@ export default function LoginForm() {
           />
           <Eye onClick={togglePasswordVisiblity}>{eye}</Eye>{" "}
         </PassWrapper>
-
+        {errors.password && (
+          <div style={{ color: "red" }}> {errors.password?.message}</div>
+        )}
         <SubmitButton type="submit" readOnly value={"로그인"} />
       </Form>
       <button onClick={onClick}>회원가입 할래요</button>

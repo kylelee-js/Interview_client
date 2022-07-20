@@ -12,7 +12,7 @@ import { queryApi } from "../api/queryApi";
 
 // 루트리듀서 - 모든 리듀서 하나로
 const rootReducer = combineReducers({
-  [queryApi.reducerPath]: queryApi.reducer,
+  // [queryApi.reducerPath]: queryApi.reducer,
   kanban: kanban,
   auth: auth,
   review: review,
@@ -31,6 +31,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // 스토어
 const store = configureStore({
   reducer: persistedReducer,
+  middleware: [],
   // middleware도 추가 가능
 });
 

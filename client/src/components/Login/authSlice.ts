@@ -24,7 +24,8 @@ const authSlice = createSlice({
   initialState: fake_User,
   reducers: {
     onAuth(state, action: PayloadAction<UserAuthState>) {
-      return action.payload;
+      state = action.payload;
+      return state;
     },
     onDeauth(state) {
       state.user = null;

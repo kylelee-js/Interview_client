@@ -1,6 +1,7 @@
 import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
 import styled from "styled-components";
 import ReviewEditor from "./ReviewEditor";
+import Button from "@mui/material/Button";
 
 export type ReviewEditorMenuPropsType = {
   menuShown: boolean;
@@ -21,21 +22,22 @@ export default React.memo(function ReviewEditorMenu({
   };
 
   useEffect(() => {
-    console.log();
+    console.log(editorShown);
   }, []);
 
   if (!menuShown) return null;
   return (
     <>
-      <button onClick={toggleShownEditor}>
+      <Button variant="contained" onClick={toggleShownEditor}>
         {reviewButton ? "리뷰 작성하기" : "리뷰창 닫기"}
-      </button>
+      </Button>
       {editorShown && (
         <>
           <ReviewEditor
             setIsEditMode={setIsEditMode}
             applicantStatus={applicantStatus}
             defaultText=""
+            toggler={toggleShownEditor}
             isEditMode={false}
           />
         </>

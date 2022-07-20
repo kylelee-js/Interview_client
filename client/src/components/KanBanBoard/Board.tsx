@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
-import { useSelector } from "react-redux";
 import styled from "styled-components";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import Card from "./Card";

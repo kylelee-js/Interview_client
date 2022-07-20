@@ -2,19 +2,14 @@
 import styled from "styled-components";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-import React, {
-  Dispatch,
-  ReactHTMLElement,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { Dispatch, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { onEdit, onReview } from "./reviewSlice";
 import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import Modal from "@mui/material/Modal";
+import SendIcon from "@mui/icons-material/Send";
 
 const Wrapper = styled.div`
   /* display: flex; */
@@ -41,6 +36,7 @@ type ReviewEditorPropsType = {
   defaultText: string;
   applicantStatus: string;
   setIsEditMode: Dispatch<React.SetStateAction<boolean>>;
+  toggler?: () => void;
   isEditMode: boolean;
 };
 
@@ -49,6 +45,7 @@ export default function ReviewEditor({
   applicantStatus,
   isEditMode,
   setIsEditMode,
+  toggler,
 }: ReviewEditorPropsType) {
   const QuillRef = useRef<ReactQuill>();
   const [review, setReview] = useState(defaultText);
@@ -89,10 +86,11 @@ export default function ReviewEditor({
         })
       );
       setReview("");
+      if (toggler) {
+        toggler();
+      }
     }
   };
-
-  useEffect(() => {}, []);
 
   return (
     <Wrapper>
@@ -107,7 +105,9 @@ export default function ReviewEditor({
         defaultValue={review}
         placeholder="공정한 리뷰를 작성해주세요."
       />
-      <button onClick={onClick}>작성</button>
+      <Button variant="contained" onClick={onClick} endIcon={<SendIcon />}>
+        제출
+      </Button>
       <Modal
         open={popupOpen}
         onClose={handleClose}

@@ -11,13 +11,12 @@ import KebabMenu from "./KebabMenu";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
+import { Tooltip } from "@mui/material";
 
-const Wrapper = styled.div`
-  position: relative;
-`;
+const Wrapper = styled.div``;
 const TagNote = styled.span`
   font-size: 12px;
-  padding: 1px 5px;
+  padding: 3px 5px;
   margin-right: 10px;
   background-color: grey;
   color: white;
@@ -38,10 +37,10 @@ interface CardProps extends ApplicantDataType {
 }
 
 export default React.memo(function Card({
-  applicantId,
+  id,
   applicantName,
   index,
-  tagNote,
+  tagNote = ["없음"],
   department,
   job,
   status,
@@ -70,9 +69,9 @@ export default React.memo(function Card({
           ...provided.draggableProps.style,
         };
         return (
-          <Wrapper onDoubleClick={() => onClick(applicantId)}>
+          <Wrapper onDoubleClick={() => onClick(id)}>
             <Box
-              sx={{ minWidth: 275 }}
+              sx={{ minWidth: 250, maxWidth: 300, position: "relative" }}
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}
@@ -90,22 +89,27 @@ export default React.memo(function Card({
                   <Typography variant="h5" component="div">
                     {applicantName}{" "}
                     {isFailed && (
-                      <BlockIcon
-                        color="error"
-                        sx={{ verticalAlign: "text-top" }}
-                      />
+                      <Tooltip title="해당 지원자는 전형 탈락상태입니다.">
+                        <BlockIcon
+                          color="error"
+                          sx={{ verticalAlign: "text-top" }}
+                        />
+                      </Tooltip>
                     )}{" "}
-                    {isFixed && <LockIcon sx={{ verticalAlign: "text-top" }} />}
+                    {isFixed && (
+                      <Tooltip title="해당 지원자는 검토 중입니다.">
+                        <LockIcon sx={{ verticalAlign: "text-top" }} />
+                      </Tooltip>
+                    )}
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
                     {myPageBoards[+status]}
                   </Typography>
                   <Typography variant="body2">
-                    {/* TODO: 태그노트 스타일링하기!! */}
-                    well meaning and kindly.
-                    <br />
-                    {tagNote.map((tag) => (
-                      <TagNote key={tag}>"#{tag}"</TagNote>
+                    {/* well meaning and kindly. FIXME: 한줄 자기소개?
+                    <br /> */}
+                    {tagNote?.map((tag) => (
+                      <TagNote key={tag}>#{tag}</TagNote>
                     ))}
                   </Typography>
                 </CardContent>
@@ -113,7 +117,7 @@ export default React.memo(function Card({
                 <MenuButtonDiv>
                   <CardActions>
                     <KebabMenu
-                      id={applicantId}
+                      id={id}
                       status={status}
                       applicantIndex={index}
                       isFailed={isFailed}

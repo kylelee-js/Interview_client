@@ -14,9 +14,9 @@ export type ApplicantCardType = {
 };
 
 export type ApplicantBoardType = {
-  boardId: number;
+  boardStatus: number;
   boardName: string;
-  contents: ApplicantDataType[];
+  applicants: ApplicantDataType[];
 };
 
 type ApplicantActionType = {
@@ -28,11 +28,11 @@ type ApplicantActionType = {
 // 칸반보드 객체 배열
 const fakeBoards: ApplicantBoardType[] = [
   {
-    boardId: 0,
+    boardStatus: 1,
     boardName: "서류합격",
-    contents: [
+    applicants: [
       {
-        applicantId: 0,
+        id: 0,
         applicantName: "Kyle Lee",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
@@ -41,7 +41,7 @@ const fakeBoards: ApplicantBoardType[] = [
         status: "0",
       },
       {
-        applicantId: 1,
+        id: 1,
         applicantName: "David Kim",
         // date: new Date(),
         tagNote: ["#zxc", "#hfdghsd"],
@@ -50,7 +50,7 @@ const fakeBoards: ApplicantBoardType[] = [
         status: "0",
       },
       {
-        applicantId: 2,
+        id: 2,
         applicantName: "Paul Shelby",
         // date: new Date(),
         tagNote: ["#zxcxcc", "#q2123"],
@@ -59,7 +59,7 @@ const fakeBoards: ApplicantBoardType[] = [
         status: "0",
       },
       {
-        applicantId: 3,
+        id: 3,
         applicantName: "Susan Carson",
         // date: new Date(),
         tagNote: ["#zxcvvd", "#fasdf"],
@@ -70,11 +70,11 @@ const fakeBoards: ApplicantBoardType[] = [
     ],
   },
   {
-    boardId: 1,
+    boardStatus: 2,
     boardName: "1차합격",
-    contents: [
+    applicants: [
       {
-        applicantId: 0,
+        id: 0,
         applicantName: "김철수",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
@@ -83,7 +83,7 @@ const fakeBoards: ApplicantBoardType[] = [
         status: "1",
       },
       {
-        applicantId: 1,
+        id: 1,
         applicantName: "박영희",
         // date: new Date(),
         tagNote: ["#zxc", "#hfdghsd"],
@@ -92,7 +92,7 @@ const fakeBoards: ApplicantBoardType[] = [
         status: "1",
       },
       {
-        applicantId: 2,
+        id: 2,
         applicantName: "권지용",
         // date: new Date(),
         tagNote: ["#zxcxcc", "#q2123"],
@@ -103,11 +103,11 @@ const fakeBoards: ApplicantBoardType[] = [
     ],
   },
   {
-    boardId: 2,
+    boardStatus: 3,
     boardName: "2차합격",
-    contents: [
+    applicants: [
       {
-        applicantId: 0,
+        id: 0,
         applicantName: "송하영",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
@@ -116,7 +116,7 @@ const fakeBoards: ApplicantBoardType[] = [
         status: "2",
       },
       {
-        applicantId: 1,
+        id: 1,
         applicantName: "유재석",
         // date: new Date(),
         tagNote: ["#zxc", "#hfdghsd"],
@@ -127,11 +127,11 @@ const fakeBoards: ApplicantBoardType[] = [
     ],
   },
   {
-    boardId: 3,
+    boardStatus: 4,
     boardName: "최종합격",
-    contents: [
+    applicants: [
       {
-        applicantId: 0,
+        id: 0,
         applicantName: "권숙",
         // date: new Date(),
         tagNote: ["#asd", "#qwe"],
@@ -150,66 +150,66 @@ const kanbanSlice = createSlice({
   reducers: {
     onInBoardDrag(state, action: PayloadAction<CardCoordinateType>) {
       const { destId, sourceId, destIndex, sourceIndex } = action.payload;
-      const sourceBoard = state[+sourceId].contents;
+      const sourceBoard = state[+sourceId].applicants;
       const sourceCard = sourceBoard[+sourceIndex];
       sourceBoard.splice(sourceIndex, 1);
       sourceBoard.splice(destIndex, 0, sourceCard);
-      state[+sourceId].contents = sourceBoard;
+      state[+sourceId].applicants = sourceBoard;
       return state;
     },
     onCrossBoardDrag(state, action: PayloadAction<CardCoordinateType>) {
       const { destId, sourceId, destIndex, sourceIndex } = action.payload;
-      const destinationBoard = [...state[+destId].contents];
-      const sourceBoard = [...state[+sourceId].contents];
+      const destinationBoard = [...state[+destId].applicants];
+      const sourceBoard = [...state[+sourceId].applicants];
       const sourceCard = sourceBoard[sourceIndex];
       // 채용상태 변경 -> 보드이름으로? 채용상태 테이블 따로?
-      sourceCard.status = "" + state[+destId].boardId;
+      sourceCard.status = "" + state[+destId].applicants;
       sourceBoard.splice(sourceIndex, 1);
       destinationBoard.splice(destIndex, 0, sourceCard);
-      state[+destId].contents = destinationBoard;
-      state[+sourceId].contents = sourceBoard;
+      state[+destId].applicants = destinationBoard;
+      state[+sourceId].applicants = sourceBoard;
       return state;
     },
     onRemoveApplicant(state, action: PayloadAction<ApplicantActionType>) {
       // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
       const { status, applicantIndex } = action.payload;
-      const applicantList = [...state[+status].contents];
+      const applicantList = [...state[+status].applicants];
       // applicantList.splice(applicantIndex, 1);
       // TODO: 프로퍼티 추가해서 확인
       applicantList[applicantIndex].isFailed = true;
       applicantList[applicantIndex].isFixed = true;
-      state[+status].contents = applicantList;
+      state[+status].applicants = applicantList;
       return state;
     },
     onRollbackApplicant(state, action: PayloadAction<ApplicantActionType>) {
       // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
       const { status, applicantIndex } = action.payload;
-      const applicantList = [...state[+status].contents];
+      const applicantList = [...state[+status].applicants];
       // applicantList.splice(applicantIndex, 1);
       // TODO: 프로퍼티 추가해서 확인
       applicantList[applicantIndex].isFailed = false;
       applicantList[applicantIndex].isFixed = false;
-      state[+status].contents = applicantList;
+      state[+status].applicants = applicantList;
       return state;
     },
     onFixApplicant(state, action: PayloadAction<ApplicantActionType>) {
       // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
       const { status, applicantIndex } = action.payload;
-      const applicantList = [...state[+status].contents];
+      const applicantList = [...state[+status].applicants];
       // applicantList.splice(applicantIndex, 1);
       // TODO: 프로퍼티 추가해서 isFixed
       applicantList[applicantIndex].isFixed = true;
-      state[+status].contents = applicantList;
+      state[+status].applicants = applicantList;
       return state;
     },
     onUnfixApplicant(state, action: PayloadAction<ApplicantActionType>) {
       // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
       const { status, applicantIndex } = action.payload;
-      const applicantList = [...state[+status].contents];
+      const applicantList = [...state[+status].applicants];
       // applicantList.splice(applicantIndex, 1);
       // TODO: 프로퍼티 추가해서 isFixed
       applicantList[applicantIndex].isFixed = false;
-      state[+status].contents = applicantList;
+      state[+status].applicants = applicantList;
       return state;
     },
   },

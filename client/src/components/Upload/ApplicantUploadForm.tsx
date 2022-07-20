@@ -1,6 +1,7 @@
 import { ErrorMessage } from "@hookform/error-message";
 import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { onFileUpload } from "../../api/applicantUploadChecker";
 import { useAppSelector } from "../../store";
@@ -14,11 +15,11 @@ import {
 import Uploader from "./Uploader";
 
 export type ApplicantFormData = {
-  name: string;
+  applicantName: string;
   birth: string;
   department: string;
   job: string;
-  file: FileList;
+  filePath: FileList;
   // TODO: default = 미등록
   // state: string;
 };
@@ -27,6 +28,7 @@ export default function ApplicantUploadForm() {
   console.log(isLogin);
   const token = useAppSelector((state) => state.auth.access);
   console.log(token);
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
@@ -38,20 +40,21 @@ export default function ApplicantUploadForm() {
   const onSubmit: SubmitHandler<ApplicantFormData> = (data) => {
     console.log(data);
     // PDF 파일 확장자 regex 검사기
-    if (data.file[0].type != "application/pdf") {
-      setError("file", {
+    if (data.filePath[0].type != "application/pdf") {
+      setError("filePath", {
         type: "filetype",
         message: "PDF 파일만 제출 가능합니다.",
       });
       return;
     }
     const fileData = new FormData();
-    fileData.append("name", data.name);
+    fileData.append("applicantName", data.applicantName);
     fileData.append("birth", data.birth);
     fileData.append("department", data.department);
     fileData.append("job", data.job);
-    fileData.append("file", data.file[0]);
+    fileData.append("filePath", data.filePath[0]);
     onFileUpload(fileData);
+    navigate("/");
   };
   console.log(errors);
 
@@ -61,11 +64,14 @@ export default function ApplicantUploadForm() {
         <Input
           type="text"
           placeholder="지원자 이름을 입력해주세요"
-          {...register("name", {
+          {...register("applicantName", {
             required: "필수 입력 칸입니다.",
             maxLength: 100,
           })}
         />
+        {errors.applicantName && (
+          <div style={{ color: "red" }}> {errors.applicantName?.message}</div>
+        )}
         <Input
           type="text"
           placeholder="생년월일(YYMMDD)을 입력해주세요 - 6자리"
@@ -78,6 +84,10 @@ export default function ApplicantUploadForm() {
             },
           })}
         />
+        {errors.birth && (
+          <div style={{ color: "red" }}> {errors.birth?.message}</div>
+        )}
+
         <select {...register("department", { required: true })}>
           <option value="개발">개발</option>
           <option value="경영지원">경영지원</option>
@@ -92,11 +102,14 @@ export default function ApplicantUploadForm() {
             maxLength: 100,
           })}
         />
+        {errors.job && (
+          <div style={{ color: "red" }}> {errors.job?.message}</div>
+        )}
 
         {/* TODO: file upload */}
         <input
           // ref={fileUploader}
-          {...register("file", {
+          {...register("filePath", {
             required: "필수 입력 칸입니다.",
           })}
           type="file"
@@ -104,8 +117,8 @@ export default function ApplicantUploadForm() {
           accept="pdf/*"
           // onChange={onUploadFile}
         />
-        {errors.file && (
-          <div style={{ color: "red" }}> {errors.file?.message}</div>
+        {errors.filePath && (
+          <div style={{ color: "red" }}> {errors.filePath?.message}</div>
         )}
         <SubmitButton type="submit" value={"지원자 등록"} />
       </Form>

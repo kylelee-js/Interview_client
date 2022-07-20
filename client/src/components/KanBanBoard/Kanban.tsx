@@ -67,10 +67,10 @@ export default React.memo(function KanBan({ kanbanSlice }: KanBanPropsType) {
         {kanbanSlice.map((board, index) => (
           <Board
             key={board.boardName}
-            droppableId={"" + board.boardId}
+            droppableId={"" + board.boardStatus}
             index={index}
             name={board.boardName}
-            contents={board.contents}
+            contents={board.applicants}
           />
         ))}
       </BoardGrid>

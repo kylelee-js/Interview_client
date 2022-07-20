@@ -15,7 +15,7 @@ export const fetchApplicants = async () => {
   }
 };
 
-export const fetchApplicantById = async (id: number) => {
+export const fetchApplicantById = async (id: string) => {
   try {
     const res = await axios.get(`/applicant/${id}/`);
     return res.data;
