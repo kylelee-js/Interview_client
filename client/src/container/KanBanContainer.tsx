@@ -6,7 +6,7 @@ import { fetchPool } from "../api/poolFetch";
 import KanBan from "../components/KanBanBoard/Kanban";
 import { onSetKanban } from "../components/KanBanBoard/kanbanSlice";
 import { onSetPage } from "../components/KanBanBoard/pageTypeSlice";
-import PoolKanBan from "../components/KanBanBoard/PoolKanban";
+import PoolKanBan from "../components/Pool/PoolKanbanBoard/PoolKanban";
 import { onSetPool } from "../components/Pool/poolSlice";
 import { useAppDispatch, useAppSelector } from "../store";
 
@@ -55,12 +55,14 @@ export default function KanBanContainer({ type }: KanBanContainerPropsType) {
   }, []);
 
   if (type == "pool") return <PoolKanBan kanbanSlice={poolBoardsData} />;
-  else if (type == "myapplicants")
+  else if (type == "myapplicants") {
+    console.log(kanbanBoardsData);
     return (
       <Suspense fallback={<div>loading...</div>}>
         <KanBan kanbanSlice={kanbanBoardsData} />
       </Suspense>
     );
+  }
 
   return null;
 }

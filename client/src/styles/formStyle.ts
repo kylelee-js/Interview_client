@@ -15,6 +15,7 @@ export const Form = styled.form`
   max-width: 414px;
   padding: 1.3rem;
   display: flex;
+  gap: 15px;
   flex-direction: column;
   position: relative;
 `;

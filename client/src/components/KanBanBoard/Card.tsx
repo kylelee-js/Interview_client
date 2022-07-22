@@ -18,7 +18,11 @@ import { setApplicantMine } from "../../api/applicantUpdate";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { onSetMyApplicant } from "./kanbanSlice";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const TagNote = styled.span`
   font-size: 12px;
   padding: 3px 5px;
@@ -92,7 +96,13 @@ export default React.memo(function Card({
         return (
           <Wrapper>
             <Box
-              sx={{ minWidth: 250, maxWidth: 300, position: "relative" }}
+              sx={{
+                minWidth: 250,
+                width: "90%",
+                maxWidth: 320,
+                position: "relative",
+                boxSizing: "border-box",
+              }}
               ref={provided.innerRef}
               {...provided.draggableProps}
               {...provided.dragHandleProps}

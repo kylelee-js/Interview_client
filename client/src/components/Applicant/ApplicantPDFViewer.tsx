@@ -16,6 +16,7 @@ const Wrapper = styled.div`
   max-width: 700px;
   padding: 15px;
   margin-left: 50px;
+  margin-bottom: 100px;
   background-color: #c4c3c2;
 `;
 

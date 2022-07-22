@@ -7,18 +7,22 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
-import KebabMenu from "./KebabMenu";
+import KebabMenu from "../../KanBanBoard/KebabMenu";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
-import { ApplicantDataType } from "../Applicant/applicantSlice";
+import { ApplicantDataType } from "../../Applicant/applicantSlice";
 import { Tooltip } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import CheckIcon from "@mui/icons-material/Check";
-import { setApplicantMine } from "../../api/applicantUpdate";
-import { useAppDispatch, useAppSelector } from "../../store";
-import { onSetMyApplicant, onUnsetMyApplicant } from "../Pool/poolSlice";
+import { setApplicantMine } from "../../../api/applicantUpdate";
+import { useAppDispatch, useAppSelector } from "../../../store";
+import { onSetMyApplicant, onUnsetMyApplicant } from "../poolSlice";
 
-const Wrapper = styled.div``;
+const Wrapper = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 const TagNote = styled.span`
   font-size: 12px;
   padding: 3px 5px;
@@ -104,7 +108,15 @@ export default React.memo(function Card({
 
   return (
     <Wrapper>
-      <Box sx={{ minWidth: 250, maxWidth: 300, position: "relative" }}>
+      <Box
+        sx={{
+          minWidth: 250,
+          maxWidth: 320,
+          width: "90%",
+          position: "relative",
+          boxSizing: "border-box",
+        }}
+      >
         <MuiCard variant="outlined">
           <CardContent>
             <Typography

@@ -11,14 +11,18 @@ import { useAppDispatch } from "../../store";
 import styled from "styled-components";
 import { onBoardUpdate } from "../../api/boardUpdate";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
+import { onApplicantUpdate } from "../../api/applicantUpdate";
 
 const BoardGrid = styled.div<{ boardLength: number }>`
   padding: 5px 15px;
   display: grid;
   grid-template-columns: repeat(${(props) => props.boardLength}, 1fr);
-  gap: 20px;
+  gap: 50px;
+  box-sizing: border-box;
   width: 100%;
   background-color: #d9dedb;
+  border-radius: 3px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
 `;
 
 // Id는 보드 위치이며 Index는 카드 배열 순서이다.
@@ -58,7 +62,13 @@ export default function KanBan({ kanbanSlice }: KanBanPropsType) {
         destIndex: destination.index,
         sourceIndex: source.index,
       };
-      console.log(cardCoordinate);
+      const tracedApplicantId =
+        kanbanSlice[+source.droppableId - 1].applicants[source.index].id;
+      const applicantStatus = destination.droppableId;
+      setTimeout(async () => {
+        await onApplicantUpdate(tracedApplicantId, applicantStatus);
+      }, 100);
+
       // 같은 보드 안에서 카드 드래그
       if (destination.droppableId === source.droppableId) {
         dispatch(onInBoardDrag(cardCoordinate));

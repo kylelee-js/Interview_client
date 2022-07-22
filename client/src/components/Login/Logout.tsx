@@ -1,3 +1,4 @@
+import { Button } from "@mui/material";
 import React, { useState } from "react";
 import styled from "styled-components";
 import { onLogout } from "../../api/logoutChecker";
@@ -14,5 +15,12 @@ export default function Logout() {
     console.log("logout");
     onLogout();
   };
-  return <button onClick={onLogoutClick}>로그아웃</button>;
+  return (
+    <Button
+      style={{ backgroundColor: "#54aceb", color: "whitesmoke" }}
+      onClick={onLogoutClick}
+    >
+      로그아웃
+    </Button>
+  );
 }

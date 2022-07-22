@@ -5,7 +5,7 @@ import KanBanContainer from "../../container/KanBanContainer";
 import Logout from "../Login/Logout";
 
 const Wrapper = styled.div`
-  width: 100vw;
+  width: 100%;
 `;
 
 const AdHocMenu = styled.div`
@@ -19,10 +19,6 @@ const AdHocMenu = styled.div`
 export default function Main() {
   return (
     <Wrapper>
-      <AdHocMenu>
-        <Link to="/pool">인재 풀 보러가기</Link>
-        <Logout />
-      </AdHocMenu>
       <KanBanContainer type="myapplicants" />
     </Wrapper>
   );

@@ -17,12 +17,6 @@ const AdHocMenu = styled.div`
 export default function Pool() {
   return (
     <Wrapper>
-      <AdHocMenu>
-        <Link to="/">내 지원자 보러가기</Link>
-        <Link to="/upload">지원자 신규 등록하기</Link>
-        <Logout />
-      </AdHocMenu>
-
       <KanBanContainer type="pool" />
     </Wrapper>
   );

@@ -12,6 +12,7 @@ import axios, { AxiosResponse } from "axios";
 export const onLogout = async () => {
   try {
     const isLogout = await axios.post("/user/logout/");
+    delete axios.defaults.headers.common["Authorization"];
     return isLogout;
   } catch (error) {
     console.log(error);

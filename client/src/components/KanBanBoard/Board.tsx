@@ -1,4 +1,4 @@
-import { Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
@@ -9,16 +9,30 @@ import Card from "./Card";
 const Wrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 90%;
 `;
 
 const BoardDiv = styled.div`
   display: flex;
   flex-direction: column;
-  background-color: #d9dedb;
-  gap: 10px;
+  gap: 15px;
   /* 드랍 보드 여유 바닥 */
   padding-bottom: 150px;
 `;
+const boxStyle = {
+  margin: "5px",
+  marginBottom: "20px",
+  borderRadius: "5px",
+  maxWidth: 340,
+  backgroundColor: "#f2f7fa",
+  boxShadow: "rgba(0, 0, 0, 0.16) 0px 1px 4px",
+  display: "flex",
+  alignItems: "center",
+  // justifyContent: "center",
+
+  padding: "10px 5px",
+  paddingLeft: "20px",
+};
 
 type BoardPropsType = {
   name: number;
@@ -42,24 +56,28 @@ export default React.memo(function Board({
   const type = useAppSelector((state) => state.pageType.type);
   return (
     <Wrapper>
-      <Typography sx={{ fontSize: 18 }}>{processStatus[name]}</Typography>
       <Droppable droppableId={droppableId}>
         {(provided) => (
-          <BoardDiv ref={provided.innerRef} {...provided.droppableProps}>
-            {applicants.map((person, index) => (
-              // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
-              <Card
-                type={type}
-                key={person.id}
-                // FIXME: index를 order로 교체해야한다!
-                // {person.order?}
-                applicantIndex={index}
-                boardStatus={droppableId}
-                {...applicants[index]}
-              />
-            ))}
-            {provided.placeholder}
-          </BoardDiv>
+          <>
+            <Box sx={boxStyle}>
+              <Typography variant="subtitle2">{processStatus[name]}</Typography>
+            </Box>
+            <BoardDiv ref={provided.innerRef} {...provided.droppableProps}>
+              {applicants.map((person, index) => (
+                // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
+                <Card
+                  type={type}
+                  key={person.id}
+                  // FIXME: index를 order로 교체해야한다!
+                  // {person.order?}
+                  applicantIndex={index}
+                  boardStatus={droppableId}
+                  {...applicants[index]}
+                />
+              ))}
+              {provided.placeholder}
+            </BoardDiv>
+          </>
         )}
       </Droppable>
     </Wrapper>
