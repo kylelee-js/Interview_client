@@ -1,1 +1,0 @@
-import{j as e,K as a,b as r,T as t}from"./index--cacd63c4.js";function i(){return e(a,{children:[e("header",{children:[" ",e("div",{style:{backgroundColor:"whitesmoke",height:"40px",color:"black"},children:[" ","\uBA38\uB9AC"," "]})]}),r("main",{children:r(t,{})})]})}export{i as default};
