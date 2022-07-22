@@ -20,7 +20,7 @@ export default React.memo(function ConfirmPopup({
   applicantIndex,
 }: ConfirmPropsType) {
   const name = useAppSelector(
-    (state) => state.kanban[+status].contents[applicantIndex].applicantName
+    (state) => state.kanban[+status].applicants[applicantIndex].applicantName
   );
   const { handleFail } = useMenu(status, applicantIndex);
   const removeApplicant = () => {
