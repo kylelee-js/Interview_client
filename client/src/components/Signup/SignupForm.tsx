@@ -9,6 +9,8 @@ import {
   ValidationMessage,
   Eye,
   PassWrapper,
+  Button,
+  Select,
 } from "../../styles/formStyle";
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
@@ -59,7 +61,7 @@ export default function SignupForm() {
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
           type="text"
-          placeholder="이름을 입력해주세요"
+          placeholder="이름을 입력해주세요."
           {...register("name", {
             required: "필수 입력 칸입니다.",
             maxLength: 100,
@@ -68,7 +70,7 @@ export default function SignupForm() {
         <ErrorMessage errors={errors} name="name" as={ValidationMessage} />
         <Input
           type="text"
-          placeholder="호을 입력해주세요"
+          placeholder="호을 입력해주세요."
           {...register("nickname", {
             required: "필수 입력 칸입니다.",
             maxLength: 100,
@@ -77,7 +79,7 @@ export default function SignupForm() {
         <ErrorMessage errors={errors} name="nickname" as={ValidationMessage} />
         <Input
           type="text"
-          placeholder="이메일을 입력해주세요"
+          placeholder="이메일을 입력해주세요."
           {...register("email", {
             required: "필수 입력 칸입니다.",
             pattern: {
@@ -87,7 +89,6 @@ export default function SignupForm() {
           })}
         />
         <ErrorMessage errors={errors} name="email" as={ValidationMessage} />
-
         <PassWrapper>
           <Input
             type={passwordShown ? "text" : "password"}
@@ -102,13 +103,11 @@ export default function SignupForm() {
           />
           <Eye onClick={togglePasswordVisiblity}>{eye}</Eye>{" "}
         </PassWrapper>
-
         <ErrorMessage errors={errors} name="password" as={ValidationMessage} />
-
         <PassWrapper>
           <Input
             type={passwordCheckerShown ? "text" : "password"}
-            placeholder="비밀번호를 재입력해주세요"
+            placeholder="비밀번호를 재입력해주세요."
             {...register("passwordChecker", {
               required: "필수 입력 칸입니다.",
               validate: (val: string) => {
@@ -120,23 +119,31 @@ export default function SignupForm() {
           />
           <Eye onClick={togglePasswordCheckerVisiblity}>{eye}</Eye>{" "}
         </PassWrapper>
-
         <ErrorMessage
           errors={errors}
           name="passwordChecker"
           as={ValidationMessage}
         />
         {/* TODO: select 컴포넌트 스타일링 해주기 */}
-        <select {...register("department", { required: true })}>
+        <Select
+          {...register("department", { required: "필수 입력 칸입니다." })}
+        >
+          <option style={{ display: "none" }} value="" disabled selected>
+            직군을 선택해주세요.
+          </option>
           <option value="개발">개발</option>
           <option value="경영지원">경영지원</option>
           <option value="마케팅">마케팅</option>
           <option value="디자인">디자인</option>
-        </select>
+        </Select>
+        <ErrorMessage
+          errors={errors}
+          name="department"
+          as={ValidationMessage}
+        />
         <SubmitButton type="submit" value={"가입하기"} />
       </Form>
-
-      <button onClick={onClick}>아이디가 있어요</button>
+      <Button onClick={onClick}>아이디가 있어요</Button>
     </FormWrapper>
   );
 }

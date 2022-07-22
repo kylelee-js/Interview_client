@@ -9,6 +9,7 @@ import {
   Form,
   FormWrapper,
   Input,
+  Select,
   SubmitButton,
   ValidationMessage,
 } from "../../styles/formStyle";
@@ -54,7 +55,7 @@ export default function ApplicantUploadForm() {
     fileData.append("job", data.job);
     fileData.append("filePath", data.filePath[0]);
     onFileUpload(fileData);
-    navigate("/");
+    navigate("/pool");
   };
   console.log(errors);
 
@@ -88,12 +89,22 @@ export default function ApplicantUploadForm() {
           <div style={{ color: "red" }}> {errors.birth?.message}</div>
         )}
 
-        <select {...register("department", { required: true })}>
+        <Select
+          {...register("department", { required: "필수 입력 칸입니다." })}
+        >
+          <option style={{ display: "none" }} value="" disabled selected>
+            직군을 선택해주세요.
+          </option>
           <option value="개발">개발</option>
           <option value="경영지원">경영지원</option>
           <option value="마케팅">마케팅</option>
           <option value="디자인">디자인</option>
-        </select>
+        </Select>
+        <ErrorMessage
+          errors={errors}
+          name="department"
+          as={ValidationMessage}
+        />
         <Input
           type="text"
           placeholder="지원자 직무을 입력해주세요"

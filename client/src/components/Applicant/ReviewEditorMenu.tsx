@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useEffect, useState } from "react";
+import React, { Dispatch, useState } from "react";
 import styled from "styled-components";
 import ReviewEditor from "./ReviewEditor";
 import Button from "@mui/material/Button";
@@ -21,14 +21,18 @@ export default React.memo(function ReviewEditorMenu({
     setEditorShown((prev) => !prev);
   };
 
-  useEffect(() => {
-    console.log(editorShown);
-  }, []);
-
   if (!menuShown) return null;
   return (
     <>
-      <Button variant="contained" onClick={toggleShownEditor}>
+      <Button
+        style={
+          reviewButton
+            ? { backgroundColor: "#66b8f2" }
+            : { backgroundColor: "#a6a4a4" }
+        }
+        variant="contained"
+        onClick={toggleShownEditor}
+      >
         {reviewButton ? "리뷰 작성하기" : "리뷰창 닫기"}
       </Button>
       {editorShown && (

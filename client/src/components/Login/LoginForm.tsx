@@ -10,6 +10,7 @@ import {
   Input,
   Eye,
   PassWrapper,
+  Button,
 } from "../../styles/formStyle";
 import { onAuth } from "./authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -76,7 +77,7 @@ export default function LoginForm() {
         )}
         <SubmitButton type="submit" readOnly value={"로그인"} />
       </Form>
-      <button onClick={onClick}>회원가입 할래요</button>
+      <Button onClick={onClick}>회원가입 할래요</Button>
     </FormWrapper>
   );
 }

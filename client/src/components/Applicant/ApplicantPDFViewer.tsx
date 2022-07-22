@@ -1,3 +1,4 @@
+import { Button, Typography } from "@mui/material";
 import { useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import styled from "styled-components";
@@ -8,17 +9,27 @@ const Wrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  border-radius: 5px;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
   width: 100%;
   /* FIXME: 너비 나중에 수정하기 */
   max-width: 700px;
-  padding: 5px;
-  background-color: grey;
+  padding: 15px;
+  margin-left: 50px;
+  background-color: #c4c3c2;
 `;
 
 const PaginationMenu = styled.div`
+  margin-top: 1rem;
+  background-color: whitesmoke;
+  width: 90%;
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  padding: 10px;
   display: flex;
+  border-radius: 5px;
   align-items: center;
-  gap: 20px;
+  justify-content: center;
+  gap: 30px;
 `;
 const PageButton = styled.button`
   background-color: grey;
@@ -51,24 +62,27 @@ export default function ApplicantPDFViewer({
         <Page pageNumber={pageNumber} />
       </Document>
       <PaginationMenu>
-        <PageButton
+        <Button
+          style={{ backgroundColor: "#21b6ae" }}
+          variant="contained"
           onClick={() =>
             pageNumber > 1 ? setPageNumber(pageNumber - 1) : null
           }
         >
           이전 페이지 보기
-        </PageButton>
-        <span>
+        </Button>
+        <Typography>
           Page {pageNumber} of {numPages}
-        </span>
-
-        <PageButton
+        </Typography>
+        <Button
+          style={{ backgroundColor: "#21b6ae" }}
+          variant="contained"
           onClick={() =>
             pageNumber < numPages ? setPageNumber(pageNumber + 1) : null
           }
         >
           다음 페이지 보기
-        </PageButton>
+        </Button>
       </PaginationMenu>
     </Wrapper>
   );

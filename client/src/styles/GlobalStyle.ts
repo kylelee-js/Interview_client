@@ -7,7 +7,13 @@ const GlobalStyle = createGlobalStyle`
   .ql-editor{
     min-height:200px;
     font-size: 16px;
-}
+    /* box-sizing: border-box; */
+  }
+
+  .annotationLayer{
+    display: none;
+  }
+
 `;
 
 export default GlobalStyle;

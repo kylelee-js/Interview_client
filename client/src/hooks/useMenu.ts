@@ -10,22 +10,17 @@ import {
 import { useAppDispatch } from "../store";
 
 export default function useMenu(status: string, applicantIndex: number) {
-  // const [isFailed, setIsFailed] = useState(false);
   const dispatch = useAppDispatch();
   const handleFail = () => {
-    // setIsFailed(true);
     dispatch(onRemoveApplicant({ status, applicantIndex }));
   };
   const handleFix = () => {
-    // setIsFailed(true);
     dispatch(onFixApplicant({ status, applicantIndex }));
   };
   const handleUnfix = () => {
-    // setIsFailed(true);
     dispatch(onUnfixApplicant({ status, applicantIndex }));
   };
   const handleRollBack = () => {
-    // setIsFailed(true);
     dispatch(onRollbackApplicant({ status, applicantIndex }));
   };
 

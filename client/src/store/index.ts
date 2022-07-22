@@ -9,14 +9,18 @@ import auth from "../components/Login/authSlice";
 import review from "../components/Applicant/reviewSlice";
 import applicants from "../components/Applicant/applicantSlice";
 import { queryApi } from "../api/queryApi";
+import pageType from "../components/KanBanBoard/pageTypeSlice";
+import pool from "../components/Pool/poolSlice";
 
 // 루트리듀서 - 모든 리듀서 하나로
 const rootReducer = combineReducers({
   // [queryApi.reducerPath]: queryApi.reducer,
+  pageType: pageType,
   kanban: kanban,
   auth: auth,
   review: review,
   applicants: applicants,
+  pool: pool,
 });
 
 // 로컬스토리지 저장 - redux-persist
@@ -32,7 +36,6 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({
   reducer: persistedReducer,
   middleware: [],
-  // middleware도 추가 가능
 });
 
 export default store;

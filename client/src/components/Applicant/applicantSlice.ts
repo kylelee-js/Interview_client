@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { useAppSelector } from "../../store";
 import { ApplicantReviewDataType, ReviewDataType } from "./reviewSlice";
 
 export type ApplicantDataType = {
@@ -15,7 +14,7 @@ export type ApplicantDataType = {
   board?: number[];
   interviewer?: string[];
   isFixed?: boolean;
-  order?: number;
+  order: number;
 };
 
 // 면접관 리뷰 정보
@@ -25,202 +24,78 @@ export type ApplicantType = {
 };
 
 // TODO: 각 지원자 데이터의 리뷰 정보를 initial state로 설정해준다.
-
+const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
 const fakeApplicantData: ApplicantType[] = [
   {
     applicantInfo: {
       id: 0,
-      applicantName: "Kyle Lee",
-      // date: new Date(),
-      tagNote: ["#asd", "#qwe"],
-      department: "개발",
-      job: "QA",
-      status: "0",
+      applicantName: "string",
+      birth: "string",
+      tagNote: [],
+      department: "string",
+      job: "string",
+      status: "string",
+      filePath: "string",
+      isFailed: false,
+      board: [],
+      interviewer: [],
+      isFixed: false,
+      order: 0,
     },
     applicantReview: {
       applicantId: 0,
       reviewData: [
         {
-          applicantStatus: "0",
+          applicantStatus: "1",
+          statusReviewData: [
+            // {
+            //   userId: 999,
+            //   userName: "면접관",
+            //   userNickname: "구관",
+            //   reviewText: "좀비월드",
+            // },
+            // {
+            //   userId: 130,
+            //   userName: "장규리",
+            //   userNickname: "금발",
+            //   reviewText: "사과",
+            // },
+          ],
+        },
+        {
+          applicantStatus: "2",
           statusReviewData: [
             {
+              id: "1",
+              userId: 120,
+              userName: "윤귀남",
+              userNickname: "좀비",
+              reviewText: "좀비월드",
+            },
+            {
+              id: "2",
+              userId: 1300,
+              userName: "송하영",
+              userNickname: "광주",
+              reviewText: "배",
+            },
+          ],
+        },
+        {
+          applicantStatus: "3",
+          statusReviewData: [
+            {
+              id: "3",
               userId: 999,
               userName: "면접관",
-              userNickname: "엄격",
-              reviewText: "ㅋㅋㅋ",
-            },
-            {
-              userId: 13,
-              userName: "삼짱구",
-              userNickname: "짱아",
-              reviewText: "ㄸㄸㄸㄸ",
-            },
-          ],
-        },
-        {
-          applicantStatus: "1",
-          statusReviewData: [
-            {
-              userId: 102,
-              userName: "김유리",
-              userNickname: "공주",
-              reviewText: "1차합격 축하",
-            },
-            {
-              userId: 103,
-              userName: "백범구",
-              userNickname: "강약",
-              reviewText: "그렇군",
-            },
-          ],
-        },
-        {
-          applicantStatus: "2",
-          statusReviewData: [
-            {
-              userId: 120,
-              userName: "윤귀남",
-              userNickname: "좀비",
+              userNickname: "구관",
               reviewText: "좀비월드",
             },
             {
+              id: "4",
               userId: 130,
               userName: "장규리",
-              userNickname: "귤이",
-              reviewText: "사과",
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    applicantInfo: {
-      id: 1,
-      applicantName: "David Kim",
-      // date: new Date(),
-      tagNote: ["#zxc", "#hfdghsd"],
-      department: "개발",
-      job: "데브옵스",
-      status: "0",
-    },
-    applicantReview: {
-      applicantId: 1,
-      reviewData: [
-        {
-          applicantStatus: "0",
-          statusReviewData: [
-            {
-              userId: 12,
-              userName: "신짱구",
-              userNickname: "부리",
-              reviewText: "ㅋㅋㅋ",
-            },
-            {
-              userId: 13,
-              userName: "삼짱구",
-              userNickname: "짱아",
-              reviewText: "ㄸㄸㄸㄸ",
-            },
-          ],
-        },
-        {
-          applicantStatus: "1",
-          statusReviewData: [
-            {
-              userId: 102,
-              userName: "김유리",
-              userNickname: "공주",
-              reviewText: "1차합격 축하",
-            },
-            {
-              userId: 103,
-              userName: "백범구",
-              userNickname: "강약",
-              reviewText: "그렇군",
-            },
-          ],
-        },
-        {
-          applicantStatus: "2",
-          statusReviewData: [
-            {
-              userId: 120,
-              userName: "윤귀남",
-              userNickname: "좀비",
-              reviewText: "좀비월드",
-            },
-            {
-              userId: 130,
-              userName: "장규리",
-              userNickname: "귤이",
-              reviewText: "사과",
-            },
-          ],
-        },
-      ],
-    },
-  },
-  {
-    applicantInfo: {
-      id: 2,
-      applicantName: "Paul Shelby",
-      // date: new Date(),
-      tagNote: ["#zxcxcc", "#q2123"],
-      department: "개발",
-      job: "기획",
-      status: "0",
-    },
-    applicantReview: {
-      applicantId: 2,
-      reviewData: [
-        {
-          applicantStatus: "0",
-          statusReviewData: [
-            {
-              userId: 12,
-              userName: "신짱구",
-              userNickname: "부리",
-              reviewText: "ㅋㅋㅋ",
-            },
-            {
-              userId: 13,
-              userName: "삼짱구",
-              userNickname: "짱아",
-              reviewText: "ㄸㄸㄸㄸ",
-            },
-          ],
-        },
-        {
-          applicantStatus: "1",
-          statusReviewData: [
-            {
-              userId: 102,
-              userName: "김유리",
-              userNickname: "공주",
-              reviewText: "1차합격 축하",
-            },
-            {
-              userId: 103,
-              userName: "백범구",
-              userNickname: "강약",
-              reviewText: "그렇군",
-            },
-          ],
-        },
-        {
-          applicantStatus: "2",
-          statusReviewData: [
-            {
-              userId: 120,
-              userName: "윤귀남",
-              userNickname: "좀비",
-              reviewText: "좀비월드",
-            },
-            {
-              userId: 130,
-              userName: "장규리",
-              userNickname: "귤이",
+              userNickname: "금발",
               reviewText: "사과",
             },
           ],

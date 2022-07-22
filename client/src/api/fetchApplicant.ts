@@ -8,7 +8,7 @@ import axios, { AxiosResponse } from "axios";
 
 export const fetchApplicants = async () => {
   try {
-    const res = await axios.get("/applicant/");
+    const res = await axios.get("/board/myapplicants/");
     return res.data;
   } catch (error) {
     console.log(error);

@@ -1,6 +1,8 @@
+import { Typography } from "@mui/material";
 import React, { useState } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
+import { useAppSelector } from "../../store";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import Card from "./Card";
 
@@ -19,32 +21,41 @@ const BoardDiv = styled.div`
 `;
 
 type BoardPropsType = {
-  name: string;
-  index: number;
-  contents: ApplicantDataType[];
+  name: number;
+  applicants: ApplicantDataType[];
+  // boardStatus를 droppableId로 주고 있다.
   droppableId: string;
 };
 
+const processStatus = [
+  "미등록",
+  "서류 합격",
+  "1차 인터뷰",
+  "2차 인터뷰",
+  "최종 면접",
+];
 export default React.memo(function Board({
   name,
-  contents,
+  applicants,
   droppableId,
 }: BoardPropsType) {
+  const type = useAppSelector((state) => state.pageType.type);
   return (
     <Wrapper>
-      <b>{name}</b>
+      <Typography sx={{ fontSize: 18 }}>{processStatus[name]}</Typography>
       <Droppable droppableId={droppableId}>
         {(provided) => (
           <BoardDiv ref={provided.innerRef} {...provided.droppableProps}>
-            {contents.map((person, index) => (
+            {applicants.map((person, index) => (
               // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
               <Card
-                key={person.applicantName}
-                index={index}
-                // name={person.name}
-                // status={person.status}
-                // tags={person.tagNote}
-                {...contents[index]}
+                type={type}
+                key={person.id}
+                // FIXME: index를 order로 교체해야한다!
+                // {person.order?}
+                applicantIndex={index}
+                boardStatus={droppableId}
+                {...applicants[index]}
               />
             ))}
             {provided.placeholder}

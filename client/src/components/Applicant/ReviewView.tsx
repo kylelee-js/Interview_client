@@ -5,36 +5,22 @@ import ReviewEditor from "./ReviewEditor";
 import { ReviewDataType, StatusReviewDataType } from "./reviewSlice";
 
 type ReviewViewPropsType = {
+  id: string;
   userPk: number;
   data: ReviewDataType;
   statusReviewData: StatusReviewDataType;
 };
 
 export default React.memo(function ReviewView({
+  id,
   statusReviewData,
   userPk,
   data,
 }: ReviewViewPropsType) {
-  const [isReviewExist, setIsReviewExist] = useState<boolean>(false);
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
-
-  useEffect(() => {
-    if (statusReviewData.userName == null) {
-      setIsReviewExist(false);
-    } else {
-      setIsReviewExist(true);
-    }
-  }, []);
-
-  if (!isReviewExist)
-    return (
-      <>
-        <div>아직 리뷰가 없습니다.</div>
-      </>
-    );
-
   return isEditMode ? (
     <ReviewEditor
+      id={id}
       applicantStatus={data.applicantStatus}
       defaultText={statusReviewData.reviewText}
       isEditMode={isEditMode}
@@ -43,6 +29,7 @@ export default React.memo(function ReviewView({
   ) : (
     <>
       <ReviewCard
+        id={id}
         applicantStatus={data.applicantStatus}
         setIsEditMode={setIsEditMode}
         userPk={userPk}

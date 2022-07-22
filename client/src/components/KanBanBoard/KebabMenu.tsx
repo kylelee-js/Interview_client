@@ -13,6 +13,7 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ConfirmPortals from "../Confirm/ConfirmPortal";
 import ConfirmPopup from "../Confirm/ConfirmPopup";
 import { useNavigate } from "react-router-dom";
+import { setApplicantMine } from "../../api/applicantUpdate";
 
 const RedSpan = styled.span`
   color: red;
@@ -23,6 +24,7 @@ type MenuType = {
   status: string;
   // FIXME: 일단은 인덱스로 -> 나중에 고유 식별 값으로 교체 (applicantId)
   applicantIndex: number;
+  type: string;
   // FIXME: 일단은 undefined 허용 -> 나중에 더미 데이터 수정
   isFailed: boolean | undefined;
   isFixed: boolean | undefined;
@@ -34,16 +36,19 @@ export default React.memo(function KebabMenu({
   applicantIndex,
   isFailed,
   isFixed,
+  type,
 }: MenuType) {
   const [popupOpened, setPopupOpened] = useState(false);
   const { handleFail, handleFix, handleRollBack, handleUnfix } = useMenu(
-    status,
+    "" + (+status - 1),
     applicantIndex
   );
   const navigate = useNavigate();
   const onNavigate = () => {
     navigate(`/applicant/${id}`);
   };
+
+  // TODO: setmine api 연결
 
   const togglePopupOpen = () => {
     setPopupOpened((prev) => !prev);
@@ -56,10 +61,11 @@ export default React.memo(function KebabMenu({
     setAnchorEl(event.currentTarget);
   };
   const handleClose = () => {
+    console.log(status, applicantIndex);
     setAnchorEl(null);
   };
   const removeApplicant = () => {
-    // onPopupClose();
+    console.log(status, applicantIndex);
     togglePopupOpen();
     handleFail();
   };
@@ -88,54 +94,69 @@ export default React.memo(function KebabMenu({
       >
         <MoreVertIcon htmlColor="grey" fontSize="inherit" />
       </Button>
-      <Menu
-        id="basic-menu"
-        anchorEl={anchorEl}
-        open={open}
-        onClose={handleClose}
-        MenuListProps={{
-          "aria-labelledby": "basic-button",
-        }}
-      >
-        {/* TODO: 만약 Pool 페이지라면 태그 추가가 아닌 지원자 등록처리 메뉴가 있어야한다. */}
-        <MenuItem onClick={onNavigate}>지원자 리뷰작성</MenuItem>
-        <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
-        {isFailed ? (
-          <MenuItem
-            onClick={() => {
-              handleRollBack();
-              handleClose();
-            }}
-          >
-            <RedSpan>지원자 탈락철회</RedSpan>
-          </MenuItem>
-        ) : (
-          <div>
-            <MenuItem onClick={togglePopupOpen}>
-              <RedSpan>지원자 탈락처리</RedSpan>
+      {type == "pool" ? (
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          <MenuItem onClick={onNavigate}>지원자 정보보기</MenuItem>
+          <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
+        </Menu>
+      ) : (
+        <Menu
+          id="basic-menu"
+          anchorEl={anchorEl}
+          open={open}
+          onClose={handleClose}
+          MenuListProps={{
+            "aria-labelledby": "basic-button",
+          }}
+        >
+          {/* TODO: 만약 Pool 페이지라면 태그 추가가 아닌 지원자 등록처리 메뉴가 있어야한다. */}
+          <MenuItem onClick={onNavigate}>지원자 리뷰작성</MenuItem>
+          <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
+          {isFailed ? (
+            <MenuItem
+              onClick={() => {
+                handleRollBack();
+                handleClose();
+              }}
+            >
+              <RedSpan>지원자 탈락철회</RedSpan>
             </MenuItem>
-            {isFixed ? (
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  handleUnfix();
-                }}
-              >
-                <b>지원자 잠금해제</b>{" "}
+          ) : (
+            <div>
+              <MenuItem onClick={togglePopupOpen}>
+                <RedSpan>지원자 탈락처리</RedSpan>
               </MenuItem>
-            ) : (
-              <MenuItem
-                onClick={() => {
-                  handleClose();
-                  handleFix();
-                }}
-              >
-                <b>지원자 이동잠금</b>{" "}
-              </MenuItem>
-            )}
-          </div>
-        )}
-      </Menu>
+              {isFixed ? (
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    handleUnfix();
+                  }}
+                >
+                  <b>지원자 잠금해제</b>{" "}
+                </MenuItem>
+              ) : (
+                <MenuItem
+                  onClick={() => {
+                    handleClose();
+                    handleFix();
+                  }}
+                >
+                  <b>지원자 이동잠금</b>{" "}
+                </MenuItem>
+              )}
+            </div>
+          )}
+        </Menu>
+      )}
 
       {/* FIXME: 컴포넌트 추출하기 */}
       <Dialog

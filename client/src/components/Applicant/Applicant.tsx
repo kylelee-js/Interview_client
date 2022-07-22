@@ -2,11 +2,12 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchApplicantById } from "../../api/fetchApplicant";
+import { reviewApi } from "../../api/reviewApi";
 import { useAppDispatch, useAppSelector } from "../../store";
 import ApplicantPDFViewer from "./ApplicantPDFViewer";
 import { onSetState } from "./applicantSlice";
 import ReviewAccordion from "./ReviewAccordion";
-import { onInit } from "./reviewSlice";
+import { onInitReivew, ReviewDataType } from "./reviewSlice";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,38 +24,39 @@ export default function Applicant() {
   const param = useParams();
   const applicantId = param.applicantId as string;
   const [filePath, setFilePath] = useState<string>("");
+  const [reviewData, setReviewData] = useState<ReviewDataType[]>([]);
   const dispatch = useAppDispatch();
-  const applicants = useAppSelector((state) => state.applicants);
 
   // TODO: 이걸 api에서 받아오기
   useEffect(() => {
     const onFetch = async (id: string) => {
       const sampleApplicant = await fetchApplicantById(id);
-      console.log("applicant", sampleApplicant);
-      console.log("filePath : ", sampleApplicant.filePath);
+      const applicantReview = await reviewApi.fetchReviewById(id);
+      console.log(applicantReview.reviewData);
       setFilePath(sampleApplicant.filePath);
+      setReviewData(applicantReview.reviewData);
       dispatch(onSetState(sampleApplicant));
-      // TODO: 리뷰 데이터로 불러오기 -> dispatch하기
+      dispatch(
+        onInitReivew({
+          applicantId: +applicantId,
+          reviewData: applicantReview.reviewData,
+        })
+      );
     };
     onFetch(applicantId);
   }, []);
 
-  // const applicant = applicants.find((applicant) => {
-  //   console.log(applicant, applicantId);
-  //   return applicant.applicantInfo.id == +applicantId;
-  // });
-  // console.log(applicant?.applicantInfo!);
-  // dispatch(onInit(applicant?.applicantReview!));
-
-  // console.log("filePath : ", applicant?.applicantInfo.filePath);
-
   return (
     <Wrapper>
       <ApplicantPDFViewer filePath={filePath} />
-      {/* <ApplicantPDFViewer /> */}
-      <div style={{ width: "100%" }}>
-        {/* FIXME: 타입 단언 제거하기 */}
-        <ReviewAccordion />
+      <div
+        style={{
+          width: "100%",
+          margin: "20px",
+          marginRight: "50px",
+        }}
+      >
+        <ReviewAccordion reviewData={reviewData} />
       </div>
     </Wrapper>
   );

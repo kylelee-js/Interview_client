@@ -3,13 +3,24 @@ import styled from "styled-components";
 import parse from "html-react-parser";
 import { onRemove, StatusReviewDataType } from "./reviewSlice";
 import { useAppDispatch } from "../../store";
-import { Typography } from "@mui/material";
+import { Divider, Typography } from "@mui/material";
 import { IconButton } from "@mui/material/";
 import DeleteIcon from "@mui/icons-material/Delete";
 import EditIcon from "@mui/icons-material/Edit";
 import { Tooltip } from "@mui/material";
+import Box from "@mui/material/Box";
+import Card from "@mui/material/Card";
+import CardActions from "@mui/material/CardActions";
+import CardContent from "@mui/material/CardContent";
+import { reviewApi } from "../../api/reviewApi";
+
+const ReviewWrapper = styled.div`
+  background-color: whitesmoke;
+  border-style: "";
+`;
 
 type ReviewCardPropsType = {
+  id: string;
   applicantStatus: string;
   statusReviewData: StatusReviewDataType;
   userPk: number;
@@ -17,6 +28,7 @@ type ReviewCardPropsType = {
 };
 
 export default function ReviewCard({
+  id,
   applicantStatus,
   statusReviewData,
   userPk,
@@ -24,42 +36,60 @@ export default function ReviewCard({
 }: ReviewCardPropsType) {
   const dispatch = useAppDispatch();
 
-  const onDeleteClick = (status: string, id: number) => {
-    dispatch(onRemove({ status, id }));
+  const onDeleteClick = (status: string, userId: number) => {
+    dispatch(onRemove({ status, id: userId }));
     setIsEditMode(false);
+    reviewApi.onDeleteReview(id);
   };
   return (
-    <>
-      {/* TODO: 작성자 이름 + 호 */}
-      {statusReviewData.userName}
-      <div>
-        <Typography>{parse(statusReviewData.reviewText)}</Typography>
-        {userPk == statusReviewData.userId && (
-          <>
-            <Tooltip title="리뷰 수정하기">
-              <IconButton
-                aria-label="edit"
-                onClick={() => setIsEditMode(true)}
-                size="small"
-              >
-                <EditIcon />
-              </IconButton>
-            </Tooltip>
+    <ReviewWrapper>
+      <Box sx={{ minWidth: 275, marginBottom: "1rem" }}>
+        <Card variant="outlined">
+          <CardContent>
+            <Typography
+              sx={{ fontSize: 12 }}
+              color="text.secondary"
+              gutterBottom
+            >
+              {applicantStatus}차 면접관
+            </Typography>
+            <Typography variant="h5" component="div" sx={{ fontSize: 20 }}>
+              {statusReviewData.userName} - {statusReviewData.userNickname}
+            </Typography>
+            <Divider />
+            <Typography component={"div"} sx={{ marginTop: "20px" }}>
+              <div>{parse(statusReviewData.reviewText)}</div>{" "}
+            </Typography>
+          </CardContent>
+          <CardActions>
+            {userPk == statusReviewData.userId && (
+              <>
+                <Tooltip title="리뷰 수정하기">
+                  <IconButton
+                    aria-label="edit"
+                    onClick={() => setIsEditMode(true)}
+                    size="small"
+                  >
+                    <EditIcon />
+                  </IconButton>
+                </Tooltip>
 
-            <Tooltip title="리뷰 삭제하기">
-              <IconButton
-                aria-label="delete"
-                onClick={() =>
-                  onDeleteClick(applicantStatus, statusReviewData.userId!)
-                }
-                size="small"
-              >
-                <DeleteIcon />
-              </IconButton>
-            </Tooltip>
-          </>
-        )}
-      </div>
-    </>
+                <Tooltip title="리뷰 삭제하기">
+                  <IconButton
+                    aria-label="delete"
+                    onClick={() =>
+                      onDeleteClick(applicantStatus, statusReviewData.userId!)
+                    }
+                    size="small"
+                  >
+                    <DeleteIcon />
+                  </IconButton>
+                </Tooltip>
+              </>
+            )}
+          </CardActions>
+        </Card>
+      </Box>
+    </ReviewWrapper>
   );
 }

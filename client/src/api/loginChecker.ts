@@ -18,11 +18,10 @@ export const onLogin = async (data: LoginFormData) => {
 
 // 화면 새로고침 시에 최상단 루트인 App의 useEffect에서 호출해서 새로 토큰 발행
 export const onSilentRefresh = async () => {
-  // const storage = JSON.parse("" + localStorage.getItem("persist:root"));
-  // const authData = JSON.parse(storage.auth);
-  // console.log("refreshed with access token : ", authData.token);
+  const storage = JSON.parse("" + localStorage.getItem("persist:root"));
+  const authData = JSON.parse(storage.auth);
   try {
-    const res = await axios.post("/user/refresh/");
+    const res = await axios.post("/user/refresh/", { access: authData.access });
     onLoginSuccess(res);
     return res.data;
   } catch (error) {
