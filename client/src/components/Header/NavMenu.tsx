@@ -17,22 +17,25 @@ export default function NavMenu() {
     setAnchorEl(event.currentTarget);
   };
   const handleNavigate = (destination: string) => {
+    console.log("path :", path);
     setAnchorEl(null);
     setPath(destination);
-    if (path == "") {
-      navigate("/");
-    }
-    if (path == "pool") {
-      navigate("/pool");
-    }
+    // if (path == "" && open == false) {
+    //   navigate("/");
+    // }
+    // if (path == "pool" && open == false) {
+    //   navigate("/pool");
+    // }
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   useDidMountEffect(() => {
-    navigate(`/${path}`);
-  }, [path]);
+    if (anchorEl == null) {
+      navigate(`/${path}`);
+    }
+  }, [path, anchorEl]);
 
   return (
     <div>

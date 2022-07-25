@@ -7,8 +7,6 @@ import axios, { AxiosResponse } from "axios";
  * @returns {boolean} 성공 여부?
  */
 
-// TODO: 로그아웃을 하려면 우선 로그인이 먼저 되어있어야한다 => 로그인 상태 설정하기
-
 export const onLogout = async () => {
   try {
     const isLogout = await axios.post("/user/logout/");

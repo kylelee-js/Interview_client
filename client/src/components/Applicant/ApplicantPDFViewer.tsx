@@ -1,5 +1,5 @@
 import { Button, Typography } from "@mui/material";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
 import styled from "styled-components";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
@@ -48,18 +48,21 @@ type ApplicantPDFViewerPropsType = {
 export default function ApplicantPDFViewer({
   filePath,
 }: ApplicantPDFViewerPropsType) {
-  // TODO: pdf 뷰어 설치하기
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
-
+  const [filePathServer, setFilePathServer] = useState<string>("");
+  useEffect(() => {
+    const newFile = filePath.slice(0, 18) + ":8080" + filePath.slice(18);
+    console.log(newFile);
+    setFilePathServer(newFile);
+  }, [filePath]);
   // FIXME: PDFPageProxy? 타입 확인해서 타입 교체하기
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
   }
   return (
     <Wrapper onContextMenu={(e) => e.preventDefault()}>
-      {/* TODO: 서버에서 불러온 PDF 파일 데이터 연결해서 렌더하기 */}
-      <Document file={filePath} onLoadSuccess={onDocumentLoadSuccess}>
+      <Document file={filePathServer} onLoadSuccess={onDocumentLoadSuccess}>
         <Page pageNumber={pageNumber} />
       </Document>
       <PaginationMenu>

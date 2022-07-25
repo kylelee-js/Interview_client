@@ -27,12 +27,11 @@ export default function Applicant() {
   const [reviewData, setReviewData] = useState<ReviewDataType[]>([]);
   const dispatch = useAppDispatch();
 
-  // TODO: 이걸 api에서 받아오기
   useEffect(() => {
     const onFetch = async (id: string) => {
       const sampleApplicant = await fetchApplicantById(id);
       const applicantReview = await reviewApi.fetchReviewById(id);
-      console.log(applicantReview.reviewData);
+      console.log(sampleApplicant.filePath);
       setFilePath(sampleApplicant.filePath);
       setReviewData(applicantReview.reviewData);
       dispatch(onSetState(sampleApplicant));
