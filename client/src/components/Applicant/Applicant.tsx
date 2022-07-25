@@ -14,11 +14,6 @@ const Wrapper = styled.div`
   width: 100vw;
   gap: 60px;
 `;
-const Box = styled.div`
-  background-color: green;
-  height: 200px;
-  width: 100%;
-`;
 
 export default function Applicant() {
   const param = useParams();
