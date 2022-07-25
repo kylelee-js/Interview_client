@@ -6,6 +6,7 @@ import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
+import { useEffect } from "react";
 
 export default function NavMenu() {
   const { pathname } = useLocation();
@@ -17,19 +18,14 @@ export default function NavMenu() {
     setAnchorEl(event.currentTarget);
   };
   const handleNavigate = (destination: string) => {
-    console.log("path :", path);
+    console.log("path :", path, destination);
     setAnchorEl(null);
     setPath(destination);
-    // if (path == "" && open == false) {
-    //   navigate("/");
-    // }
-    // if (path == "pool" && open == false) {
-    //   navigate("/pool");
-    // }
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
+  useEffect(() => {}, []);
 
   useDidMountEffect(() => {
     if (anchorEl == null) {
