@@ -62,19 +62,21 @@ export default function KanBan({ kanbanSlice }: KanBanPropsType) {
         destIndex: destination.index,
         sourceIndex: source.index,
       };
+
       const tracedApplicantId =
         kanbanSlice[+source.droppableId - 1].applicants[source.index].id;
       const applicantStatus = destination.droppableId;
-      setTimeout(async () => {
-        await onApplicantUpdate(tracedApplicantId, applicantStatus);
-      }, 100);
+      if (destination.droppableId !== source.droppableId) {
+        setTimeout(async () => {
+          await onApplicantUpdate(tracedApplicantId, applicantStatus);
+        }, 100);
+      }
 
       // 같은 보드 안에서 카드 드래그
       if (destination.droppableId === source.droppableId) {
         dispatch(onInBoardDrag(cardCoordinate));
       } else {
         // 다른 보드로 카드 드래그
-        // TODO: 이 기능은 Pool 페이지에서는 사용불가능해야함
         dispatch(onCrossBoardDrag(cardCoordinate));
       }
     },

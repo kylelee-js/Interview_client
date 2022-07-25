@@ -5,27 +5,34 @@ import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
+import useDidMountEffect from "../../hooks/useDidMountEffect";
 
 export default function NavMenu() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [path, setPath] = React.useState<string>("");
   const open = Boolean(anchorEl);
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
   const handleNavigate = (destination: string) => {
     setAnchorEl(null);
-    setTimeout(() => {
-      navigate(`/${destination}`);
-    }, 50);
+    setPath(destination);
+    if (path == "") {
+      navigate("/");
+    }
+    if (path == "pool") {
+      navigate("/pool");
+    }
   };
   const handleClose = () => {
     setAnchorEl(null);
   };
-  React.useEffect(() => {
-    setAnchorEl(null);
-  }, []);
+
+  useDidMountEffect(() => {
+    navigate(`/${path}`);
+  }, [path]);
 
   return (
     <div>

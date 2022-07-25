@@ -14,7 +14,8 @@ const persistor = persistStore(store);
 
 // refresh token cookie를 주고 받기 위한 설정 + BaseUrl 설정 : 8000포트 / 80
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = "http://3.39.22.167:8080";
+// axios.defaults.baseURL = "http://3.39.22.167:8080";
+axios.defaults.baseURL = "http://localhost:8000";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // dnd 라이브러리와 충돌이 있어 React.StrictMode를 제거함

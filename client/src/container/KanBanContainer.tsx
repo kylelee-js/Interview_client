@@ -30,7 +30,6 @@ export default function KanBanContainer({ type }: KanBanContainerPropsType) {
   const dispatch = useAppDispatch();
 
   useEffect(() => {
-    console.log(type);
     if (type == "pool") {
       dispatch(onSetPage("pool"));
     } else if (type == "myapplicants") {
@@ -39,13 +38,11 @@ export default function KanBanContainer({ type }: KanBanContainerPropsType) {
     const onFetch = async () => {
       if (type == "pool") {
         const poolBoardData = await fetchPool();
-        console.log(poolBoardData);
         if (poolBoardData) {
           dispatch(onSetPool(poolBoardData));
         }
       } else if (type == "myapplicants") {
         const kanbanBoardData = await fetchApplicants();
-        console.log(kanbanBoardData);
         if (kanbanBoardData) {
           dispatch(onSetKanban(kanbanBoardData));
         }
