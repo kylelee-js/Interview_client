@@ -34,7 +34,7 @@ export default function KanBanContainer({ type }: KanBanContainerPropsType) {
     }
   }, [trigger]);
 
-  if (type == "pool") return <PoolKanBan kanbanSlice={poolBoardsData} />;
+  if (type == "pool") return <PoolKanBan kanbanSlice={poolBoardsData!} />;
   else if (type == "myapplicants") {
     console.log(kanbanBoardsData);
     return (
