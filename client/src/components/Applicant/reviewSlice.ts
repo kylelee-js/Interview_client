@@ -31,20 +31,7 @@ const fakeReviewDate: ApplicantReviewDataType = {
   reviewData: [
     {
       applicantStatus: "1",
-      statusReviewData: [
-        // {
-        //   userId: 999,
-        //   userName: "면접관",
-        //   userNickname: "구관",
-        //   reviewText: "좀비월드",
-        // },
-        // {
-        //   userId: 130,
-        //   userName: "장규리",
-        //   userNickname: "금발",
-        //   reviewText: "사과",
-        // },
-      ],
+      statusReviewData: [],
     },
     {
       applicantStatus: "2",

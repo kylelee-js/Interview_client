@@ -12,7 +12,7 @@ import {
   PassWrapper,
   Button,
 } from "../../styles/formStyle";
-import { onAuth, onLoginNotice, onNotice } from "./authSlice";
+import { noticeAfterLogin, onAuth } from "./authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
@@ -43,12 +43,7 @@ export default function LoginForm() {
 
   // login 후 notice가 myapplicant보다 먼저 실행됨
   useDidMountEffect(() => {
-    const onFetch = async () => {
-      const notice = await onUserNotice();
-      console.log(notice);
-      dispatch(onLoginNotice(notice));
-    };
-    onFetch();
+    dispatch(noticeAfterLogin());
     navigate("/", { replace: true });
   }, [isLogin]);
 
@@ -64,7 +59,6 @@ export default function LoginForm() {
         message: "잘못된 아이디 또는 비밀번호입니다.",
       });
     }
-    // navigate("/", { replace: true });
   };
 
   const onClick = () => {

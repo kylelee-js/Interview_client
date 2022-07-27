@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchApplicants } from "../../api/fetchApplicant";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { CardCoordinateType } from "./Kanban";
 
@@ -14,19 +15,22 @@ type ApplicantActionType = {
   // FIXME: 일단은 인덱스로 -> 나중에 고유 식별 값으로 교체 (applicantId)
   applicantIndex: number;
 };
-const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
-// 칸반보드 객체 배열
+
 const fakeBoards: ApplicantBoardType[] | null = [];
+
+export const fetchKanbanBoard = createAsyncThunk(
+  "FETCH_KANBAN_BOARD",
+  async () => {
+    const kanbanBoardData = await fetchApplicants();
+    return kanbanBoardData;
+  }
+);
 
 const kanbanSlice = createSlice({
   name: "KANBAN_BOARDS",
   // TODO: 지원자 상태에서 불러와서 칸반 보드를 형성해야함!
   initialState: fakeBoards,
   reducers: {
-    onSetKanban(state, action) {
-      state = action.payload;
-      return state;
-    },
     onInBoardDrag(state, action: PayloadAction<CardCoordinateType>) {
       const { destId, sourceId, destIndex, sourceIndex } = action.payload;
       const sourceBoard = state[+sourceId - 1].applicants;
@@ -109,11 +113,17 @@ const kanbanSlice = createSlice({
       return state;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchKanbanBoard.fulfilled, (state, action) => {
+      state = action.payload;
+      return state;
+    });
+  },
 });
 
 export default kanbanSlice.reducer;
 export const {
-  onSetKanban,
+  // onSetKanban,
   onInBoardDrag,
   onCrossBoardDrag,
   onRemoveApplicant,

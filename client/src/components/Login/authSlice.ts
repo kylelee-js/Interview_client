@@ -1,4 +1,6 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { onUserNotice } from "../../api/boardUpdate";
+import { onSilentRefresh } from "../../api/loginChecker";
 
 type UserState = {
   pk: number;
@@ -18,6 +20,18 @@ const fake_User: UserAuthState = {
   user: null,
   access: null,
 };
+export const reAuthUser = createAsyncThunk("REAUTH", async () => {
+  const res = await onSilentRefresh();
+  return res;
+});
+
+export const noticeAfterLogin = createAsyncThunk(
+  "NOTICE_AFTER_LOGIN",
+  async () => {
+    const notice = await onUserNotice();
+    return notice;
+  }
+);
 
 const authSlice = createSlice({
   name: "AUTH_STATE",
@@ -32,18 +46,18 @@ const authSlice = createSlice({
       state.access = null;
       return state;
     },
-    onReauth(
-      state,
-      action: PayloadAction<{ isLogin: boolean; access: string }>
-    ) {
-      state.user!.isLogin = action.payload.isLogin;
-      state.access = action.payload.access;
-      return state;
-    },
-    onLoginNotice(state, action: PayloadAction<{ isChanged: boolean }>) {
-      state.user!.onLoginChange = action.payload.isChanged;
-      return state;
-    },
+    // onReauth(
+    //   state,
+    //   action: PayloadAction<{ isLogin: boolean; access: string }>
+    // ) {
+    //   state.user!.isLogin = action.payload.isLogin;
+    //   state.access = action.payload.access;
+    //   return state;
+    // },
+    // onLoginNotice(state, action: PayloadAction<{ isChanged: boolean }>) {
+    //   state.user!.onLoginChange = action.payload.isChanged;
+    //   return state;
+    // },
     onLoginNoticeFalse(state) {
       state.user!.onLoginChange = false;
       return state;
@@ -57,15 +71,32 @@ const authSlice = createSlice({
       return state;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(
+      reAuthUser.fulfilled,
+      (state, action: PayloadAction<{ isLogin: boolean; access: string }>) => {
+        state.user!.isLogin = action.payload.isLogin;
+        state.access = action.payload.access;
+        return state;
+      }
+    );
+    builder.addCase(
+      noticeAfterLogin.fulfilled,
+      (state, action: PayloadAction<{ isChanged: boolean }>) => {
+        state.user!.onLoginChange = action.payload.isChanged;
+        return state;
+      }
+    );
+  },
 });
 
 export default authSlice.reducer;
 export const {
   onAuth,
   onDeauth,
-  onReauth,
+  // onReauth,
   onNotice,
   onNoticeFalse,
-  onLoginNotice,
+  // onLoginNotice,
   onLoginNoticeFalse,
 } = authSlice.actions;

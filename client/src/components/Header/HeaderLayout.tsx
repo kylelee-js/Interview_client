@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
 import Logout from "../Login/Logout";
 import NavMenu from "./NavMenu";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -16,8 +16,27 @@ import {
   onNoticeFalse,
 } from "../Login/authSlice";
 import { onTrigger } from "./triggerFetchSlice";
+import styled from "styled-components";
+
+const LinkAnchor = styled.button`
+  cursor: pointer;
+  border: none;
+  text-decoration: underline;
+  background-color: transparent;
+  color: blue;
+  font-size: 16px;
+  padding-right: 5px;
+  transition: all ease-in-out 0.3s;
+  border-radius: 3px;
+  &:hover {
+    background-color: rgba(39, 168, 245, 0.44);
+    color: whitesmoke;
+    text-decoration: none;
+  }
+`;
 
 export default function HeaderLayout() {
+  const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // 활동중 상태 변경이 감지되었을 때
   const changeAlarm = useAppSelector((state) => state.auth.user?.isChanged);
@@ -28,6 +47,7 @@ export default function HeaderLayout() {
 
   useEffect(() => {
     if (!loginChangeAlarm) {
+      // TODO: RTK Query -> polling 으로 변경
       const onFetch = async () => {
         const notice = await onUserNotice();
         console.log(notice);
@@ -42,13 +62,13 @@ export default function HeaderLayout() {
   }, []);
 
   const onNoticeClick = () => {
-    console.log("clicked");
+    console.log("clic");
     dispatch(onTrigger());
     dispatch(onNoticeFalse());
+    navigate("/");
   };
 
   const onLoginNoticeClick = () => {
-    console.log("login clicked");
     dispatch(onNoticeFalse());
     dispatch(onLoginNoticeFalse());
   };
@@ -67,8 +87,9 @@ export default function HeaderLayout() {
               </Typography>
               {changeAlarm && !loginChangeAlarm && (
                 <Typography sx={{ flexGrow: 1 }}>
-                  나의 지원자 상태에 변경이 있습니다. 이
-                  <button onClick={onNoticeClick}>버튼</button>을 눌러주세요.
+                  나의 지원자 상태에 변경이 있습니다.
+                  <LinkAnchor onClick={onNoticeClick}>여기</LinkAnchor>를 눌러
+                  확인하세요.
                 </Typography>
               )}
               {loginChangeAlarm && (

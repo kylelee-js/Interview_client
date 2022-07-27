@@ -55,7 +55,7 @@ export default function SignupForm() {
         message: "이미 회원가입된 이메일입니다.",
       });
     } else {
-      navigate("../login");
+      navigate("../verification");
     }
   };
   console.log(errors);
@@ -91,12 +91,12 @@ export default function SignupForm() {
         )}
         <Input
           type="text"
-          placeholder="이메일을 입력해주세요."
+          placeholder="단비교육 사내 이메일을 입력해주세요."
           {...register("email", {
             required: "필수 입력 칸입니다.",
             pattern: {
-              value: /^\S+@\S+$/i,
-              message: "이메일 양식이 아닙니다.",
+              value: /^\S+@\bdanbiedu.co.kr\b$/i,
+              message: "단비교육 이메일 양식이 아닙니다.",
             },
           })}
         />
@@ -106,7 +106,7 @@ export default function SignupForm() {
         <PassWrapper>
           <Input
             type={passwordShown ? "text" : "password"}
-            placeholder="비밀번호를 입력해주세요."
+            placeholder="비밀번호를 입력해주세요. (영문 + 숫자 8자 이상)"
             {...register("password", {
               required: "필수 입력 칸입니다.",
               pattern: {

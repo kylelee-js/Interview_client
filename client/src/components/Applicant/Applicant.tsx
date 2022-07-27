@@ -1,9 +1,9 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchApplicantById } from "../../api/fetchApplicant";
 import { reviewApi } from "../../api/reviewApi";
-import { useAppDispatch, useAppSelector } from "../../store";
+import { useAppDispatch } from "../../store";
 import ApplicantPDFViewer from "./ApplicantPDFViewer";
 import { onSetState } from "./applicantSlice";
 import ReviewAccordion from "./ReviewAccordion";
@@ -19,9 +19,11 @@ export default function Applicant() {
   const param = useParams();
   const applicantId = param.applicantId as string;
   const [filePath, setFilePath] = useState<string>("");
-  const [reviewData, setReviewData] = useState<ReviewDataType[]>([]);
+
   const dispatch = useAppDispatch();
 
+  const [reviewData, setReviewData] = useState<ReviewDataType[]>([]);
+  // FIXME: useAppselector로 했을 때 문제가 있지 않을까?
   useEffect(() => {
     const onFetch = async (id: string) => {
       const sampleApplicant = await fetchApplicantById(id);

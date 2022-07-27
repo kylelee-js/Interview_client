@@ -1,15 +1,11 @@
 import React, { Suspense, useEffect, useState } from "react";
 import { fetchApplicants } from "../api/fetchApplicant";
-import { fetchPool } from "../api/poolFetch";
 import KanBan from "../components/KanBanBoard/Kanban";
-import { onSetKanban } from "../components/KanBanBoard/kanbanSlice";
+import { fetchKanbanBoard } from "../components/KanBanBoard/kanbanSlice";
 import { onSetPage } from "../components/KanBanBoard/pageTypeSlice";
 import PoolKanBan from "../components/Pool/PoolKanbanBoard/PoolKanban";
-import { onSetPool } from "../components/Pool/poolSlice";
+import { fetchPoolBoard } from "../components/Pool/poolSlice";
 import { useAppDispatch, useAppSelector } from "../store";
-
-const myPageBoards = ["서류합격", "1차합격", "2차합격", "최종합격"];
-const poolPageBoards = ["개발", "마케팅", "경영지원", "디자인"];
 
 /**
  * KanBanPropsType
@@ -31,23 +27,11 @@ export default function KanBanContainer({ type }: KanBanContainerPropsType) {
   useEffect(() => {
     if (type == "pool") {
       dispatch(onSetPage("pool"));
+      dispatch(fetchPoolBoard());
     } else if (type == "myapplicants") {
       dispatch(onSetPage("myapplicants"));
+      dispatch(fetchKanbanBoard());
     }
-    const onFetch = async () => {
-      if (type == "pool") {
-        const poolBoardData = await fetchPool();
-        if (poolBoardData) {
-          dispatch(onSetPool(poolBoardData));
-        }
-      } else if (type == "myapplicants") {
-        const kanbanBoardData = await fetchApplicants();
-        if (kanbanBoardData) {
-          dispatch(onSetKanban(kanbanBoardData));
-        }
-      }
-    };
-    onFetch();
   }, [trigger]);
 
   if (type == "pool") return <PoolKanBan kanbanSlice={poolBoardsData} />;

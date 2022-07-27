@@ -64,13 +64,13 @@ export default function ReviewEditor({
   const dispatch = useAppDispatch();
 
   const [popupOpen, setPopupOpen] = useState(false);
-  const handleOpen = () => setPopupOpen(true);
+  const showPopup = () => setPopupOpen(true);
   const handleClose = () => setPopupOpen(false);
 
   const onClick = async () => {
     const text = "" + QuillRef.current?.getEditor().root.innerHTML;
     if (text == "<p><br></p>") {
-      handleOpen();
+      showPopup();
     } else if (isEditMode) {
       // TODO: 로컬 상태랑 서버에서 받아온 데이터 업데이트의 충돌은?
       await reviewApi.onEditReview("" + id!, {

@@ -37,7 +37,8 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // 스토어
 const store = configureStore({
   reducer: persistedReducer,
-  middleware: [],
+  // middlewart: []  // 그때 미들웨어에서 문제가 있어서 -> redux-persist 문제
+  middleware: (gDM) => gDM().concat(queryApi.middleware),
 });
 
 export default store;

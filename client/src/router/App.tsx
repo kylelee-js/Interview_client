@@ -1,9 +1,10 @@
 import React, { Suspense, useEffect } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { onSilentRefresh } from "../api/loginChecker";
-import { onReauth } from "../components/Login/authSlice";
+import { reAuthUser } from "../components/Login/authSlice";
+import EmailVerificationPage from "../pages/EmailVerificationPage";
 
 import NotFoundPage from "../pages/NotFoundPage";
+
 import { useAppDispatch, useAppSelector } from "../store";
 
 const LoginPage = React.lazy(() => import("../pages/LoginPage"));
@@ -22,13 +23,7 @@ function App() {
 
   useEffect(() => {
     if (isLogin) {
-      const onFetch = async () => {
-        const res = await onSilentRefresh();
-        // const notice = await onUserNotice();
-        // console.log(notice);
-        dispatch(onReauth(res));
-      };
-      onFetch();
+      dispatch(reAuthUser());
     }
   }, []);
 
@@ -40,6 +35,7 @@ function App() {
           <Route path="*" element={<NotFoundPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
+          <Route path="/verification" element={<EmailVerificationPage />} />
           <Route element={isLogin ? <HeaderLayout /> : <LoginPage />}>
             <Route path="/" element={<MainPage />} />
             <Route path="/applicant/:applicantId" element={<ApplicantPage />} />

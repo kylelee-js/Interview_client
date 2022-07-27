@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchPool } from "../../api/poolFetch";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { ApplicantBoardType } from "../KanBanBoard/kanbanSlice";
 
@@ -11,15 +12,20 @@ const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "
 // 칸반보드 객체 배열
 const fakeBoards: ApplicantBoardType[] | null = [];
 
+export const fetchPoolBoard = createAsyncThunk("FETCH_POOL_BOARD", async () => {
+  const poolBoardData = await fetchPool();
+  return poolBoardData;
+});
+
 const poolSlice = createSlice({
   name: "POOL_BOARD",
   // TODO: 지원자 상태에서 불러와서 칸반 보드를 형성해야함!
   initialState: fakeBoards,
   reducers: {
-    onSetPool(state, action) {
-      state = action.payload;
-      return state;
-    },
+    // onSetPool(state, action) {
+    //   state = action.payload;
+    //   return state;
+    // },
     onSetMyApplicant(state, action) {
       const { boardStatus, applicantIndex, userPk } = action.payload;
       const applicantList = [...state[+boardStatus - 1].applicants];
@@ -38,8 +44,13 @@ const poolSlice = createSlice({
       return state;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(fetchPoolBoard.fulfilled, (state, action) => {
+      state = action.payload;
+      return state;
+    });
+  },
 });
 
 export default poolSlice.reducer;
-export const { onSetPool, onSetMyApplicant, onUnsetMyApplicant } =
-  poolSlice.actions;
+export const { onSetMyApplicant, onUnsetMyApplicant } = poolSlice.actions;

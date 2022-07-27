@@ -13,6 +13,8 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ConfirmPortals from "../Confirm/ConfirmPortal";
 import ConfirmPopup from "../Confirm/ConfirmPopup";
 import { useNavigate } from "react-router-dom";
+import { TextField } from "@mui/material";
+import { TagNote } from "../../styles/boardStyle";
 
 const RedSpan = styled.span`
   color: red;
@@ -47,8 +49,6 @@ export default React.memo(function KebabMenu({
     navigate(`/applicant/${id}`);
   };
 
-  // TODO: setmine api 연결
-
   const togglePopupOpen = () => {
     setPopupOpened((prev) => !prev);
     setAnchorEl(null);
@@ -69,6 +69,17 @@ export default React.memo(function KebabMenu({
     handleFail();
   };
 
+  const [tagOpen, setTagOpen] = useState(false);
+
+  const tagModalOpen = () => {
+    setTagOpen(true);
+  };
+
+  const tagModalClose = () => {
+    setTagOpen(false);
+    setAnchorEl(null);
+  };
+
   return (
     <div>
       <Button
@@ -76,7 +87,6 @@ export default React.memo(function KebabMenu({
         aria-controls={open ? "basic-menu" : undefined}
         aria-haspopup="true"
         aria-expanded={open ? "true" : undefined}
-        // FIXME: 스타일 조정하기
         sx={{ borderRadius: 8 }}
         style={{
           fontSize: "20px",
@@ -104,7 +114,8 @@ export default React.memo(function KebabMenu({
           }}
         >
           <MenuItem onClick={onNavigate}>지원자 정보보기</MenuItem>
-          <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
+          {/* TODO: 태그노트 개수가 3개 이상이면 버튼 비활성화 + 태그 삭제 기능? "disabled={ TagNote.length == 3 ? true: false}" */}
+          <MenuItem onClick={tagModalOpen}>지원자 태그추가</MenuItem>
         </Menu>
       ) : (
         <Menu
@@ -116,9 +127,10 @@ export default React.memo(function KebabMenu({
             "aria-labelledby": "basic-button",
           }}
         >
-          {/* TODO: 만약 Pool 페이지라면 태그 추가가 아닌 지원자 등록처리 메뉴가 있어야한다. */}
           <MenuItem onClick={onNavigate}>지원자 리뷰작성</MenuItem>
-          <MenuItem onClick={handleClose}>지원자 태그추가</MenuItem>
+
+          {/* TODO: 태그노트 개수가 3개 이상이면 버튼 비활성화 + 태그 삭제 기능? "disabled={ TagNote.length == 3 ? true: false}" */}
+          <MenuItem onClick={tagModalOpen}>지원자 태그추가</MenuItem>
           {isFailed ? (
             <MenuItem
               onClick={() => {
@@ -185,17 +197,28 @@ export default React.memo(function KebabMenu({
           </Button>
         </DialogActions>
       </Dialog>
-      {/* FIXME: 조건문으로 감싸면 - 렌더링이 줄어든다! 하지만 애니메이션은 어떻게?? */}
-      {/* {popupOpened && (
-        <ConfirmPortals>
-          <ConfirmPopup
-            isShown={popupOpened}
-            onPopupClose={togglePopupOpen}
-            status={status}
-            applicantIndex={applicantIndex}
+
+      <Dialog open={tagOpen} onClose={tagModalClose}>
+        <DialogTitle>태그 작성</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            지원자당 태그는 3개 까지 작성하실 수 있습니다.
+          </DialogContentText>
+          <TextField
+            autoFocus
+            margin="dense"
+            id="name"
+            label="#태그작성"
+            type="email"
+            fullWidth
+            variant="standard"
           />
-        </ConfirmPortals>
-      )} */}
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={tagModalClose}>취소</Button>
+          <Button onClick={tagModalClose}>작성</Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 });
