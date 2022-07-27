@@ -32,14 +32,6 @@ const PaginationMenu = styled.div`
   justify-content: center;
   gap: 30px;
 `;
-const PageButton = styled.button`
-  background-color: grey;
-  padding: 5px;
-  color: white;
-  border-style: none;
-  border-radius: 5px;
-  cursor: pointer;
-`;
 
 type ApplicantPDFViewerPropsType = {
   filePath: string;
@@ -50,13 +42,7 @@ export default function ApplicantPDFViewer({
 }: ApplicantPDFViewerPropsType) {
   const [numPages, setNumPages] = useState<number>(0);
   const [pageNumber, setPageNumber] = useState(1);
-  // const [filePathServer, setFilePathServer] = useState<string>("");
-  // useEffect(() => {
-  //   const newFile = filePath.slice(0, 18) + ":8080" + filePath.slice(18);
-  //   console.log(newFile);
-  //   setFilePathServer(newFile);
-  // }, [filePath]);
-  // FIXME: PDFPageProxy? 타입 확인해서 타입 교체하기
+
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
   }
@@ -65,8 +51,6 @@ export default function ApplicantPDFViewer({
       <Document
         file={{
           url: filePath,
-          // httpHeaders: { "Access-Control-Allow-Origin": "*" },
-          // withCredentials: true,
         }}
         onLoadSuccess={onDocumentLoadSuccess}
       >

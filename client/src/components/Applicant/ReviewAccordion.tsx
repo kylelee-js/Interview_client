@@ -87,10 +87,6 @@ export default React.memo(function ReviewAccordion({
         const hadReviewed = data.statusReviewData.find(
           (sRD) => sRD.userId == user?.pk!
         );
-        // TODO: 곧 props로 지원자 정보 받아오면 .interviewer.find로 user?.pk! 검사
-        const isAuthorized = "";
-        // console.log(hadReviewed);
-
         return (
           <Accordion
             expanded={expanded === data.applicantStatus}

@@ -1,24 +1,9 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
-import Card from "./Card";
 import { CardCoordinateType } from "./Kanban";
 
-// export type ApplicantDataType = {
-//   id: number;
-//   applicantName: string;
-//   birth?: string;
-//   tagNote?: string[] | [];
-//   department: string;
-//   job: string;
-//   status: string;
-//   filePath?: string;
-//   isFailed?: boolean;
-//   board?: number[];
-//   interviewer?: string[];
-//   isFixed?: boolean;
-//   order?: number;
-// };
 export type ApplicantBoardType = {
+  pk: number;
   boardStatus: number;
   boardName: string;
   applicants: ApplicantDataType[];

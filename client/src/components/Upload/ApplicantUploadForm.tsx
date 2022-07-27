@@ -38,7 +38,7 @@ export default function ApplicantUploadForm() {
     watch,
   } = useForm<ApplicantFormData>();
 
-  const onSubmit: SubmitHandler<ApplicantFormData> = (data) => {
+  const onSubmit: SubmitHandler<ApplicantFormData> = async (data) => {
     console.log(data);
     // PDF 파일 확장자 regex 검사기
     if (data.filePath[0].type != "application/pdf") {
@@ -54,8 +54,17 @@ export default function ApplicantUploadForm() {
     fileData.append("department", data.department);
     fileData.append("job", data.job);
     fileData.append("filePath", data.filePath[0]);
-    onFileUpload(fileData);
-    navigate("/pool");
+    const res = await onFileUpload(fileData);
+    if (res) {
+      navigate("/pool");
+    } else {
+      setError("filePath", {
+        type: "validate",
+        message:
+          "업로드 과정에서 문제가 발생했습니다. 새로고침하거나 다시 시도해주세요",
+      });
+      return;
+    }
   };
   console.log(errors);
 
@@ -80,7 +89,8 @@ export default function ApplicantUploadForm() {
             required: "필수 입력 칸입니다.",
             maxLength: 100,
             pattern: {
-              value: /^(?=.*\d).{6,6}$/i,
+              value:
+                /^(?:[0-9]{2}(?:0[1-9]|1[0-2])(?:0[1-9]|[1,2][0-9]|3[0,1]))$/i,
               message: "YYMMDD 양식이 아닙니다.",
             },
           })}
@@ -100,11 +110,9 @@ export default function ApplicantUploadForm() {
           <option value="마케팅">마케팅</option>
           <option value="디자인">디자인</option>
         </Select>
-        <ErrorMessage
-          errors={errors}
-          name="department"
-          as={ValidationMessage}
-        />
+        {errors.department && (
+          <div style={{ color: "red" }}> {errors.department?.message}</div>
+        )}
         <Input
           type="text"
           placeholder="지원자 직무을 입력해주세요"
@@ -117,16 +125,13 @@ export default function ApplicantUploadForm() {
           <div style={{ color: "red" }}> {errors.job?.message}</div>
         )}
 
-        {/* TODO: file upload */}
         <input
-          // ref={fileUploader}
           {...register("filePath", {
             required: "필수 입력 칸입니다.",
           })}
           type="file"
           id="applicantFile"
           accept="pdf/*"
-          // onChange={onUploadFile}
         />
         {errors.filePath && (
           <div style={{ color: "red" }}> {errors.filePath?.message}</div>

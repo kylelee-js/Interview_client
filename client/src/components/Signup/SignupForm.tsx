@@ -1,12 +1,10 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { sendSignUp } from "../../api/signupChecker";
-import { ErrorMessage } from "@hookform/error-message";
 import {
   SubmitButton,
   Form,
   FormWrapper,
   Input,
-  ValidationMessage,
   Eye,
   PassWrapper,
   Button,
@@ -42,13 +40,23 @@ export default function SignupForm() {
     handleSubmit,
     formState: { errors },
     watch,
+    setError,
   } = useForm<RegisterFormData>();
   const navigate = useNavigate();
 
-  const onSubmit: SubmitHandler<RegisterFormData> = (data) => {
+  const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     console.log(data);
-    sendSignUp(data);
-    navigate("../login");
+    const res = await sendSignUp(data);
+    console.log(res);
+    // TODO: 에러 필드 값 확인!
+    if (res.email) {
+      setError("email", {
+        type: "pattern",
+        message: "이미 회원가입된 이메일입니다.",
+      });
+    } else {
+      navigate("../login");
+    }
   };
   console.log(errors);
 
@@ -67,7 +75,9 @@ export default function SignupForm() {
             maxLength: 100,
           })}
         />
-        <ErrorMessage errors={errors} name="name" as={ValidationMessage} />
+        {errors.name && (
+          <div style={{ color: "red" }}> {errors.name?.message}</div>
+        )}
         <Input
           type="text"
           placeholder="호을 입력해주세요."
@@ -76,7 +86,9 @@ export default function SignupForm() {
             maxLength: 100,
           })}
         />
-        <ErrorMessage errors={errors} name="nickname" as={ValidationMessage} />
+        {errors.nickname && (
+          <div style={{ color: "red" }}> {errors.nickname?.message}</div>
+        )}
         <Input
           type="text"
           placeholder="이메일을 입력해주세요."
@@ -88,7 +100,9 @@ export default function SignupForm() {
             },
           })}
         />
-        <ErrorMessage errors={errors} name="email" as={ValidationMessage} />
+        {errors.email && (
+          <div style={{ color: "red" }}> {errors.email?.message}</div>
+        )}
         <PassWrapper>
           <Input
             type={passwordShown ? "text" : "password"}
@@ -103,7 +117,9 @@ export default function SignupForm() {
           />
           <Eye onClick={togglePasswordVisiblity}>{eye}</Eye>{" "}
         </PassWrapper>
-        <ErrorMessage errors={errors} name="password" as={ValidationMessage} />
+        {errors.password && (
+          <div style={{ color: "red" }}> {errors.password?.message}</div>
+        )}
         <PassWrapper>
           <Input
             type={passwordCheckerShown ? "text" : "password"}
@@ -119,11 +135,9 @@ export default function SignupForm() {
           />
           <Eye onClick={togglePasswordCheckerVisiblity}>{eye}</Eye>{" "}
         </PassWrapper>
-        <ErrorMessage
-          errors={errors}
-          name="passwordChecker"
-          as={ValidationMessage}
-        />
+        {errors.passwordChecker && (
+          <div style={{ color: "red" }}> {errors.passwordChecker?.message}</div>
+        )}
         {/* TODO: select 컴포넌트 스타일링 해주기 */}
         <Select
           {...register("department", { required: "필수 입력 칸입니다." })}
@@ -136,11 +150,9 @@ export default function SignupForm() {
           <option value="마케팅">마케팅</option>
           <option value="디자인">디자인</option>
         </Select>
-        <ErrorMessage
-          errors={errors}
-          name="department"
-          as={ValidationMessage}
-        />
+        {errors.department && (
+          <div style={{ color: "red" }}> {errors.department?.message}</div>
+        )}
         <SubmitButton type="submit" value={"가입하기"} />
       </Form>
       <Button onClick={onClick}>아이디가 있어요</Button>

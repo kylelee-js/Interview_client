@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosError } from "axios";
 import { RegisterFormData } from "../components/Signup/SignupForm";
 
 export const sendSignUp = async (formData: RegisterFormData) => {
@@ -9,7 +9,9 @@ export const sendSignUp = async (formData: RegisterFormData) => {
         Accept: "application/json",
       },
     });
-  } catch (error) {
-    console.log(error);
+    return res.data;
+  } catch (err) {
+    const errors = err as AxiosError;
+    return errors?.response?.data;
   }
 };

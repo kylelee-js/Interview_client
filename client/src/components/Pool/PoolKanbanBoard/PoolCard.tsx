@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import { Draggable } from "react-beautiful-dnd";
 import { Alert, Box, Snackbar } from "@mui/material/";
 import MuiCard from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
@@ -9,40 +8,19 @@ import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
 import KebabMenu from "../../KanBanBoard/KebabMenu";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { ApplicantDataType } from "../../Applicant/applicantSlice";
 import { Tooltip } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import CheckIcon from "@mui/icons-material/Check";
-import { setApplicantMine } from "../../../api/applicantUpdate";
+import { setApplicantMine } from "../../../api/fetchApplicant";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { onSetMyApplicant, onUnsetMyApplicant } from "../poolSlice";
-
-const Wrapper = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
-const TagNote = styled.span`
-  font-size: 12px;
-  padding: 3px 5px;
-  margin-right: 10px;
-  background-color: grey;
-  color: white;
-  border-radius: 5px;
-`;
-
-const MenuButtonDiv = styled.div`
-  position: absolute;
-  top: 0px;
-  right: 0px;
-`;
-
-const CheckBoxDiv = styled.div`
-  position: absolute;
-  top: 20px;
-  right: 30px;
-`;
+import {
+  CardWrapper,
+  CheckBoxDiv,
+  MenuButtonDiv,
+  TagNote,
+} from "../../../styles/boardStyle";
 
 const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
 const poolPageBoards = ["개발", "마케팅", "경영지원", "디자인"];
@@ -107,7 +85,7 @@ export default React.memo(function Card({
   };
 
   return (
-    <Wrapper>
+    <CardWrapper>
       <Box
         sx={{
           minWidth: 250,
@@ -200,6 +178,6 @@ export default React.memo(function Card({
           </MenuButtonDiv>
         </MuiCard>
       </Box>
-    </Wrapper>
+    </CardWrapper>
   );
 });

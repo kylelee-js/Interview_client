@@ -1,18 +1,7 @@
 import React, { Suspense, useEffect } from "react";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  Navigate,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import { onSilentRefresh } from "../api/loginChecker";
 import { onReauth } from "../components/Login/authSlice";
-// import LoginPage from "../pages/LoginPage";
-// import MainPage from "../pages/MainPage";
-// import ApplicantPage from "../pages/ApplicantPage";
-// import SignupPage from "../pages/SignupPage";
-// import PoolPage from "../pages/PoolPage";
-// import UploadPage from "../pages/SignupPage";
 
 import NotFoundPage from "../pages/NotFoundPage";
 import { useAppDispatch, useAppSelector } from "../store";
@@ -27,31 +16,19 @@ const HeaderLayout = React.lazy(
   () => import("../components/Header/HeaderLayout")
 );
 
-type RouteType = {
-  isLogin: boolean;
-  outlet: JSX.Element;
-};
-
-// PrivateRoute 구현
-const ProtectedRoute = ({ isLogin = false, outlet }: RouteType) => {
-  if (!isLogin) {
-    return <Navigate to="/login" replace />;
-  }
-  return outlet;
-};
-
 function App() {
-  let isLogin = useAppSelector((state) => state.auth.user?.isLogin);
+  const isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   const dispatch = useAppDispatch();
 
-  // FIXME: useLayoutEffect를 대신 사용하나?
   useEffect(() => {
     if (isLogin) {
-      const reAuth = async () => {
+      const onFetch = async () => {
         const res = await onSilentRefresh();
+        // const notice = await onUserNotice();
+        // console.log(notice);
         dispatch(onReauth(res));
       };
-      reAuth();
+      onFetch();
     }
   }, []);
 
@@ -69,28 +46,6 @@ function App() {
             <Route path="/pool" element={<PoolPage />} />
             <Route path="/upload" element={<UploadPage />} />
           </Route>
-
-          {/* FIXME: 페이지 리로드시 isLogin 업데이트 보다 먼저 렌더링이 됨 */}
-          {/* <Route
-            path="/"
-            element={<ProtectedRoute isLogin={isLogin} outlet={<MainPage />} />}
-          />
-          <Route
-            path="/applicant"
-            element={
-              <ProtectedRoute isLogin={isLogin} outlet={<ApplicantPage />} />
-            }
-          />
-          <Route
-            path="/pool"
-            element={<ProtectedRoute isLogin={isLogin} outlet={<PoolPage />} />}
-          />
-          <Route
-            path="/upload"
-            element={
-              <ProtectedRoute isLogin={isLogin} outlet={<UploadPage />} />
-            }
-          /> */}
         </Routes>
       </Suspense>
     </Router>

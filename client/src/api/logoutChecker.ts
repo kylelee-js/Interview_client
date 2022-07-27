@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from "axios";
+import axios from "axios";
 
 // FIXME: 로그아웃시에는 사용자 상태를 받아와서 제거하는게 맞지 않나? -> createAsyncThunk?
 /**
@@ -14,5 +14,6 @@ export const onLogout = async () => {
     return isLogout;
   } catch (error) {
     console.log(error);
+    delete axios.defaults.headers.common["Authorization"];
   }
 };

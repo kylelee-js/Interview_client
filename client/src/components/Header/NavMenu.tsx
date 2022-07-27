@@ -1,12 +1,10 @@
 import * as React from "react";
-import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { useEffect } from "react";
 
 export default function NavMenu() {
   const { pathname } = useLocation();
@@ -25,7 +23,6 @@ export default function NavMenu() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  useEffect(() => {}, []);
 
   useDidMountEffect(() => {
     if (anchorEl == null) {

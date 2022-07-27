@@ -1,11 +1,6 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
-
-export type ApplicantBoardType = {
-  boardStatus: number;
-  boardName: string;
-  applicants: ApplicantDataType[];
-};
+import { ApplicantBoardType } from "../KanBanBoard/kanbanSlice";
 
 type ApplicantActionType = {
   status: string;

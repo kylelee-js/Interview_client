@@ -23,8 +23,7 @@ export type ApplicantType = {
   applicantReview: ApplicantReviewDataType;
 };
 
-// TODO: 각 지원자 데이터의 리뷰 정보를 initial state로 설정해준다.
-const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
+// FIXME: 이니셜 상태 그냥 null로 구성하기!
 const fakeApplicantData: ApplicantType[] = [
   {
     applicantInfo: {
@@ -109,10 +108,7 @@ const applicantSlice = createSlice({
   name: "APPLICANT",
   initialState: fakeApplicantData,
   reducers: {
-    // onSetState(state, action: PayloadAction<ApplicantType>) {
-    //   state = [action.payload];
-    //   return state;
-    // },
+    // FIXME: 이니셜 상태 수정 이후 코드 수정 요망!
     onSetState(state, action: PayloadAction<ApplicantDataType>) {
       state[0].applicantInfo = action.payload;
       return state;

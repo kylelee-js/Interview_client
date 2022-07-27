@@ -5,6 +5,8 @@ type UserState = {
   name: string;
   nickname: string;
   isLogin: boolean;
+  isChanged?: boolean;
+  onLoginChange?: boolean;
 };
 
 type UserAuthState = {
@@ -13,12 +15,8 @@ type UserAuthState = {
 };
 
 const fake_User: UserAuthState = {
-  // local에서 로그인 할때 설정
-  // user: { pk: 999, name: "면접관", nickname: "떡잎", isLogin: true },
-
   user: null,
   access: null,
-  // access: "fake_token_on_local",
 };
 
 const authSlice = createSlice({
@@ -42,8 +40,32 @@ const authSlice = createSlice({
       state.access = action.payload.access;
       return state;
     },
+    onLoginNotice(state, action: PayloadAction<{ isChanged: boolean }>) {
+      state.user!.onLoginChange = action.payload.isChanged;
+      return state;
+    },
+    onLoginNoticeFalse(state) {
+      state.user!.onLoginChange = false;
+      return state;
+    },
+    onNotice(state, action: PayloadAction<{ isChanged: boolean }>) {
+      state.user!.isChanged = action.payload.isChanged;
+      return state;
+    },
+    onNoticeFalse(state) {
+      state.user!.isChanged = false;
+      return state;
+    },
   },
 });
 
 export default authSlice.reducer;
-export const { onAuth, onDeauth, onReauth } = authSlice.actions;
+export const {
+  onAuth,
+  onDeauth,
+  onReauth,
+  onNotice,
+  onNoticeFalse,
+  onLoginNotice,
+  onLoginNoticeFalse,
+} = authSlice.actions;

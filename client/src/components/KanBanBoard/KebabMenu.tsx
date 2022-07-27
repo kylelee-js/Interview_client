@@ -13,7 +13,6 @@ import DialogTitle from "@mui/material/DialogTitle";
 import ConfirmPortals from "../Confirm/ConfirmPortal";
 import ConfirmPopup from "../Confirm/ConfirmPopup";
 import { useNavigate } from "react-router-dom";
-import { setApplicantMine } from "../../api/applicantUpdate";
 
 const RedSpan = styled.span`
   color: red;

@@ -26,7 +26,6 @@ export default function Applicant() {
     const onFetch = async (id: string) => {
       const sampleApplicant = await fetchApplicantById(id);
       const applicantReview = await reviewApi.fetchReviewById(id);
-      console.log(sampleApplicant.filePath);
       setFilePath(sampleApplicant.filePath);
       setReviewData(applicantReview.reviewData);
       dispatch(onSetState(sampleApplicant));

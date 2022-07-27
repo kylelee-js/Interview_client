@@ -1,21 +1,8 @@
-import Board from "../../KanBanBoard/Board";
 // import GeneratorBtn from "../BoardGenerator/GeneratorBtn";
 import { ApplicantBoardType } from "../../KanBanBoard/kanbanSlice";
 import { useAppDispatch } from "../../../store";
-import styled from "styled-components";
 import PoolBoard from "./PoolBoard";
-
-const BoardGrid = styled.div<{ boardLength: number }>`
-  padding: 5px 15px;
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.boardLength}, 1fr);
-  gap: 50px;
-  box-sizing: border-box;
-  width: 100%;
-  background-color: #d9dedb;
-  border-radius: 3px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-`;
+import { BoardGrid } from "../../../styles/boardStyle";
 
 // Id는 보드 위치이며 Index는 카드 배열 순서이다.
 export type CardCoordinateType = {

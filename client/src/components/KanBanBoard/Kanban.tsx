@@ -9,21 +9,9 @@ import {
 } from "./kanbanSlice";
 import { useAppDispatch } from "../../store";
 import styled from "styled-components";
-import { onBoardUpdate } from "../../api/boardUpdate";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { onApplicantUpdate } from "../../api/applicantUpdate";
-
-const BoardGrid = styled.div<{ boardLength: number }>`
-  padding: 5px 15px;
-  display: grid;
-  grid-template-columns: repeat(${(props) => props.boardLength}, 1fr);
-  gap: 50px;
-  box-sizing: border-box;
-  width: 100%;
-  background-color: #d9dedb;
-  border-radius: 3px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-`;
+import { patchApplicantById } from "../../api/fetchApplicant";
+import { BoardGrid } from "../../styles/boardStyle";
 
 // Id는 보드 위치이며 Index는 카드 배열 순서이다.
 export type CardCoordinateType = {
@@ -31,6 +19,14 @@ export type CardCoordinateType = {
   sourceId: string;
   destIndex: number;
   sourceIndex: number;
+};
+
+export type ApplicantCoordinateType = {
+  id: number;
+  status: number;
+  index: number;
+  prevBoardPk: number;
+  boardPk: number;
 };
 
 // TODO: 상위 컨테이너에서 가져올 props 목록
@@ -41,14 +37,16 @@ type KanBanPropsType = {
 // FIXME: 현재 "키값"을 "이름"으로 부여하고 있음!! -> pk값<고유값>으로 변경!!!
 export default function KanBan({ kanbanSlice }: KanBanPropsType) {
   const dispatch = useAppDispatch();
+  const [applicantCoordinate, setApplicantCoordinate] =
+    useState<ApplicantCoordinateType>();
 
   useDidMountEffect(() => {
     const onFetch = async () => {
-      console.log("useEffect kanbanSlice : ", kanbanSlice);
-      await onBoardUpdate(kanbanSlice);
+      // TODO: applicantId 찾기
+      await patchApplicantById(applicantCoordinate!);
     };
     onFetch();
-  }, [kanbanSlice]);
+  }, [applicantCoordinate]);
 
   const onDragEnd = useCallback(
     async ({ destination, source }: DropResult) => {
@@ -63,14 +61,14 @@ export default function KanBan({ kanbanSlice }: KanBanPropsType) {
         sourceIndex: source.index,
       };
 
-      const tracedApplicantId =
-        kanbanSlice[+source.droppableId - 1].applicants[source.index].id;
-      const applicantStatus = destination.droppableId;
-      if (destination.droppableId !== source.droppableId) {
-        setTimeout(async () => {
-          await onApplicantUpdate(tracedApplicantId, applicantStatus);
-        }, 100);
-      }
+      // x: status, y: index
+      setApplicantCoordinate({
+        id: kanbanSlice[+source.droppableId - 1].applicants[source.index].id,
+        status: +destination.droppableId,
+        index: destination.index,
+        prevBoardPk: kanbanSlice[+source.droppableId - 1].pk,
+        boardPk: kanbanSlice[+destination.droppableId - 1].pk,
+      });
 
       // 같은 보드 안에서 카드 드래그
       if (destination.droppableId === source.droppableId) {
@@ -91,7 +89,7 @@ export default function KanBan({ kanbanSlice }: KanBanPropsType) {
         {/* <BoardGrid boardLength={4}> */}
         {kanbanSlice.map((board) => (
           <Board
-            key={board.boardName}
+            key={board.pk}
             droppableId={"" + board.boardStatus}
             name={board.boardStatus}
             applicants={board.applicants}

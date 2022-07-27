@@ -18,6 +18,7 @@ export const onFileUpload = async (data: FormData) => {
         Accept: "application/json",
       },
     });
+    return res.data;
     // TODO: 파일 통신 성공하고 나면 후속 처리 ?
   } catch (error) {
     console.log(error);

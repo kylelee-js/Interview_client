@@ -9,6 +9,9 @@ export const queryApi = createApi({
     getApplicantById: builder.query<ApplicantFormData, string>({
       query: (id) => `applicant/${id}`,
     }),
+    getUserNotice: builder.query({
+      query: () => "/user/notice/",
+    }),
   }),
 });
 

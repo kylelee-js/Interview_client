@@ -1,6 +1,4 @@
 import React, { Suspense, useEffect, useState } from "react";
-import { shallowEqual } from "react-redux";
-import { onBoardUpdate } from "../api/boardUpdate";
 import { fetchApplicants } from "../api/fetchApplicant";
 import { fetchPool } from "../api/poolFetch";
 import KanBan from "../components/KanBanBoard/Kanban";
@@ -27,6 +25,7 @@ type KanBanContainerPropsType = {
 export default function KanBanContainer({ type }: KanBanContainerPropsType) {
   const kanbanBoardsData = useAppSelector((state) => state.kanban);
   const poolBoardsData = useAppSelector((state) => state.pool);
+  const trigger = useAppSelector((state) => state.triggerFetch);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -49,7 +48,7 @@ export default function KanBanContainer({ type }: KanBanContainerPropsType) {
       }
     };
     onFetch();
-  }, []);
+  }, [trigger]);
 
   if (type == "pool") return <PoolKanBan kanbanSlice={poolBoardsData} />;
   else if (type == "myapplicants") {
