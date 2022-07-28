@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom";
 import styled from "styled-components";
 import { fetchApplicantById } from "../../api/fetchApplicant";
 import { reviewApi } from "../../api/reviewApi";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import ApplicantPDFViewer from "./ApplicantPDFViewer";
 import { onSetState } from "./applicantSlice";
 import ReviewAccordion from "./ReviewAccordion";
@@ -19,6 +19,8 @@ export default function Applicant() {
   const param = useParams();
   const applicantId = param.applicantId as string;
   const [filePath, setFilePath] = useState<string>("");
+  const [amIAnAuthor, setAmIAnAuthor] = useState<boolean>(false);
+  const userPk = useAppSelector((state) => state.auth.user?.pk);
 
   const dispatch = useAppDispatch();
 
@@ -28,6 +30,13 @@ export default function Applicant() {
     const onFetch = async (id: string) => {
       const sampleApplicant = await fetchApplicantById(id);
       const applicantReview = await reviewApi.fetchReviewById(id);
+      setAmIAnAuthor(
+        Boolean(
+          sampleApplicant.interviewer.find(
+            (interviewer: number) => interviewer == userPk
+          )
+        )
+      );
       setFilePath(sampleApplicant.filePath);
       setReviewData(applicantReview.reviewData);
       dispatch(onSetState(sampleApplicant));
@@ -51,7 +60,7 @@ export default function Applicant() {
           marginRight: "50px",
         }}
       >
-        <ReviewAccordion reviewData={reviewData} />
+        <ReviewAccordion reviewData={reviewData} amIAnAuthor={amIAnAuthor} />
       </div>
     </Wrapper>
   );

@@ -12,6 +12,7 @@ import Modal from "@mui/material/Modal";
 import SendIcon from "@mui/icons-material/Send";
 import { reviewApi } from "../../api/reviewApi";
 import { useParams } from "react-router-dom";
+import ReviewNullWarningPopup from "../Popup/ReviewNullWarningPopup";
 
 const Wrapper = styled.div`
   display: flex;
@@ -23,21 +24,6 @@ const Wrapper = styled.div`
   min-width: 300px;
   margin: 10px;
 `;
-
-// TODO: 스타일링하기
-const popupStyle = {
-  position: "absolute" as "absolute",
-  top: "50%",
-  left: "50%",
-  transform: "translate(-50%, -50%)",
-  width: 600,
-  height: 100,
-  bgcolor: "background.paper",
-  borderRadius: "5px",
-  // border: "1px solid #000",
-  boxShadow: 24,
-  p: 4,
-};
 
 type ReviewEditorPropsType = {
   id?: string;
@@ -140,21 +126,7 @@ export default function ReviewEditor({
       >
         제출
       </Button>
-      <Modal
-        open={popupOpen}
-        onClose={handleClose}
-        aria-labelledby="modal-modal-title"
-        aria-describedby="modal-modal-description"
-      >
-        <Box sx={popupStyle}>
-          <Typography id="modal-modal-title" variant="h6" component="h2">
-            리뷰를 작성하고 제출해주세요.
-          </Typography>
-          <Typography id="modal-modal-description" sx={{ mt: 2 }}>
-            빈칸으로 작성된 리뷰는 제출될 수 없습니다.
-          </Typography>
-        </Box>
-      </Modal>
+      <ReviewNullWarningPopup open={popupOpen} handleClose={handleClose} />
     </Wrapper>
   );
 }

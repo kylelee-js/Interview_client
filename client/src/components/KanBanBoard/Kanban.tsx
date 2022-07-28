@@ -87,9 +87,9 @@ export default function KanBan({ kanbanSlice }: KanBanPropsType) {
       {/* FIXME: 일단 4개 고정 */}
       <BoardGrid boardLength={+kanbanSlice.length}>
         {/* <BoardGrid boardLength={4}> */}
-        {kanbanSlice.map((board) => (
+        {kanbanSlice.map((board, index) => (
           <Board
-            key={board.pk}
+            key={board.pk ? board.pk : index}
             droppableId={"" + board.boardStatus}
             name={board.boardStatus}
             applicants={board.applicants}

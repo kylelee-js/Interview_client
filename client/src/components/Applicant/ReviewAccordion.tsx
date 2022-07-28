@@ -57,10 +57,12 @@ const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
 
 type ReviewAccordionPropsType = {
   reviewData: ReviewDataType[];
+  amIAnAuthor: boolean;
 };
 //
 export default React.memo(function ReviewAccordion({
   reviewData,
+  amIAnAuthor,
 }: ReviewAccordionPropsType) {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<string | false>(
@@ -79,6 +81,8 @@ export default React.memo(function ReviewAccordion({
   useDidMountEffect(() => {
     setupdatedReview(checkReview);
   }, [checkReview]);
+
+  console.log(user?.pk, reviewData);
 
   if (reviewData.length == 0) return <>노 리뷰</>;
   return (
@@ -116,7 +120,9 @@ export default React.memo(function ReviewAccordion({
               <ReviewEditorMenu
                 applicantStatus={data.applicantStatus}
                 setIsEditMode={setIsEditMode}
-                menuShown={hadReviewed ? false : true}
+                menuShown={
+                  amIAnAuthor ? (Boolean(hadReviewed) ? false : true) : false
+                }
               />
             </AccordionDetails>
           </Accordion>

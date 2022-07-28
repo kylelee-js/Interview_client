@@ -15,3 +15,15 @@ export const sendSignUp = async (formData: RegisterFormData) => {
     return errors?.response?.data;
   }
 };
+
+export const resendEmailVerification = async (verificationPk: string) => {
+  delete axios.defaults.headers.common["Authorization"];
+  try {
+    const res = await axios.get(`/user/resend/${verificationPk}`);
+    return res.data;
+  } catch (error) {
+    console.log(error);
+    // const errors = error as AxiosError;
+    // return errors?.response?.data;
+  }
+};

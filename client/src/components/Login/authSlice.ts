@@ -46,18 +46,6 @@ const authSlice = createSlice({
       state.access = null;
       return state;
     },
-    // onReauth(
-    //   state,
-    //   action: PayloadAction<{ isLogin: boolean; access: string }>
-    // ) {
-    //   state.user!.isLogin = action.payload.isLogin;
-    //   state.access = action.payload.access;
-    //   return state;
-    // },
-    // onLoginNotice(state, action: PayloadAction<{ isChanged: boolean }>) {
-    //   state.user!.onLoginChange = action.payload.isChanged;
-    //   return state;
-    // },
     onLoginNoticeFalse(state) {
       state.user!.onLoginChange = false;
       return state;

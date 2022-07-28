@@ -16,7 +16,14 @@ import { noticeAfterLogin, onAuth } from "./authSlice";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { onUserNotice } from "../../api/boardUpdate";
+import { AxiosError, AxiosResponse } from "axios";
+import { resendEmailVerification } from "../../api/signupChecker";
+
+type VerificationPk = {
+  verificationPk: string;
+};
+declare function isVerificationPk(x: unknown): x is VerificationPk;
+
 const eye = <FontAwesomeIcon icon={faEye} />;
 
 export type LoginFormData = {
@@ -36,6 +43,10 @@ export default function LoginForm() {
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
+  const [emailReverification, setEmailRevierfication] =
+    useState<boolean>(false);
+  const [reverificationPk, setReverificationPk] = useState<string>("");
+
   const [passwordShown, setPasswordShown] = useState(false);
   const togglePasswordVisiblity = () => {
     setPasswordShown(passwordShown ? false : true);
@@ -51,8 +62,32 @@ export default function LoginForm() {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     const res = await onLogin(data);
     console.log(res);
-    if (res) {
-      dispatch(onAuth(res));
+    if (res?.status == "200") {
+      console.log(res);
+      // FIXME: 타입 단언 -> 타입 가드로 수정하기!
+      const response = res as AxiosResponse;
+      const { access } = response.data;
+      const { isLogin, name, nickname, pk } = response.data;
+      dispatch(onAuth({ user: { isLogin, name, nickname, pk }, access }));
+    } else if (res?.status == "403") {
+      console.log(res);
+      const { response } = res as AxiosError;
+      // TODO: unknown 타입에 타입 선언하기 -> 어떻게?
+      const data = response?.data as VerificationPk;
+      // if (isVerificationPk(response?.data)) {
+      if (data) {
+        setReverificationPk(data.verificationPk!);
+        setEmailRevierfication(true);
+        setError("password", {
+          type: "value",
+          message: "인증이 확인되지 않은 계정입니다. 이메일을 재전송해주세요.",
+        });
+      } else {
+        setError("password", {
+          type: "value",
+          message: "인증 절차에 문제가 있습니다. 다시 시도해주세요.",
+        });
+      }
     } else {
       setError("password", {
         type: "value",
@@ -65,6 +100,13 @@ export default function LoginForm() {
     navigate("/signup", { replace: true });
   };
 
+  const onReverification = () => {
+    // TODO: 서버로 재전송 api /user/resend/
+    // pk : reverificationPk
+    resendEmailVerification(reverificationPk);
+    navigate("/verification");
+  };
+
   return (
     <FormWrapper>
       <Form onSubmit={handleSubmit(onSubmit)}>
@@ -73,8 +115,8 @@ export default function LoginForm() {
           placeholder="이메일 주소를 입력해주세요."
           {...register("email", { required: "필수 입력칸입니다." })}
         />
-        {errors.password && (
-          <div style={{ color: "red" }}> {errors.password?.message}</div>
+        {errors.email && (
+          <div style={{ color: "red" }}> {errors.email?.message}</div>
         )}
         <PassWrapper>
           <Input
@@ -89,6 +131,14 @@ export default function LoginForm() {
         )}
         <SubmitButton type="submit" readOnly value={"로그인"} />
       </Form>
+      {emailReverification && (
+        <Button
+          style={{ backgroundColor: "blueviolet" }}
+          onClick={onReverification}
+        >
+          이메일 재전송
+        </Button>
+      )}
       <Button onClick={onClick}>회원가입 할래요</Button>
     </FormWrapper>
   );

@@ -5,16 +5,9 @@ import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import useMenu from "../../hooks/useMenu";
-import Dialog from "@mui/material/Dialog";
-import DialogActions from "@mui/material/DialogActions";
-import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
-import DialogTitle from "@mui/material/DialogTitle";
-import ConfirmPortals from "../Confirm/ConfirmPortal";
-import ConfirmPopup from "../Confirm/ConfirmPopup";
 import { useNavigate } from "react-router-dom";
-import { TextField } from "@mui/material";
-import { TagNote } from "../../styles/boardStyle";
+import FailApplicantPopup from "../Popup/FailApplicantPopup";
+import TagNotePopup from "../Popup/TagNotePopup";
 
 const RedSpan = styled.span`
   color: red;
@@ -169,56 +162,13 @@ export default React.memo(function KebabMenu({
         </Menu>
       )}
 
-      {/* FIXME: 컴포넌트 추출하기 */}
-      <Dialog
+      <FailApplicantPopup
         open={popupOpened}
-        onClose={togglePopupOpen}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
-      >
-        <DialogTitle id="alert-dialog-title">
-          {"해당 지원자를 탈락시키시겠습니까?"}
-        </DialogTitle>
-        <DialogContent>
-          <DialogContentText id="alert-dialog-description">
-            탈락 처리된 지원자는 하단 창에서 확인하실 수 있습니다.
-          </DialogContentText>
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={removeApplicant}>탈락 처리</Button>
-          <Button
-            onClick={() => {
-              togglePopupOpen();
-              handleClose();
-            }}
-            autoFocus
-          >
-            아니오
-          </Button>
-        </DialogActions>
-      </Dialog>
-
-      <Dialog open={tagOpen} onClose={tagModalClose}>
-        <DialogTitle>태그 작성</DialogTitle>
-        <DialogContent>
-          <DialogContentText>
-            지원자당 태그는 3개 까지 작성하실 수 있습니다.
-          </DialogContentText>
-          <TextField
-            autoFocus
-            margin="dense"
-            id="name"
-            label="#태그작성"
-            type="email"
-            fullWidth
-            variant="standard"
-          />
-        </DialogContent>
-        <DialogActions>
-          <Button onClick={tagModalClose}>취소</Button>
-          <Button onClick={tagModalClose}>작성</Button>
-        </DialogActions>
-      </Dialog>
+        togglePopupOpen={togglePopupOpen}
+        removeApplicant={removeApplicant}
+        handleClose={handleClose}
+      />
+      <TagNotePopup open={tagOpen} tagModalClose={tagModalClose} />
     </div>
   );
 });
