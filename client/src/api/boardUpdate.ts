@@ -24,7 +24,7 @@ export const onUserNotice = async () => {
   try {
     const res = await axios.get("/user/notice/");
     // setScheduler();
-
+    console.log(res);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -33,4 +33,24 @@ export const onUserNotice = async () => {
 
 export const setScheduler = async () => {
   setTimeout(onUserNotice, 10000);
+};
+
+export const onPostTag = async (tagText: string, applicantId: number) => {
+  try {
+    const res = await axios.post("/tag/", {
+      tagText: tagText,
+      pk: applicantId,
+    });
+    return res.data;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const onDeleteTag = async (tagPk: number, applicantId: number) => {
+  try {
+    const res = await axios.delete(`/tag/${applicantId}/${tagPk}/`);
+  } catch (error) {
+    console.log(error);
+  }
 };

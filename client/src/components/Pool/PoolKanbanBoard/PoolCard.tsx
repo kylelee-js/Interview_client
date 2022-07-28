@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, Snackbar } from "@mui/material/";
+import { Alert, Box, Menu, MenuItem, Snackbar } from "@mui/material/";
 import MuiCard from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
@@ -7,20 +7,21 @@ import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
 import KebabMenu from "../../KanBanBoard/KebabMenu";
-import { useNavigate } from "react-router-dom";
 import { ApplicantDataType } from "../../Applicant/applicantSlice";
 import { Tooltip } from "@mui/material";
 import Checkbox from "@mui/material/Checkbox";
 import CheckIcon from "@mui/icons-material/Check";
 import { setApplicantMine } from "../../../api/fetchApplicant";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { onSetMyApplicant, onUnsetMyApplicant } from "../poolSlice";
 import {
   CardWrapper,
   CheckBoxDiv,
   MenuButtonDiv,
   TagNote,
 } from "../../../styles/boardStyle";
+import { onToggleMyApplicant } from "../poolSlice";
+import { onDeleteTag } from "../../../api/boardUpdate";
+import { onTagDelete } from "../../KanBanBoard/kanbanSlice";
 
 const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
 const poolPageBoards = ["개발", "마케팅", "경영지원", "디자인"];
@@ -35,7 +36,7 @@ export default React.memo(function Card({
   id,
   applicantName,
   applicantIndex,
-  tagNote = ["없음"],
+  tags = [{ id: -1, tagText: "없음" }],
   department,
   boardStatus,
   status,
@@ -45,14 +46,27 @@ export default React.memo(function Card({
   isFailed = false,
   isFixed = false,
 }: CardProps) {
-  const navigate = useNavigate();
-  const onClick = (id: number) => {
-    navigate(`/applicant/${id}`);
-  };
   // TODO: 각 지원자 별로 setMine bool 값을 받아오기
   const userPk = useAppSelector((state) => state.auth.user?.pk);
   const dispatch = useAppDispatch();
   const [isMine, setIsMine] = useState(false);
+
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const [tagId, setTagId] = useState<number>();
+  const openTag = Boolean(anchorEl);
+  const onTagClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setTagId(+event.currentTarget.id);
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const onTagDeleteClick = async () => {
+    await onDeleteTag(tagId!, id);
+    dispatch(onTagDelete({ boardStatus, applicantIndex, tagId }));
+    handleClose();
+  };
 
   useEffect(() => {
     if (interviewer?.find((viewer) => viewer == "" + userPk)) {
@@ -67,9 +81,13 @@ export default React.memo(function Card({
   const [openOpp, setOpenOpp] = useState(false);
   const onSetMine = () => {
     if (!isMine) {
-      dispatch(onSetMyApplicant({ boardStatus, applicantIndex, userPk }));
+      dispatch(
+        onToggleMyApplicant({ boardStatus, applicantIndex, userPk, isMine })
+      );
     } else {
-      dispatch(onUnsetMyApplicant({ boardStatus, applicantIndex, userPk }));
+      dispatch(
+        onToggleMyApplicant({ boardStatus, applicantIndex, userPk, isMine })
+      );
     }
 
     setApplicantMine("" + id, !isMine);
@@ -83,6 +101,7 @@ export default React.memo(function Card({
     setIsMine((prev) => !prev);
     onSetMine();
   };
+  console.log(isMine);
 
   return (
     <CardWrapper>
@@ -121,13 +140,25 @@ export default React.memo(function Card({
               {myPageBoards[+status]}
             </Typography>
             <Typography variant="body2">
-              {/* well meaning and kindly. FIXME: 한줄 자기소개?
-                    <br /> */}
-              {tagNote?.map((tag) => (
-                <TagNote key={tag}>#{tag}</TagNote>
+              {tags?.map((tag) => (
+                <TagNote onClick={onTagClick} key={tag.id} id={"" + tag.id}>
+                  #{tag.tagText}
+                </TagNote>
               ))}
             </Typography>
           </CardContent>
+
+          <Menu
+            id="basic-menu"
+            anchorEl={anchorEl}
+            open={openTag}
+            onClose={handleClose}
+            MenuListProps={{
+              "aria-labelledby": "basic-button",
+            }}
+          >
+            <MenuItem onClick={onTagDeleteClick}>태그 삭제하기</MenuItem>
+          </Menu>
 
           {type == "pool" && (
             // TODO: 체크박스

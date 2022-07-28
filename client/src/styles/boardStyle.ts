@@ -50,6 +50,7 @@ export const CardWrapper = styled.div`
 `;
 
 export const TagNote = styled.span`
+  cursor: pointer;
   font-size: 12px;
   padding: 3px 5px;
   margin-right: 10px;

@@ -21,6 +21,28 @@ function App() {
   const isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   const dispatch = useAppDispatch();
 
+  // TODO: 창 나갈 시 로그아웃 기능?
+  // const onBeforeCloseWindow = (e: BeforeUnloadEvent) => {
+  //   e.preventDefault();
+  //   e.returnValue = "창을 닫으시겠습니까?";
+  // };
+  // const onCloseWindow = (e: BeforeUnloadEvent) => {
+  //   e.preventDefault();
+  //   console.log("logout");
+  //   dispatch(onDeauth());
+  //   onLogout();
+  // };
+
+  // useEffect(() => {
+  //   window.addEventListener("beforeunload", onBeforeCloseWindow);
+  //   window.addEventListener("unload", onCloseWindow);
+
+  //   return () => {
+  //     window.removeEventListener("beforeunload", onBeforeCloseWindow);
+  //     window.removeEventListener("unload", onCloseWindow);
+  //   };
+  // }, []);
+
   useEffect(() => {
     if (isLogin) {
       dispatch(reAuthUser());

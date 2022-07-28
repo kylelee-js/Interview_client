@@ -2,27 +2,29 @@
 
 import { useState } from "react";
 import {
-  onFixApplicant,
-  onRemoveApplicant,
-  onRollbackApplicant,
-  onUnfixApplicant,
+  ApplicantActionType,
+  onToggleRemoveApplicant,
+  onToggleFixApplicant,
 } from "../components/KanBanBoard/kanbanSlice";
 import { useAppDispatch } from "../store";
 
-export default function useMenu(status: string, applicantIndex: number) {
+export default function useMenu(props: ApplicantActionType) {
+  const { isFailed, isFixed } = props;
+  const [Fixed, setFixed] = useState<boolean>(isFixed);
+  const [failed, setFailed] = useState<boolean>(isFailed);
   const dispatch = useAppDispatch();
   const handleFail = () => {
-    dispatch(onRemoveApplicant({ status, applicantIndex }));
+    dispatch(onToggleRemoveApplicant(props));
   };
   const handleFix = () => {
-    dispatch(onFixApplicant({ status, applicantIndex }));
+    dispatch(onToggleFixApplicant(props));
   };
-  const handleUnfix = () => {
-    dispatch(onUnfixApplicant({ status, applicantIndex }));
-  };
-  const handleRollBack = () => {
-    dispatch(onRollbackApplicant({ status, applicantIndex }));
-  };
+  // const handleUnfix = () => {
+  //   dispatch(onToggleFixApplicant(props));
+  // };
+  // const handleRollBack = () => {
+  //   dispatch(onToggleRemoveApplicant(props));
+  // };
 
-  return { handleFix, handleFail, handleUnfix, handleRollBack };
+  return { handleFix, handleFail };
 }

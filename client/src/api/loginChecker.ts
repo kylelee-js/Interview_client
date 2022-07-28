@@ -24,11 +24,25 @@ export const onLogin = async (data: LoginFormData) => {
   }
 };
 
+export const onLogout = async () => {
+  try {
+    const isLogout = await axios.post("/user/logout/");
+    delete axios.defaults.headers.common["Authorization"];
+    return isLogout;
+  } catch (error) {
+    console.log(error);
+    delete axios.defaults.headers.common["Authorization"];
+  }
+};
+
 // 화면 새로고침 시에 최상단 루트인 App의 useEffect에서 호출해서 새로 토큰 발행
 export const onSilentRefresh = async () => {
   const storage = JSON.parse("" + localStorage.getItem("persist:root"));
   const authData = JSON.parse(storage.auth);
+
   try {
+    // Django simpleJWT에서는 헤더에 있으면 오류 상태를 구별을 못하기 때문에 지워주고 다시 넣음
+    delete axios.defaults.headers.common["Authorization"];
     const res = await axios.post("/user/refresh/", { access: authData.access });
     onLoginSuccess(res);
     return res.data;

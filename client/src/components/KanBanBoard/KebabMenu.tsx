@@ -33,10 +33,12 @@ export default React.memo(function KebabMenu({
   type,
 }: MenuType) {
   const [popupOpened, setPopupOpened] = useState(false);
-  const { handleFail, handleFix, handleRollBack, handleUnfix } = useMenu(
-    "" + (+status - 1),
-    applicantIndex
-  );
+  const { handleFail, handleFix } = useMenu({
+    status: "" + (+status - 1),
+    applicantIndex,
+    isFailed: Boolean(isFailed),
+    isFixed: Boolean(isFixed),
+  });
   const navigate = useNavigate();
   const onNavigate = () => {
     navigate(`/applicant/${id}`);
@@ -127,7 +129,7 @@ export default React.memo(function KebabMenu({
           {isFailed ? (
             <MenuItem
               onClick={() => {
-                handleRollBack();
+                handleFail();
                 handleClose();
               }}
             >
@@ -142,7 +144,7 @@ export default React.memo(function KebabMenu({
                 <MenuItem
                   onClick={() => {
                     handleClose();
-                    handleUnfix();
+                    handleFix();
                   }}
                 >
                   <b>지원자 잠금해제</b>{" "}
@@ -168,7 +170,13 @@ export default React.memo(function KebabMenu({
         removeApplicant={removeApplicant}
         handleClose={handleClose}
       />
-      <TagNotePopup open={tagOpen} tagModalClose={tagModalClose} />
+      <TagNotePopup
+        open={tagOpen}
+        tagModalClose={tagModalClose}
+        applicantId={id}
+        boardStatus={status}
+        applicantIndex={applicantIndex}
+      />
     </div>
   );
 });

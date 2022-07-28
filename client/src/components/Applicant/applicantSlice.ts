@@ -1,11 +1,16 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ApplicantReviewDataType, ReviewDataType } from "./reviewSlice";
 
+export type tagDataType = {
+  id: number;
+  tagText: string;
+};
+
 export type ApplicantDataType = {
   id: number;
   applicantName: string;
   birth?: string;
-  tagNote?: string[] | [];
+  tags?: tagDataType[];
   department: string;
   job: string;
   status: string;
@@ -30,7 +35,7 @@ const fakeApplicantData: ApplicantType[] = [
       id: 0,
       applicantName: "string",
       birth: "string",
-      tagNote: [],
+      tags: [],
       department: "string",
       job: "string",
       status: "string",
@@ -46,20 +51,7 @@ const fakeApplicantData: ApplicantType[] = [
       reviewData: [
         {
           applicantStatus: "1",
-          statusReviewData: [
-            // {
-            //   userId: 999,
-            //   userName: "면접관",
-            //   userNickname: "구관",
-            //   reviewText: "좀비월드",
-            // },
-            // {
-            //   userId: 130,
-            //   userName: "장규리",
-            //   userNickname: "금발",
-            //   reviewText: "사과",
-            // },
-          ],
+          statusReviewData: [],
         },
         {
           applicantStatus: "2",

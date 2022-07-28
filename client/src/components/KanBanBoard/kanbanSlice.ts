@@ -10,10 +10,12 @@ export type ApplicantBoardType = {
   applicants: ApplicantDataType[];
 };
 
-type ApplicantActionType = {
+export type ApplicantActionType = {
   status: string;
   // FIXME: 일단은 인덱스로 -> 나중에 고유 식별 값으로 교체 (applicantId)
   applicantIndex: number;
+  isFailed: boolean;
+  isFixed: boolean;
 };
 
 const fakeBoards: ApplicantBoardType[] | null = [];
@@ -56,60 +58,46 @@ const kanbanSlice = createSlice({
       state[+sourceId - 1].applicants = sourceBoard;
       return state;
     },
-    // TODO: Id, Index 교체 수정 !!!!!!
-    onRemoveApplicant(state, action: PayloadAction<ApplicantActionType>) {
-      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
-      const { status, applicantIndex } = action.payload;
+    onToggleRemoveApplicant(state, action: PayloadAction<ApplicantActionType>) {
+      const { status, applicantIndex, isFailed } = action.payload;
       const applicantList = [...state[+status].applicants];
-      // applicantList.splice(applicantIndex, 1);
-      applicantList[applicantIndex].isFailed = true;
-      applicantList[applicantIndex].isFixed = true;
+      applicantList[applicantIndex].isFailed = !isFailed;
+      applicantList[applicantIndex].isFixed = !isFailed;
       state[+status].applicants = applicantList;
       return state;
     },
-    onRollbackApplicant(state, action: PayloadAction<ApplicantActionType>) {
-      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
-      const { status, applicantIndex } = action.payload;
+    onToggleFixApplicant(state, action: PayloadAction<ApplicantActionType>) {
+      const { status, applicantIndex, isFixed } = action.payload;
       const applicantList = [...state[+status].applicants];
-      // applicantList.splice(applicantIndex, 1);
-      applicantList[applicantIndex].isFailed = false;
-      applicantList[applicantIndex].isFixed = false;
+      applicantList[applicantIndex].isFixed = !isFixed;
       state[+status].applicants = applicantList;
       return state;
     },
-    onFixApplicant(state, action: PayloadAction<ApplicantActionType>) {
-      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
-      const { status, applicantIndex } = action.payload;
-      const applicantList = [...state[+status].applicants];
-      // applicantList.splice(applicantIndex, 1);
-      applicantList[applicantIndex].isFixed = true;
-      state[+status].applicants = applicantList;
-      return state;
+    onTagWrite(state, action) {
+      // TODO: post res로 받아온 id로 설정
+      const { boardStatus, applicantIndex, tagId, tagText } = action.payload;
+      const targetApplicant =
+        state[+boardStatus - 1].applicants[applicantIndex];
+      if (targetApplicant.tags) {
+        targetApplicant.tags?.push({ id: tagId, tagText: tagText });
+        state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
+        return state;
+      } else {
+        targetApplicant.tags = [{ id: tagId, tagText: tagText }];
+        state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
+        return state;
+      }
     },
-    onUnfixApplicant(state, action: PayloadAction<ApplicantActionType>) {
-      // TODO: action payload는 지원자의 상태(보드 아이디)와 지원자 고유식별 값(개인 아이디 or 배열 인덱스)를 담아야함
-      const { status, applicantIndex } = action.payload;
-      const applicantList = [...state[+status].applicants];
-      // applicantList.splice(applicantIndex, 1);
-      applicantList[applicantIndex].isFixed = false;
-      state[+status].applicants = applicantList;
-      return state;
-    },
-    onSetMyApplicant(state, action) {
-      const { boardStatus, applicantIndex, userPk } = action.payload;
-      const applicantList = [...state[+boardStatus - 1].applicants];
-      applicantList[applicantIndex].interviewer?.push(userPk);
-      state[+boardStatus - 1].applicants = applicantList;
-      return state;
-    },
-    onUnsetMyApplicant(state, action) {
-      const { boardStatus, applicantIndex, userPk } = action.payload;
-      const applicantList = [...state[+boardStatus - 1].applicants];
-      const userIndex = applicantList[applicantIndex].interviewer?.findIndex(
-        (viewer) => viewer == userPk
+    onTagDelete(state, action) {
+      // TODO: post res로 받아온 id로 설정
+      const { boardStatus, applicantIndex, tagId } = action.payload;
+      const targetApplicant =
+        state[+boardStatus - 1].applicants[applicantIndex];
+      const targetTagIndex = targetApplicant.tags?.findIndex(
+        (tag) => tag.id == tagId
       );
-      applicantList[applicantIndex].interviewer?.splice(userIndex!, 1);
-      state[+boardStatus - 1].applicants = applicantList;
+      targetApplicant.tags?.splice(targetTagIndex!, 1);
+      state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
       return state;
     },
   },
@@ -123,13 +111,10 @@ const kanbanSlice = createSlice({
 
 export default kanbanSlice.reducer;
 export const {
-  // onSetKanban,
   onInBoardDrag,
   onCrossBoardDrag,
-  onRemoveApplicant,
-  onRollbackApplicant,
-  onFixApplicant,
-  onUnfixApplicant,
-  onSetMyApplicant,
-  onUnsetMyApplicant,
+  onToggleRemoveApplicant,
+  onToggleFixApplicant,
+  onTagWrite,
+  onTagDelete,
 } = kanbanSlice.actions;

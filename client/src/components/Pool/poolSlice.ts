@@ -22,26 +22,22 @@ const poolSlice = createSlice({
   // TODO: 지원자 상태에서 불러와서 칸반 보드를 형성해야함!
   initialState: fakeBoards,
   reducers: {
-    // onSetPool(state, action) {
-    //   state = action.payload;
-    //   return state;
-    // },
-    onSetMyApplicant(state, action) {
-      const { boardStatus, applicantIndex, userPk } = action.payload;
+    onToggleMyApplicant(state, action) {
+      // FIXME: 토글 bool 상태 하나 넣어서 토글
+      const { boardStatus, applicantIndex, userPk, isMine } = action.payload;
       const applicantList = [...state[+boardStatus - 1].applicants];
-      applicantList[applicantIndex].interviewer?.push(userPk);
-      state[+boardStatus - 1].applicants = applicantList;
-      return state;
-    },
-    onUnsetMyApplicant(state, action) {
-      const { boardStatus, applicantIndex, userPk } = action.payload;
-      const applicantList = [...state[+boardStatus - 1].applicants];
-      const userIndex = applicantList[applicantIndex].interviewer?.findIndex(
-        (viewer) => viewer == userPk
-      );
-      applicantList[applicantIndex].interviewer?.splice(userIndex!, 1);
-      state[+boardStatus - 1].applicants = applicantList;
-      return state;
+      if (!isMine) {
+        applicantList[applicantIndex].interviewer?.push(userPk);
+        state[+boardStatus - 1].applicants = applicantList;
+        return state;
+      } else {
+        const userIndex = applicantList[applicantIndex].interviewer?.findIndex(
+          (viewer) => viewer == userPk
+        );
+        applicantList[applicantIndex].interviewer?.splice(userIndex!, 1);
+        state[+boardStatus - 1].applicants = applicantList;
+        return state;
+      }
     },
   },
   extraReducers: (builder) => {
@@ -53,4 +49,4 @@ const poolSlice = createSlice({
 });
 
 export default poolSlice.reducer;
-export const { onSetMyApplicant, onUnsetMyApplicant } = poolSlice.actions;
+export const { onToggleMyApplicant } = poolSlice.actions;
