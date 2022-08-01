@@ -1,69 +1,14 @@
 import { Button, Typography } from "@mui/material";
-import { truncate } from "fs";
 import { useEffect, useRef, useState } from "react";
 import { Document, Page, pdfjs } from "react-pdf";
-import styled from "styled-components";
+import {
+  DocStickyDiv,
+  PaginationMenu,
+  PDFWrapper,
+  StickyDivIntersectingBottom,
+  StickyDivIntersectingTop,
+} from "../../styles/reviewViewerStyle";
 pdfjs.GlobalWorkerOptions.workerSrc = `//cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.js`;
-
-const Wrapper = styled.div`
-  position: relative;
-
-  border-radius: 5px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  width: 100%;
-  /* FIXME: 너비 나중에 수정하기 */
-  max-width: 700px;
-  padding: 15px;
-  margin-left: 50px;
-  margin-bottom: 100px;
-  background-color: #c4c3c2;
-`;
-
-const StickyDivIntersectingTop = styled.div`
-  height: 1px;
-  visibility: hidden;
-`;
-const StickyDivIntersectingBottom = styled.div`
-  height: 1px;
-  visibility: hidden;
-`;
-const DocStickyDiv = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  position: sticky;
-
-  /* TODO: 사용자 디바이스 높이에 따라 50px과 rem 중에서 선택 */
-  /* top: 0.5rem; */
-  top: 50px;
-`;
-
-const PaginationMenu = styled.div`
-  position: relative;
-  top: 0px;
-  margin-top: 0.5rem;
-  background-color: whitesmoke;
-  width: 90%;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  padding: 10px;
-  display: flex;
-  border-radius: 5px;
-  align-items: center;
-  justify-content: center;
-  gap: 30px;
-  transition: all ease-in 0.3s;
-  &.stuck {
-    &:hover {
-      top: -40px;
-    }
-  }
-  &.shown {
-    &:hover {
-      top: 0px;
-    }
-  }
-`;
 
 type ApplicantPDFViewerPropsType = {
   filePath: string;
@@ -83,7 +28,7 @@ export default function ApplicantPDFViewer({
   }
 
   useEffect(() => {
-    const observer = new IntersectionObserver(
+    const topObserver = new IntersectionObserver(
       ([e]) => {
         if (e.intersectionRatio == 0) {
           pagDiv.current?.classList.add("stuck");
@@ -93,7 +38,6 @@ export default function ApplicantPDFViewer({
       },
       { threshold: [1] }
     );
-    observer.observe(stickyDivTop.current!);
 
     const bottomObserver = new IntersectionObserver(
       ([e]) => {
@@ -105,15 +49,17 @@ export default function ApplicantPDFViewer({
       },
       { threshold: [1] }
     );
+
+    topObserver.observe(stickyDivTop.current!);
     bottomObserver.observe(stickyDivBottom.current!);
 
     return () => {
-      observer.disconnect();
+      topObserver.disconnect();
       bottomObserver.disconnect();
     };
   }, []);
   return (
-    <Wrapper onContextMenu={(e) => e.preventDefault()}>
+    <PDFWrapper onContextMenu={(e) => e.preventDefault()}>
       <StickyDivIntersectingTop ref={stickyDivTop} />
       <DocStickyDiv id="stickyDoc">
         <Document
@@ -149,6 +95,6 @@ export default function ApplicantPDFViewer({
         </PaginationMenu>
         <StickyDivIntersectingBottom ref={stickyDivBottom} />
       </DocStickyDiv>
-    </Wrapper>
+    </PDFWrapper>
   );
 }

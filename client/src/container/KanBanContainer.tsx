@@ -1,5 +1,4 @@
-import React, { Suspense, useEffect, useState } from "react";
-import { fetchApplicants } from "../api/fetchApplicant";
+import { Suspense, useEffect, useState } from "react";
 import KanBan from "../components/KanBanBoard/Kanban";
 import { fetchKanbanBoard } from "../components/KanBanBoard/kanbanSlice";
 import { onSetPage } from "../components/KanBanBoard/pageTypeSlice";

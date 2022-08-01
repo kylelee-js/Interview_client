@@ -48,6 +48,9 @@ export const onSilentRefresh = async () => {
     return res.data;
   } catch (error) {
     console.log(error);
+    delete axios.defaults.headers.common["Authorization"];
+    // 리로드에 문제 발생 시 로커스토리지를 비운다. - isLogin 없애기
+    localStorage.setItem("persist:root", "");
   }
 };
 

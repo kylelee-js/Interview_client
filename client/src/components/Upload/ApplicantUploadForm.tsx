@@ -1,8 +1,5 @@
-import { ErrorMessage } from "@hookform/error-message";
-import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { onFileUpload } from "../../api/applicantUploadChecker";
 import { useAppSelector } from "../../store";
 import {
@@ -11,9 +8,7 @@ import {
   Input,
   Select,
   SubmitButton,
-  ValidationMessage,
 } from "../../styles/formStyle";
-import Uploader from "./Uploader";
 
 export type ApplicantFormData = {
   applicantName: string;
@@ -38,7 +33,6 @@ export default function ApplicantUploadForm() {
   } = useForm<ApplicantFormData>();
 
   const onSubmit: SubmitHandler<ApplicantFormData> = async (data) => {
-    console.log(data);
     // PDF 파일 확장자 검사
     if (data.filePath[0].type != "application/pdf") {
       setError("filePath", {
@@ -53,6 +47,8 @@ export default function ApplicantUploadForm() {
     fileData.append("department", data.department);
     fileData.append("job", data.job);
     fileData.append("filePath", data.filePath[0]);
+
+    console.log(fileData);
     const res = await onFileUpload(fileData);
     if (res) {
       navigate("/pool");

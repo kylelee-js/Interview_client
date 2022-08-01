@@ -100,7 +100,6 @@ export default React.memo(function Card({
     setIsMine((prev) => !prev);
     onSetMine();
   };
-  console.log(isMine);
 
   return (
     <CardWrapper>

@@ -1,4 +1,5 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { on } from "events";
 import { onUserNotice } from "../../api/boardUpdate";
 import { onSilentRefresh } from "../../api/loginChecker";
 
@@ -21,8 +22,13 @@ const fake_User: UserAuthState = {
   access: null,
 };
 export const reAuthUser = createAsyncThunk("REAUTH", async () => {
-  const res = await onSilentRefresh();
-  return res;
+  try {
+    const res = await onSilentRefresh();
+    return res;
+  } catch (error) {
+    console.log(error);
+    onDeauth();
+  }
 });
 
 export const noticeAfterLogin = createAsyncThunk(
@@ -43,6 +49,10 @@ const authSlice = createSlice({
     },
     onDeauth(state) {
       state.user = null;
+      state.access = null;
+      return state;
+    },
+    onReload(state) {
       state.access = null;
       return state;
     },
@@ -83,6 +93,7 @@ export const {
   onAuth,
   onDeauth,
   // onReauth,
+  onReload,
   onNotice,
   onNoticeFalse,
   // onLoginNotice,

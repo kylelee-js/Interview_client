@@ -65,7 +65,6 @@ export default function SignupForm() {
   }, [profile]);
 
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
-    console.log(data);
     const fileData = new FormData();
     fileData.append("name", data.name);
     fileData.append("nickname", data.nickname);
@@ -74,7 +73,7 @@ export default function SignupForm() {
     fileData.append("password", data.password);
     fileData.append("passwordChecker", data.passwordChecker);
     fileData.append("image", data.image[0]);
-
+    console.log(fileData);
     const res = await sendSignUp(fileData);
     console.log(res);
     // TODO: 에러 필드 값 확인!

@@ -1,14 +1,11 @@
 // Quill 에디터
 import styled from "styled-components";
-import ReactQuill, { Quill } from "react-quill";
+import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import React, { Dispatch, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { onEdit, onReview } from "./reviewSlice";
-import Box from "@mui/material/Box";
 import Button from "@mui/material/Button";
-import Typography from "@mui/material/Typography";
-import Modal from "@mui/material/Modal";
 import SendIcon from "@mui/icons-material/Send";
 import { reviewApi } from "../../api/reviewApi";
 import { useParams } from "react-router-dom";

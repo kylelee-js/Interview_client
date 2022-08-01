@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import styled from "styled-components";
 import ReviewCard from "./ReviewCard";
 import ReviewEditor from "./ReviewEditor";
 import { ReviewDataType, StatusReviewDataType } from "./reviewSlice";
@@ -27,14 +26,12 @@ export default React.memo(function ReviewView({
       setIsEditMode={setIsEditMode}
     />
   ) : (
-    <>
-      <ReviewCard
-        id={id}
-        applicantStatus={data.applicantStatus}
-        setIsEditMode={setIsEditMode}
-        userPk={userPk}
-        statusReviewData={statusReviewData}
-      />
-    </>
+    <ReviewCard
+      id={id}
+      applicantStatus={data.applicantStatus}
+      setIsEditMode={setIsEditMode}
+      userPk={userPk}
+      statusReviewData={statusReviewData}
+    />
   );
 });

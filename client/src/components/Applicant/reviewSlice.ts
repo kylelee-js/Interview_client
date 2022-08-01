@@ -26,7 +26,7 @@ type ReviewDataActionType = {
 
 // TODO: 각 지원자 데이터의 리뷰 정보를 initial state로 설정해준다.
 
-const fakeReviewDate: ApplicantReviewDataType = {
+const fakeReviewDate: ApplicantReviewDataType | null = {
   applicantId: 0,
   reviewData: [
     {

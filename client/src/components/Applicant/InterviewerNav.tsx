@@ -6,61 +6,14 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import React, { useState } from "react";
-import styled from "styled-components";
+import { useState } from "react";
 import { ProfileImg } from "../../styles/formStyle";
+import {
+  InterviewerButton,
+  InterviewerContainer,
+  InterviewerNavWrapper,
+} from "../../styles/reviewViewerStyle";
 import { InterviewerDataType } from "./applicantSlice";
-
-const Wrapper = styled.div`
-  width: 90%;
-  border: 0.1rem solid #cfd1d0;
-  border-radius: 5px;
-  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-  background-color: #f2f7fa;
-  padding: 10px 20px;
-  margin-bottom: 20px;
-`;
-
-const ButtonContainer = styled.span`
-  margin-top: 5px;
-  padding: 5px;
-`;
-
-const InterviewerButton = styled.button`
-  align-items: center;
-  background-color: #ffffff;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  border-radius: 0.25rem;
-  box-shadow: rgba(0, 0, 0, 0.02) 0 1px 3px 0;
-  box-sizing: border-box;
-  color: rgba(0, 0, 0, 0.85);
-  cursor: pointer;
-  display: inline-flex;
-  font-family: system-ui, -apple-system, system-ui, "Helvetica Neue", Helvetica,
-    Arial, sans-serif;
-  font-size: 12px;
-  font-weight: 500;
-  justify-content: center;
-  line-height: 1;
-  margin-top: 5;
-  min-height: 0.5rem;
-  padding: 5px 10px;
-  position: relative;
-  text-decoration: none;
-  transition: all 250ms;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-  vertical-align: baseline;
-  width: auto;
-
-  &:hover {
-    border-color: rgba(0, 0, 0, 0.15);
-    box-shadow: rgba(0, 0, 0, 0.1) 0 4px 12px;
-    color: rgba(0, 0, 0, 0.65);
-    transform: translateY(-1px);
-  }
-`;
 
 type InterviewerNavPropsType = {
   interviewers: InterviewerDataType[] | undefined;
@@ -82,10 +35,9 @@ export default function InterviewerNav({
 
   if (!interviewers) return null;
   return (
-    // TODO: key는 pk - button으로 onClick시 모달창 - props로 정보 전달
-    <Wrapper>
+    <InterviewerNavWrapper>
       {interviewers.map((interviewer) => (
-        <ButtonContainer>
+        <InterviewerContainer>
           <InterviewerButton
             onClick={() => {
               setInterviewerData(interviewer);
@@ -94,7 +46,7 @@ export default function InterviewerNav({
           >
             {interviewer.name} - {interviewer.nickname}
           </InterviewerButton>
-        </ButtonContainer>
+        </InterviewerContainer>
       ))}
 
       <Dialog
@@ -120,6 +72,6 @@ export default function InterviewerNav({
           <Button onClick={handleClose}>확인</Button>
         </DialogActions>
       </Dialog>
-    </Wrapper>
+    </InterviewerNavWrapper>
   );
 }
