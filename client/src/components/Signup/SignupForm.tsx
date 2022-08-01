@@ -94,12 +94,14 @@ export default function SignupForm() {
 
   return (
     <FormWrapper>
-      {/* TODO: 이미지 스타일링 - 증명사진처럼 나오게끔 */}
-      {/* {profileURL !== "" && <img src={profileURL}  />} */}
+      {/* TODO: default Img 설정 */}
 
       <Form onSubmit={handleSubmit(onSubmit)}>
         <ProfileDiv>
-          <ProfileImg src={profileURL} alt="프로필 사진" />
+          <ProfileImg
+            src={profile ? profileURL : "/default.png"}
+            alt="프로필 사진"
+          />
 
           <ProfilebuttonBox>
             <ProfileName>{profileName}</ProfileName>
@@ -107,10 +109,9 @@ export default function SignupForm() {
           </ProfilebuttonBox>
         </ProfileDiv>
 
-        {/* TODO: 사용자 프로필 이미지 업로드 input */}
         <input
           {...register("image", {
-            required: "필수 입력 칸입니다.",
+            // required: "필수 입력 칸입니다.",
           })}
           type="file"
           id="image"

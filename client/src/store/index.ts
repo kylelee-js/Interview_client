@@ -2,7 +2,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import { useSelector } from "react-redux";
 import { TypedUseSelectorHook, useDispatch } from "react-redux";
 import { persistStore, persistReducer } from "redux-persist";
-import storage from "redux-persist/lib/storage"; // defaults to localStorage for web
+import storage from "redux-persist/lib/storage/session"; // defaults to sessionStorage for web
 // 각 슬라이스의 리듀서들
 import kanban from "../components/KanBanBoard/kanbanSlice";
 import auth from "../components/Login/authSlice";

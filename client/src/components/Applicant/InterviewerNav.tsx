@@ -33,6 +33,10 @@ export default function InterviewerNav({
     setOpen(false);
   };
 
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/default.png";
+  };
+
   if (!interviewers) return null;
   return (
     <InterviewerNavWrapper>
@@ -63,7 +67,11 @@ export default function InterviewerNav({
         <DialogContent dividers={true}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             {/* TODO: 면접관 사진 보이기 */}
-            <ProfileImg src={interviewerData?.image} alt="면접관 사진" />
+            <ProfileImg
+              src={interviewerData?.image}
+              alt="면접관 사진"
+              onError={handleError}
+            />
             <p>Email : {interviewerData?.email}</p>
             <p>부서 : {interviewerData?.department}</p>
           </DialogContentText>

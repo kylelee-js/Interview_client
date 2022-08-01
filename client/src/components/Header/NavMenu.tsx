@@ -1,4 +1,4 @@
-import * as React from "react";
+import React, { useRef } from "react";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import MenuIcon from "@mui/icons-material/Menu";
@@ -9,26 +9,41 @@ import useDidMountEffect from "../../hooks/useDidMountEffect";
 export default function NavMenu() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
+  const ref = useRef<HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [path, setPath] = React.useState<string>("");
+  const [path, setPath] = React.useState<string>(pathname);
   const open = Boolean(anchorEl);
+
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
+    console.log(ref.current);
   };
   const handleClose = () => {
+    console.log(ref.current);
     setAnchorEl(null);
   };
   const handleNavigate = (destination: string) => {
     handleClose();
-    console.log("path :", path, destination);
+
     setPath(destination);
+    console.log(ref.current);
   };
 
+  // useDidMountEffect(() => {
+  //   console.log("path :", path);
+
+  //   if (ref.current === null) {
+  //     navigate(`/${path}`);
+  //   }
+  // }, [ref.current]);
+
   useDidMountEffect(() => {
+    console.log("path :", path);
+
     if (anchorEl == null) {
       navigate(`/${path}`);
     }
-  }, [path, anchorEl]);
+  }, [path]);
 
   return (
     <div>
@@ -47,6 +62,7 @@ export default function NavMenu() {
         <MenuIcon />
       </IconButton>
       <Menu
+        ref={ref}
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}

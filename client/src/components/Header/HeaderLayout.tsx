@@ -51,7 +51,6 @@ export default function HeaderLayout() {
       // TODO: RTK Query -> polling 으로 변경
       const onFetch = async () => {
         const notice = await onUserNotice();
-        console.log(notice);
         dispatch(onNotice(notice));
       };
       onFetch();

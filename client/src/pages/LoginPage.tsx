@@ -7,7 +7,6 @@ export default function LoginPage() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    console.log(url.pathname);
     if (url.pathname !== "/login") {
       navigate("/login");
     }

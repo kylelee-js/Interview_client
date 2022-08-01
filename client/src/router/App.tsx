@@ -1,11 +1,10 @@
 import React, { Suspense, useEffect } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { onDeauth, onReload, reAuthUser } from "../components/Login/authSlice";
+import { reAuthUser } from "../components/Login/authSlice";
 
 import EmailVerificationPage from "../pages/EmailVerificationPage";
 import NotFoundPage from "../pages/NotFoundPage";
-import { onLogout } from "../api/loginChecker";
 
 const LoginPage = React.lazy(() => import("../pages/LoginPage"));
 const MainPage = React.lazy(() => import("../pages/MainPage"));
@@ -22,34 +21,9 @@ function App() {
   const isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   const dispatch = useAppDispatch();
 
-  // TODO: 창 나갈 시 로그아웃 기능?
-  const onBeforeCloseWindow = (e: BeforeUnloadEvent) => {
-    e.preventDefault();
-    if (sessionStorage.getItem("reloaded") != "") {
-      console.log("page was reloaded");
-    } else {
-      onLogout();
-      dispatch(onDeauth());
-
-      console.log("page closed");
-    }
-    e.returnValue = "창을 닫으시겠습니까?";
-  };
-
-  useEffect(() => {
-    window.addEventListener("beforeunload", onBeforeCloseWindow);
-
-    return () => {
-      window.removeEventListener("beforeunload", onBeforeCloseWindow);
-    };
-  }, []);
-
   useEffect(() => {
     if (isLogin) {
-      sessionStorage.setItem("reloaded", "yes");
       dispatch(reAuthUser());
-    } else {
-      sessionStorage.setItem("reloaded", "");
     }
   }, []);
 

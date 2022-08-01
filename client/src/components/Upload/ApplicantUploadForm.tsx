@@ -19,10 +19,6 @@ export type ApplicantFormData = {
 };
 
 export default function ApplicantUploadForm() {
-  let isLogin = useAppSelector((state) => state.auth.user?.isLogin);
-  console.log(isLogin);
-  const token = useAppSelector((state) => state.auth.access);
-  console.log(token);
   const navigate = useNavigate();
   const {
     register,

@@ -14,12 +14,13 @@ const Wrapper = styled.div`
 `;
 
 const ReviewSectionDiv = styled.div`
-  width: "100%";
-  margin: "20px";
-  margin-right: "50px";
-  display: "flex";
-  align-items: "center";
-  flex-direction: "column";
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 20px;
+  margin-right: 50px;
+  align-items: center;
+  flex-direction: column;
 `;
 
 export type ApplicantPropsType = {

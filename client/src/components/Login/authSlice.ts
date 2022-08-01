@@ -52,10 +52,6 @@ const authSlice = createSlice({
       state.access = null;
       return state;
     },
-    onReload(state) {
-      state.access = null;
-      return state;
-    },
     onLoginNoticeFalse(state) {
       state.user!.onLoginChange = false;
       return state;
@@ -89,13 +85,5 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const {
-  onAuth,
-  onDeauth,
-  // onReauth,
-  onReload,
-  onNotice,
-  onNoticeFalse,
-  // onLoginNotice,
-  onLoginNoticeFalse,
-} = authSlice.actions;
+export const { onAuth, onDeauth, onNotice, onNoticeFalse, onLoginNoticeFalse } =
+  authSlice.actions;
