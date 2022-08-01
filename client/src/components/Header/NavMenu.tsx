@@ -15,13 +15,13 @@ export default function NavMenu() {
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
   };
-  const handleNavigate = (destination: string) => {
-    console.log("path :", path, destination);
-    setAnchorEl(null);
-    setPath(destination);
-  };
   const handleClose = () => {
     setAnchorEl(null);
+  };
+  const handleNavigate = (destination: string) => {
+    handleClose();
+    console.log("path :", path, destination);
+    setPath(destination);
   };
 
   useDidMountEffect(() => {

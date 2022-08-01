@@ -9,14 +9,20 @@ import {
   PassWrapper,
   Button,
   Select,
+  FileInputLable,
+  ProfileImg,
+  ProfileDiv,
+  ProfilebuttonBox,
+  ProfileName,
 } from "../../styles/formStyle";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 const eye = <FontAwesomeIcon icon={faEye} />;
 
 export type RegisterFormData = {
+  image: FileList;
   name: string;
   nickname: string;
   email: string;
@@ -35,6 +41,9 @@ export default function SignupForm() {
     setPasswordCheckerShown(passwordCheckerShown ? false : true);
   };
 
+  const [profileName, setProfileName] = useState<string>("");
+  const [profileURL, setProfileURL] = useState<string>("");
+
   const {
     register,
     handleSubmit,
@@ -44,9 +53,29 @@ export default function SignupForm() {
   } = useForm<RegisterFormData>();
   const navigate = useNavigate();
 
+  const profile = watch("image");
+
+  useEffect(() => {
+    if (profile && profile.length > 0) {
+      const file = profile[0];
+      console.log(file);
+      setProfileName(file.name);
+      setProfileURL(URL.createObjectURL(file));
+    }
+  }, [profile]);
+
   const onSubmit: SubmitHandler<RegisterFormData> = async (data) => {
     console.log(data);
-    const res = await sendSignUp(data);
+    const fileData = new FormData();
+    fileData.append("name", data.name);
+    fileData.append("nickname", data.nickname);
+    fileData.append("department", data.department);
+    fileData.append("email", data.email);
+    fileData.append("password", data.password);
+    fileData.append("passwordChecker", data.passwordChecker);
+    fileData.append("image", data.image[0]);
+
+    const res = await sendSignUp(fileData);
     console.log(res);
     // TODO: 에러 필드 값 확인!
     if (res.email) {
@@ -66,7 +95,30 @@ export default function SignupForm() {
 
   return (
     <FormWrapper>
+      {/* TODO: 이미지 스타일링 - 증명사진처럼 나오게끔 */}
+      {/* {profileURL !== "" && <img src={profileURL}  />} */}
+
       <Form onSubmit={handleSubmit(onSubmit)}>
+        <ProfileDiv>
+          <ProfileImg src={profileURL} alt="프로필 사진" />
+
+          <ProfilebuttonBox>
+            <ProfileName>{profileName}</ProfileName>
+            <FileInputLable htmlFor="image">업로드</FileInputLable>
+          </ProfilebuttonBox>
+        </ProfileDiv>
+
+        {/* TODO: 사용자 프로필 이미지 업로드 input */}
+        <input
+          {...register("image", {
+            required: "필수 입력 칸입니다.",
+          })}
+          type="file"
+          id="image"
+          name="image"
+          accept="img/*"
+          style={{ display: "none" }}
+        />
         <Input
           type="text"
           placeholder="이름을 입력해주세요."

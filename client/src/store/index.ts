@@ -12,6 +12,7 @@ import { queryApi } from "../api/queryApi";
 import pageType from "../components/KanBanBoard/pageTypeSlice";
 import pool from "../components/Pool/poolSlice";
 import triggerFetch from "../components/Header/triggerFetchSlice";
+import search from "../components/Search/searchSlice";
 
 // 루트리듀서 - 모든 리듀서 하나로
 const rootReducer = combineReducers({
@@ -23,6 +24,7 @@ const rootReducer = combineReducers({
   applicants: applicants,
   pool: pool,
   triggerFetch: triggerFetch,
+  search: search,
 });
 
 // 로컬스토리지 저장 - redux-persist

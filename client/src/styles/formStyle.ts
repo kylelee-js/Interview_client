@@ -19,6 +19,44 @@ export const Form = styled.form`
   flex-direction: column;
   position: relative;
 `;
+export const ProfileName = styled.p`
+  font-size: 14px;
+`;
+
+export const ProfilebuttonBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+`;
+
+export const ProfileDiv = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-end;
+`;
+
+export const ProfileImg = styled.img`
+  width: 150px;
+  height: 180px;
+  border: 1px solid #8a8787;
+  border-radius: 3px;
+`;
+
+// label attr에 'for="input-file"'을 지정해줘야한다 -> 같은 아이디의 html object와 연결해줌
+export const FileInputLable = styled.label`
+  width: 50px;
+  padding: 6px 15px;
+  text-align: center;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #ff6600;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+`;
 
 // TODO: 스타일 수정하기
 export const Input = styled.input`

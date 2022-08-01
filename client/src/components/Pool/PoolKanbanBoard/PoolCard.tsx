@@ -19,9 +19,8 @@ import {
   MenuButtonDiv,
   TagNote,
 } from "../../../styles/boardStyle";
-import { onToggleMyApplicant } from "../poolSlice";
+import { onTagDelete, onToggleMyApplicant } from "../poolSlice";
 import { onDeleteTag } from "../../../api/boardUpdate";
-import { onTagDelete } from "../../KanBanBoard/kanbanSlice";
 
 const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
 const poolPageBoards = ["개발", "마케팅", "경영지원", "디자인"];
@@ -63,13 +62,13 @@ export default React.memo(function Card({
   };
 
   const onTagDeleteClick = async () => {
+    handleClose();
     await onDeleteTag(tagId!, id);
     dispatch(onTagDelete({ boardStatus, applicantIndex, tagId }));
-    handleClose();
   };
 
   useEffect(() => {
-    if (interviewer?.find((viewer) => viewer == "" + userPk)) {
+    if (interviewer?.find((viewer) => viewer.pk == userPk)) {
       setIsMine(true);
     } else {
       setIsMine(false);
@@ -157,7 +156,16 @@ export default React.memo(function Card({
               "aria-labelledby": "basic-button",
             }}
           >
-            <MenuItem onClick={onTagDeleteClick}>태그 삭제하기</MenuItem>
+            <MenuItem
+              disabled={
+                !Boolean(
+                  interviewer?.find((interviewer) => interviewer.pk === userPk!)
+                )
+              }
+              onClick={onTagDeleteClick}
+            >
+              태그 삭제하기
+            </MenuItem>
           </Menu>
 
           {type == "pool" && (
@@ -198,8 +206,12 @@ export default React.memo(function Card({
           <MenuButtonDiv>
             <CardActions>
               <KebabMenu
+                tags={tags}
                 type={type}
                 id={id}
+                isMine={Boolean(
+                  interviewer?.find((interviewer) => interviewer.pk === userPk!)
+                )}
                 status={boardStatus}
                 applicantIndex={applicantIndex}
                 isFailed={isFailed}

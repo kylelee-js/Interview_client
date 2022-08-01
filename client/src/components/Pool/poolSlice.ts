@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { fetchPool } from "../../api/poolFetch";
-import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { ApplicantBoardType } from "../KanBanBoard/kanbanSlice";
 
 type ApplicantActionType = {
@@ -39,6 +38,33 @@ const poolSlice = createSlice({
         return state;
       }
     },
+    onTagWrite(state, action) {
+      // TODO: post res로 받아온 id로 설정
+      const { boardStatus, applicantIndex, tagId, tagText } = action.payload;
+      const targetApplicant =
+        state[+boardStatus - 1].applicants[applicantIndex];
+      if (targetApplicant.tags) {
+        targetApplicant.tags?.push({ id: tagId, tagText: tagText });
+        state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
+        return state;
+      } else {
+        targetApplicant.tags = [{ id: tagId, tagText: tagText }];
+        state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
+        return state;
+      }
+    },
+    onTagDelete(state, action) {
+      // TODO: post res로 받아온 id로 설정
+      const { boardStatus, applicantIndex, tagId } = action.payload;
+      const targetApplicant =
+        state[+boardStatus - 1].applicants[applicantIndex];
+      const targetTagIndex = targetApplicant.tags?.findIndex(
+        (tag) => tag.id == tagId
+      );
+      targetApplicant.tags?.splice(targetTagIndex!, 1);
+      state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(fetchPoolBoard.fulfilled, (state, action) => {
@@ -49,4 +75,5 @@ const poolSlice = createSlice({
 });
 
 export default poolSlice.reducer;
-export const { onToggleMyApplicant } = poolSlice.actions;
+export const { onToggleMyApplicant, onTagWrite, onTagDelete } =
+  poolSlice.actions;

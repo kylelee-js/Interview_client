@@ -17,6 +17,7 @@ import {
 } from "../Login/authSlice";
 import { onTrigger } from "./triggerFetchSlice";
 import styled from "styled-components";
+import SearchInput from "./SearchForm/SearchInput";
 
 const LinkAnchor = styled.button`
   cursor: pointer;
@@ -62,7 +63,6 @@ export default function HeaderLayout() {
   }, []);
 
   const onNoticeClick = () => {
-    console.log("clic");
     dispatch(onTrigger());
     dispatch(onNoticeFalse());
     navigate("/");
@@ -110,6 +110,7 @@ export default function HeaderLayout() {
                   </IconButton>
                 </Typography>
               )}
+              <SearchInput />
               <Logout />
             </Toolbar>
           </AppBar>

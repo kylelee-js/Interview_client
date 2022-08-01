@@ -21,9 +21,8 @@ export type ApplicantFormData = {
   department: string;
   job: string;
   filePath: FileList;
-  // TODO: default = 미등록
-  // state: string;
 };
+
 export default function ApplicantUploadForm() {
   let isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   console.log(isLogin);
@@ -40,7 +39,7 @@ export default function ApplicantUploadForm() {
 
   const onSubmit: SubmitHandler<ApplicantFormData> = async (data) => {
     console.log(data);
-    // PDF 파일 확장자 regex 검사기
+    // PDF 파일 확장자 검사
     if (data.filePath[0].type != "application/pdf") {
       setError("filePath", {
         type: "filetype",

@@ -1,4 +1,4 @@
-import { styled } from "@mui/material/styles";
+import { styled as styledMui } from "@mui/material/styles";
 import ArrowForwardIosSharpIcon from "@mui/icons-material/ArrowForwardIosSharp";
 import MuiAccordion, { AccordionProps } from "@mui/material/Accordion";
 import MuiAccordionSummary, {
@@ -12,8 +12,14 @@ import ReviewView from "./ReviewView";
 import ReviewEditorMenu from "./ReviewEditorMenu";
 import { ReviewDataType } from "./reviewSlice";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
+import styled from "styled-components";
 
-const Accordion = styled((props: AccordionProps) => (
+const Wrapper = styled.div`
+  box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+  width: 100%;
+`;
+
+const Accordion = styledMui((props: AccordionProps) => (
   <MuiAccordion disableGutters elevation={0} square {...props} />
 ))(({ theme }) => ({
   border: `1px solid ${theme.palette.divider}`,
@@ -31,7 +37,7 @@ const processStatus = [
   "2차 인터뷰",
   "최종면접",
 ];
-const AccordionSummary = styled((props: AccordionSummaryProps) => (
+const AccordionSummary = styledMui((props: AccordionSummaryProps) => (
   <MuiAccordionSummary
     expandIcon={<ArrowForwardIosSharpIcon sx={{ fontSize: "0.9rem" }} />}
     {...props}
@@ -50,7 +56,7 @@ const AccordionSummary = styled((props: AccordionSummaryProps) => (
   },
 }));
 
-const AccordionDetails = styled(MuiAccordionDetails)(({ theme }) => ({
+const AccordionDetails = styledMui(MuiAccordionDetails)(({ theme }) => ({
   padding: theme.spacing(2),
   borderTop: "1px solid rgba(0, 0, 0, .125)",
 }));
@@ -86,7 +92,7 @@ export default React.memo(function ReviewAccordion({
 
   if (reviewData.length == 0) return <>노 리뷰</>;
   return (
-    <div style={{ boxShadow: "rgba(99, 99, 99, 0.2) 0px 2px 8px 0px" }}>
+    <Wrapper>
       {updatedReview.map((data) => {
         const hadReviewed = data.statusReviewData.find(
           (sRD) => sRD.userId == user?.pk!
@@ -128,6 +134,6 @@ export default React.memo(function ReviewAccordion({
           </Accordion>
         );
       })}
-    </div>
+    </Wrapper>
   );
 });

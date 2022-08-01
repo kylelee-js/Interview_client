@@ -22,10 +22,10 @@ export default React.memo(function ConfirmPopup({
   const name = useAppSelector(
     (state) => state.kanban[+status].applicants[applicantIndex].applicantName
   );
-  const { handleFail } = useMenu(status, applicantIndex);
+  // const { handleFail } = useMenu(status, applicantIndex);
   const removeApplicant = () => {
     onPopupClose();
-    handleFail();
+    // handleFail();
   };
   return (
     <ConfirmWrapper isShown={isShown}>

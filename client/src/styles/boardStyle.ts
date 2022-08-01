@@ -51,6 +51,11 @@ export const CardWrapper = styled.div`
 
 export const TagNote = styled.span`
   cursor: pointer;
+  /* word-wrap: normal; */
+  margin-top: 5px;
+  display: inline-block;
+  white-space: normal;
+  word-break: keep-all;
   font-size: 12px;
   padding: 3px 5px;
   margin-right: 10px;

@@ -11,7 +11,7 @@ import KebabMenu from "./KebabMenu";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { Tooltip } from "@mui/material";
 import { CardWrapper, MenuButtonDiv, TagNote } from "../../styles/boardStyle";
-import { useAppDispatch } from "../../store";
+import { useAppDispatch, useAppSelector } from "../../store";
 import { onTagDelete } from "./kanbanSlice";
 import { onDeleteTag } from "../../api/boardUpdate";
 
@@ -31,11 +31,13 @@ export default React.memo(function Card({
   tags,
   department,
   boardStatus,
+  interviewer,
   type,
   job,
   isFailed = false,
   isFixed = false,
 }: CardProps) {
+  const userPk = useAppSelector((state) => state.auth.user?.pk);
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [tagId, setTagId] = useState<number>();
@@ -49,9 +51,9 @@ export default React.memo(function Card({
   };
 
   const onTagDeleteClick = async () => {
+    handleClose();
     await onDeleteTag(tagId!, id);
     dispatch(onTagDelete({ boardStatus, applicantIndex, tagId }));
-    handleClose();
   };
 
   return (
@@ -134,7 +136,18 @@ export default React.memo(function Card({
                     "aria-labelledby": "basic-button",
                   }}
                 >
-                  <MenuItem onClick={onTagDeleteClick}>태그 삭제하기</MenuItem>
+                  <MenuItem
+                    disabled={
+                      !Boolean(
+                        interviewer?.find(
+                          (interviewer) => interviewer.pk === userPk!
+                        )
+                      )
+                    }
+                    onClick={onTagDeleteClick}
+                  >
+                    태그 삭제하기
+                  </MenuItem>
                 </Menu>
 
                 <MenuButtonDiv>
@@ -143,9 +156,15 @@ export default React.memo(function Card({
                       type={type}
                       id={id}
                       status={boardStatus}
+                      isMine={Boolean(
+                        interviewer?.find(
+                          (interviewer) => interviewer.pk === userPk!
+                        )
+                      )}
                       applicantIndex={applicantIndex}
                       isFailed={isFailed}
                       isFixed={isFixed}
+                      tags={tags}
                     />
                   </CardActions>
                 </MenuButtonDiv>

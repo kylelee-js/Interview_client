@@ -8,6 +8,7 @@ import useMenu from "../../hooks/useMenu";
 import { useNavigate } from "react-router-dom";
 import FailApplicantPopup from "../Popup/FailApplicantPopup";
 import TagNotePopup from "../Popup/TagNotePopup";
+import { TagDataType } from "../Applicant/applicantSlice";
 
 const RedSpan = styled.span`
   color: red;
@@ -21,13 +22,17 @@ type MenuType = {
   type: string;
   // FIXME: 일단은 undefined 허용 -> 나중에 더미 데이터 수정
   isFailed: boolean | undefined;
+  isMine: boolean;
   isFixed: boolean | undefined;
+  tags: TagDataType[] | undefined;
 };
 
 export default React.memo(function KebabMenu({
   id,
   status,
+  tags,
   applicantIndex,
+  isMine,
   isFailed,
   isFixed,
   type,
@@ -109,8 +114,13 @@ export default React.memo(function KebabMenu({
           }}
         >
           <MenuItem onClick={onNavigate}>지원자 정보보기</MenuItem>
-          {/* TODO: 태그노트 개수가 3개 이상이면 버튼 비활성화 + 태그 삭제 기능? "disabled={ TagNote.length == 3 ? true: false}" */}
-          <MenuItem onClick={tagModalOpen}>지원자 태그추가</MenuItem>
+
+          <MenuItem
+            disabled={tags?.length == 3 || !isMine}
+            onClick={tagModalOpen}
+          >
+            지원자 태그추가
+          </MenuItem>
         </Menu>
       ) : (
         <Menu
@@ -124,8 +134,9 @@ export default React.memo(function KebabMenu({
         >
           <MenuItem onClick={onNavigate}>지원자 리뷰작성</MenuItem>
 
-          {/* TODO: 태그노트 개수가 3개 이상이면 버튼 비활성화 + 태그 삭제 기능? "disabled={ TagNote.length == 3 ? true: false}" */}
-          <MenuItem onClick={tagModalOpen}>지원자 태그추가</MenuItem>
+          <MenuItem disabled={tags?.length == 3} onClick={tagModalOpen}>
+            지원자 태그추가
+          </MenuItem>
           {isFailed ? (
             <MenuItem
               onClick={() => {
@@ -176,6 +187,7 @@ export default React.memo(function KebabMenu({
         applicantId={id}
         boardStatus={status}
         applicantIndex={applicantIndex}
+        tags={tags}
       />
     </div>
   );

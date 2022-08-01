@@ -23,8 +23,6 @@ export const onBoardUpdate = async (board: ApplicantBoardType[]) => {
 export const onUserNotice = async () => {
   try {
     const res = await axios.get("/user/notice/");
-    // setScheduler();
-    console.log(res);
     return res.data;
   } catch (error) {
     console.log(error);

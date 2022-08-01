@@ -1,23 +1,33 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { ApplicantReviewDataType, ReviewDataType } from "./reviewSlice";
 
-export type tagDataType = {
+export type TagDataType = {
   id: number;
   tagText: string;
+};
+
+// FIXME: undefined 나중에 삭제하기
+export type InterviewerDataType = {
+  pk: number;
+  email?: string;
+  name?: string;
+  nickname?: string;
+  department?: string;
+  image: string;
 };
 
 export type ApplicantDataType = {
   id: number;
   applicantName: string;
   birth?: string;
-  tags?: tagDataType[];
+  tags?: TagDataType[];
   department: string;
   job: string;
   status: string;
   filePath?: string;
   isFailed?: boolean;
   board?: number[];
-  interviewer?: string[];
+  interviewer?: InterviewerDataType[];
   isFixed?: boolean;
   order: number;
 };
