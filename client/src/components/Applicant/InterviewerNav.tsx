@@ -67,7 +67,12 @@ export default function InterviewerNav({
         <DialogContent dividers={true}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ProfileImg
-              src={interviewerData?.image}
+              // src={interviewerData?.image}
+              src={
+                interviewerData?.image.slice(0, 18) +
+                ":8080" +
+                interviewerData?.image.slice(18)
+              }
               alt="면접관 사진"
               onError={handleError}
             />
