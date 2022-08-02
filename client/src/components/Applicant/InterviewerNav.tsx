@@ -34,11 +34,11 @@ export default function InterviewerNav({
     setOpen(false);
   };
 
-  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+  const handleError = async (e: React.SyntheticEvent<HTMLImageElement>) => {
     const storage = JSON.parse("" + sessionStorage.getItem("persist:root"));
     const { access } = JSON.parse(storage.auth);
     try {
-      fetch(
+      const url = await fetch(
         interviewerData?.image.slice(0, 18) +
           ":8080" +
           interviewerData?.image.slice(18),
@@ -51,11 +51,9 @@ export default function InterviewerNav({
         .then((res) => res.blob())
         .then((blob) => {
           console.log(URL.createObjectURL(blob));
-          e.currentTarget.src = URL.createObjectURL(blob);
-        })
-        .catch((e) => {
-          e.currentTarget.src = "/default.png";
+          return URL.createObjectURL(blob);
         });
+      e.currentTarget.src = url;
     } catch (error) {
       e.currentTarget.src = "/default.png";
     }
