@@ -52,6 +52,9 @@ export default function InterviewerNav({
         .then((blob) => {
           console.log(URL.createObjectURL(blob));
           e.currentTarget.src = URL.createObjectURL(blob);
+        })
+        .catch((e) => {
+          e.currentTarget.src = "/default.png";
         });
     } catch (error) {
       e.currentTarget.src = "/default.png";
