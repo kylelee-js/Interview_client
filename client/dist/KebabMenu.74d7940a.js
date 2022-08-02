@@ -1,4 +1,4 @@
-import{s as C,r as l,a as H,a0 as U,a1 as X,j as a,d as e,u as Y,N as Z,a2 as ee,a3 as ue,a4 as ae,R as ne,b as oe}from"./index--98a1aa81.js";import{a as j,i as z,r as R}from"./jsx-runtime_commonjs-proxy.88d19f0c.js";import{D as _,a as E,b as M,c as S,d as $}from"./DialogTitle.bb1db00d.js";import{c as g}from"./Modal.a47a3860.js";import{T as te,M as N,a as r}from"./TextField.44e0a5ad.js";const _e=C.div`
+import{s as C,r as l,a as H,a0 as U,a1 as X,j as a,d as e,u as Y,N as Z,a2 as ee,a3 as ue,a4 as ae,R as ne,b as oe}from"./index--d5b455e1.js";import{a as j,i as z,r as R}from"./jsx-runtime_commonjs-proxy.5bc8c4dd.js";import{D as _,a as E,b as M,c as S,d as $}from"./DialogTitle.593e259a.js";import{c as g}from"./Modal.ed80c2c1.js";import{T as te,M as N,a as r}from"./TextField.bece04a5.js";const _e=C.div`
   padding: 5px 15px;
   display: grid;
   grid-template-columns: repeat(${o=>o.boardLength}, 1fr);

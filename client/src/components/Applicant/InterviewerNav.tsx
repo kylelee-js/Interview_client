@@ -6,7 +6,8 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { useState } from "react";
+import axios from "axios";
+import { useRef, useState } from "react";
 import { ProfileImg } from "../../styles/formStyle";
 import {
   InterviewerButton,
@@ -24,7 +25,7 @@ export default function InterviewerNav({
 }: InterviewerNavPropsType) {
   const [interviewerData, setInterviewerData] = useState<InterviewerDataType>();
   const [open, setOpen] = useState(false);
-
+  // const ref = useRef<HTMLImageElement>(null)
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -34,7 +35,27 @@ export default function InterviewerNav({
   };
 
   const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
-    e.currentTarget.src = "/default.png";
+    const storage = JSON.parse("" + sessionStorage.getItem("persist:root"));
+    const { access } = JSON.parse(storage.auth);
+    try {
+      fetch(
+        interviewerData?.image.slice(0, 18) +
+          ":8080" +
+          interviewerData?.image.slice(18),
+        {
+          headers: new Headers({
+            Authorization: `Bearer ${access}`,
+          }),
+        }
+      )
+        .then((res) => res.blob())
+        .then((blob) => {
+          console.log(URL.createObjectURL(blob));
+          e.currentTarget.src = URL.createObjectURL(blob);
+        });
+    } catch (error) {
+      e.currentTarget.src = "/default.png";
+    }
   };
 
   if (!interviewers) return null;
@@ -67,6 +88,7 @@ export default function InterviewerNav({
         <DialogContent dividers={true}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ProfileImg
+              // ref={ref}
               // src={interviewerData?.image}
               src={
                 interviewerData?.image.slice(0, 18) +

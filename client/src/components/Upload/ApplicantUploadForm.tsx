@@ -1,7 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { onFileUpload } from "../../api/applicantUploadChecker";
-import { useAppSelector } from "../../store";
 import {
   Form,
   FormWrapper,
@@ -37,10 +36,14 @@ export default function ApplicantUploadForm() {
           message: "PDF 파일만 제출 가능합니다.",
         });
         return;
+      } else if (data.file[i].name.length > 80) {
+        setError("file", {
+          type: "filetype",
+          message: "파일 이름 제한은 최대 80자 입니다.",
+        });
+        return;
       }
     }
-
-    const fileList = [...data.file];
     const fileData = new FormData();
     fileData.append("applicantName", data.applicantName);
     fileData.append("birth", data.birth);

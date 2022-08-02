@@ -72,7 +72,12 @@ export default function ApplicantPDFViewer({
       <FilePageNavWrapper>
         {fileData.map((file, index) => (
           <FilePageContainer key={file.id}>
-            <FilePageButton onClick={() => setFileNumber(index)}>
+            <FilePageButton
+              onClick={() => {
+                setFileNumber(index);
+                setPageNumber(1);
+              }}
+            >
               {index + 1}
             </FilePageButton>
           </FilePageContainer>

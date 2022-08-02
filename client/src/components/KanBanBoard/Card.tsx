@@ -57,12 +57,10 @@ export default React.memo(function Card({
   };
 
   return (
-    // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
     <Draggable
-      key={applicantName}
+      key={id}
       index={applicantIndex}
-      draggableId={"" + applicantName}
-      // TODO: 이 옵션 크고 끄게 할 수 있도록
+      draggableId={"" + id}
       isDragDisabled={isFixed || type == "pool"}
     >
       {(provided, snapshot) => {
