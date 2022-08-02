@@ -89,12 +89,13 @@ export default function InterviewerNav({
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ProfileImg
               // ref={ref}
-              // src={interviewerData?.image}
-              src={
-                interviewerData?.image.slice(0, 18) +
-                ":8080" +
-                interviewerData?.image.slice(18)
-              }
+              // 강제로 에러를 발생시켜야함
+              src={interviewerData?.image}
+              // src={
+              //   interviewerData?.image.slice(0, 18) +
+              //   ":8080" +
+              //   interviewerData?.image.slice(18)
+              // }
               alt="면접관 사진"
               onError={handleError}
             />
