@@ -1,5 +1,4 @@
 import axios, { AxiosError } from "axios";
-import { RegisterFormData } from "../components/Signup/SignupForm";
 
 export const sendSignUp = async (formData: FormData) => {
   delete axios.defaults.headers.common["Authorization"];

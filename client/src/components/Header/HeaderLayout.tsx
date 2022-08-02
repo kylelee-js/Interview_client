@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Outlet, useNavigate } from "react-router-dom";
 import Logout from "../Login/Logout";
-import NavMenu from "./NavMenu";
+import NavMenuButton from "./NavMenuButton";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { useEffect } from "react";
 import { onUserNotice } from "../../api/boardUpdate";
@@ -79,7 +79,7 @@ export default function HeaderLayout() {
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-              <NavMenu />
+              <NavMenuButton />
 
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Jobreeting

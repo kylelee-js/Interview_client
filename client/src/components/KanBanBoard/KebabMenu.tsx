@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useTransition } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -38,6 +38,7 @@ export default React.memo(function KebabMenu({
   type,
 }: MenuType) {
   const [popupOpened, setPopupOpened] = useState(false);
+  const [isPending, startTransition] = useTransition();
   const { handleFail, handleFix } = useMenu({
     status: "" + (+status - 1),
     applicantIndex,
@@ -46,7 +47,9 @@ export default React.memo(function KebabMenu({
   });
   const navigate = useNavigate();
   const onNavigate = () => {
-    navigate(`/applicant/${id}`);
+    startTransition(() => {
+      navigate(`/applicant/${id}`);
+    });
   };
 
   const togglePopupOpen = () => {

@@ -1,62 +1,48 @@
-import { useEffect, useState } from "react";
+import { Suspense, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import { fetchApplicantById } from "../api/fetchApplicant";
-import { reviewApi } from "../api/reviewApi";
-import Applicant, {
-  ApplicantPropsType,
-} from "../components/Applicant/Applicant";
-import {
-  InterviewerDataType,
-  onSetState,
-} from "../components/Applicant/applicantSlice";
-import {
-  onInitReivew,
-  ReviewDataType,
-} from "../components/Applicant/reviewSlice";
+import Applicant from "../components/Applicant/Applicant";
+import { fetchApplicant } from "../components/Applicant/applicantSlice";
+import { fetchReviewData } from "../components/Applicant/reviewSlice";
 import { useAppDispatch, useAppSelector } from "../store";
 
 export default function ApplicantContaier() {
   const param = useParams();
   const applicantId = param.applicantId as string;
-  const [filePath, setFilePath] = useState<string>("");
-  const [amIAnAuthor, setAmIAnAuthor] = useState<boolean>(false);
-  const [interviewers, setInterviewers] = useState<InterviewerDataType[]>();
   const userPk = useAppSelector((state) => state.auth.user?.pk);
-
+  const fileData = useAppSelector(
+    (state) => state.applicant.applicantInfo?.file
+  );
+  const reviewData = useAppSelector((state) => state.review.reviewData);
+  const interviewerData = useAppSelector(
+    (state) => state.applicant.applicantInfo?.interviewer
+  );
   const dispatch = useAppDispatch();
 
-  const [reviewData, setReviewData] = useState<ReviewDataType[]>([]);
-  // FIXME: useAppselector로 했을 때 문제가 있지 않을까?
   useEffect(() => {
-    const onFetch = async (id: string) => {
-      const sampleApplicant = await fetchApplicantById(id);
-      const applicantReview = await reviewApi.fetchReviewById(id);
-      setInterviewers(sampleApplicant.interviewer);
-      setAmIAnAuthor(
-        Boolean(
-          sampleApplicant.interviewer.find(
-            (interviewer: number) => interviewer == userPk
-          )
-        )
-      );
-      setFilePath(sampleApplicant.filePath);
-      setReviewData(applicantReview.reviewData);
-      dispatch(onSetState(sampleApplicant));
-      dispatch(
-        onInitReivew({
-          applicantId: +applicantId,
-          reviewData: applicantReview.reviewData,
-        })
-      );
-    };
-    onFetch(applicantId);
-  }, []);
+    const onFetch = async () => {
+      await dispatch(fetchReviewData(applicantId));
+      await dispatch(fetchApplicant(applicantId));
 
-  const applicantProps: ApplicantPropsType = {
-    filePath,
-    interviewers,
-    reviewData,
-    amIAnAuthor,
-  };
-  return <Applicant {...applicantProps} />;
+      console.log("Asd");
+    };
+    onFetch();
+  }, []);
+  console.log(reviewData);
+
+  if (fileData && reviewData) {
+    return (
+      <Suspense fallback={<div>loading...</div>}>
+        <Applicant
+          fileData={fileData}
+          interviewers={interviewerData}
+          reviewData={reviewData}
+          amIAnAuthor={Boolean(
+            interviewerData?.find((interviewer) => interviewer.pk == userPk)
+          )}
+        />
+      </Suspense>
+    );
+  }
+
+  return null;
 }

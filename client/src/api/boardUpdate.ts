@@ -16,7 +16,7 @@ export const onBoardUpdate = async (board: ApplicantBoardType[]) => {
     // TODO: 파일 통신 성공하고 나면 후속 처리 ?
   } catch (error) {
     // TODO: 잠깐 에러 로그 꺼두기 - useEffect 수정
-    // console.log(error);
+    console.log(error);
   }
 };
 

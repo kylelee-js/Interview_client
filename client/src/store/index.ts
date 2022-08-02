@@ -7,7 +7,7 @@ import storage from "redux-persist/lib/storage/session"; // defaults to sessionS
 import kanban from "../components/KanBanBoard/kanbanSlice";
 import auth from "../components/Login/authSlice";
 import review from "../components/Applicant/reviewSlice";
-import applicants from "../components/Applicant/applicantSlice";
+import applicant from "../components/Applicant/applicantSlice";
 import { queryApi } from "../api/queryApi";
 import pageType from "../components/KanBanBoard/pageTypeSlice";
 import pool from "../components/Pool/poolSlice";
@@ -21,7 +21,7 @@ const rootReducer = combineReducers({
   kanban: kanban,
   auth: auth,
   review: review,
-  applicants: applicants,
+  applicant: applicant,
   pool: pool,
   triggerFetch: triggerFetch,
   search: search,

@@ -16,6 +16,7 @@ export const reviewApi = {
   fetchReviewById: async (id: string) => {
     try {
       const res = await axios.get(`/review/${id}/`);
+      console.log(res.data.reviewData);
       return res.data;
     } catch (error) {
       console.log(error);

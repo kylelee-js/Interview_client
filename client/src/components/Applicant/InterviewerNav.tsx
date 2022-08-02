@@ -41,7 +41,7 @@ export default function InterviewerNav({
   return (
     <InterviewerNavWrapper>
       {interviewers.map((interviewer) => (
-        <InterviewerContainer>
+        <InterviewerContainer key={interviewer.pk}>
           <InterviewerButton
             onClick={() => {
               setInterviewerData(interviewer);

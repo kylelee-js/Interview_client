@@ -21,7 +21,7 @@ const ReviewWrapper = styled.div`
 
 type ReviewCardPropsType = {
   id: string;
-  applicantStatus: string;
+  applicantStatus: number;
   statusReviewData: StatusReviewDataType;
   userPk: number;
   setIsEditMode: Dispatch<React.SetStateAction<boolean>>;
@@ -78,7 +78,10 @@ export default function ReviewCard({
                   <IconButton
                     aria-label="delete"
                     onClick={() =>
-                      onDeleteClick(applicantStatus, statusReviewData.userId!)
+                      onDeleteClick(
+                        "" + applicantStatus,
+                        statusReviewData.userId!
+                      )
                     }
                     size="small"
                   >

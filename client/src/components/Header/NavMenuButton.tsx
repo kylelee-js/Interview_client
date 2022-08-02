@@ -1,49 +1,56 @@
-import React, { useRef } from "react";
-import Menu from "@mui/material/Menu";
-import MenuItem from "@mui/material/MenuItem";
+import React, { useCallback, useEffect, useRef, useTransition } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton } from "@mui/material";
+import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 
-export default function NavMenu() {
+export default function NavMenuButton() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<null | HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const [path, setPath] = React.useState<string>(pathname);
   const open = Boolean(anchorEl);
+  const [isPending, startTransition] = useTransition();
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
-    console.log(ref.current);
   };
   const handleClose = () => {
-    console.log(ref.current);
     setAnchorEl(null);
   };
   const handleNavigate = (destination: string) => {
     handleClose();
-
     setPath(destination);
-    console.log(ref.current);
   };
 
-  // useDidMountEffect(() => {
-  //   console.log("path :", path);
-
-  //   if (ref.current === null) {
-  //     navigate(`/${path}`);
-  //   }
-  // }, [ref.current]);
-
   useDidMountEffect(() => {
-    console.log("path :", path);
-
     if (anchorEl == null) {
-      navigate(`/${path}`);
+      startTransition(() => {
+        navigate(`/${path}`);
+      });
+      // setTimeout(() => {
+      //   // TODO: 0.3초 후에도 unmount가 안되었다면?
+      //   if (ref.current == null) {
+      //     navigate(`/${path}`);
+      //   }
+      // }, 300);
     }
   }, [path]);
+
+  // useEffect(() => {
+  //   if (ref.current) {
+  //     const observer = new MutationObserver(() => {
+  //       if (ref.current == null) {
+  //         navigate(`/${path}`);
+  //       }
+  //     });
+  //     observer.observe(ref.current, { childList: false });
+  //     return () => {
+  //       observer.disconnect();
+  //     };
+  //   }
+  // }, [ref.current]);
 
   return (
     <div>
@@ -61,6 +68,7 @@ export default function NavMenu() {
       >
         <MenuIcon />
       </IconButton>
+
       <Menu
         ref={ref}
         id="basic-menu"

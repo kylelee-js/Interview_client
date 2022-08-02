@@ -72,7 +72,7 @@ export default React.memo(function ReviewAccordion({
 }: ReviewAccordionPropsType) {
   const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<string | false>(
-    reviewData.length > 0 ? reviewData[0].applicantStatus : false
+    reviewData.length > 0 ? "" + reviewData[0].applicantStatus : false
   );
   const user = useAppSelector((state) => state.auth.user);
   const handleChange =
@@ -99,8 +99,8 @@ export default React.memo(function ReviewAccordion({
         );
         return (
           <Accordion
-            expanded={expanded === data.applicantStatus}
-            onChange={handleChange(data.applicantStatus)}
+            expanded={expanded === "" + data.applicantStatus}
+            onChange={handleChange("" + data.applicantStatus)}
             key={data.applicantStatus}
           >
             <AccordionSummary

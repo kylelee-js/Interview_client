@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { reviewApi } from "../../api/reviewApi";
 
 export type StatusReviewDataType = {
   id: string;
@@ -10,7 +11,7 @@ export type StatusReviewDataType = {
 
 export type ReviewDataType = {
   // 사실상 배열 인덱스
-  applicantStatus: string;
+  applicantStatus: number;
   statusReviewData: StatusReviewDataType[];
 };
 
@@ -20,21 +21,32 @@ export type ApplicantReviewDataType = {
 };
 
 type ReviewDataActionType = {
-  applicantStatus: string;
+  applicantStatus: number;
   statusReviewData: StatusReviewDataType;
 };
 
-// TODO: 각 지원자 데이터의 리뷰 정보를 initial state로 설정해준다.
+export const fetchReviewData = createAsyncThunk(
+  "FETCH_REVIEW_DATA",
+  async (id: string) => {
+    const res = await reviewApi.fetchReviewById(id);
+    const applicantReviewData: ApplicantReviewDataType = {
+      applicantId: +id,
+      reviewData: res.reviewData,
+    };
+    return applicantReviewData;
+  }
+);
 
+// TODO: 이니셜 상태 null로 만들기
 const fakeReviewDate: ApplicantReviewDataType | null = {
   applicantId: 0,
   reviewData: [
     {
-      applicantStatus: "1",
+      applicantStatus: 1,
       statusReviewData: [],
     },
     {
-      applicantStatus: "2",
+      applicantStatus: 2,
       statusReviewData: [
         {
           id: "1",
@@ -53,7 +65,7 @@ const fakeReviewDate: ApplicantReviewDataType | null = {
       ],
     },
     {
-      applicantStatus: "3",
+      applicantStatus: 3,
       statusReviewData: [
         {
           id: "3",
@@ -73,14 +85,11 @@ const fakeReviewDate: ApplicantReviewDataType | null = {
     },
   ],
 };
+
 const reviewSlice = createSlice({
   name: "REVIEW",
   initialState: fakeReviewDate,
   reducers: {
-    onInitReivew(state, action: PayloadAction<ApplicantReviewDataType>) {
-      state = action.payload;
-      return state;
-    },
     onReview(state, action: PayloadAction<ReviewDataActionType>) {
       const { applicantStatus, statusReviewData } = action.payload;
       state.reviewData[+applicantStatus - 1].statusReviewData.push(
@@ -116,7 +125,16 @@ const reviewSlice = createSlice({
       return state;
     },
   },
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchReviewData.fulfilled,
+      (state, action: PayloadAction<ApplicantReviewDataType>) => {
+        state = action.payload;
+        return state;
+      }
+    );
+  },
 });
 
 export default reviewSlice.reducer;
-export const { onInitReivew, onRemove, onReview, onEdit } = reviewSlice.actions;
+export const { onRemove, onReview, onEdit } = reviewSlice.actions;

@@ -15,7 +15,7 @@ export type ApplicantFormData = {
   birth: string;
   department: string;
   job: string;
-  filePath: FileList;
+  file: FileList;
 };
 
 export default function ApplicantUploadForm() {
@@ -30,26 +30,32 @@ export default function ApplicantUploadForm() {
 
   const onSubmit: SubmitHandler<ApplicantFormData> = async (data) => {
     // PDF 파일 확장자 검사
-    if (data.filePath[0].type != "application/pdf") {
-      setError("filePath", {
-        type: "filetype",
-        message: "PDF 파일만 제출 가능합니다.",
-      });
-      return;
+    for (let i = 0; i < data.file.length; i++) {
+      if (data.file[i].type != "application/pdf") {
+        setError("file", {
+          type: "filetype",
+          message: "PDF 파일만 제출 가능합니다.",
+        });
+        return;
+      }
     }
+
+    const fileList = [...data.file];
     const fileData = new FormData();
     fileData.append("applicantName", data.applicantName);
     fileData.append("birth", data.birth);
     fileData.append("department", data.department);
     fileData.append("job", data.job);
-    fileData.append("filePath", data.filePath[0]);
+    for (let i = 0; i < data.file.length; i++) {
+      fileData.append("file", data.file[i]);
+    }
 
     console.log(fileData);
     const res = await onFileUpload(fileData);
     if (res) {
       navigate("/pool");
     } else {
-      setError("filePath", {
+      setError("file", {
         type: "validate",
         message:
           "업로드 과정에서 문제가 발생했습니다. 새로고침하거나 다시 시도해주세요",
@@ -117,15 +123,16 @@ export default function ApplicantUploadForm() {
         )}
 
         <input
-          {...register("filePath", {
+          {...register("file", {
             required: "필수 입력 칸입니다.",
           })}
           type="file"
           id="applicantFile"
           accept="pdf/*"
+          multiple
         />
-        {errors.filePath && (
-          <div style={{ color: "red" }}> {errors.filePath?.message}</div>
+        {errors.file && (
+          <div style={{ color: "red" }}> {errors.file?.message}</div>
         )}
         <SubmitButton type="submit" value={"지원자 등록"} />
       </Form>

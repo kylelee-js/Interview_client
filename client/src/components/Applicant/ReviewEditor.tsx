@@ -25,7 +25,7 @@ const Wrapper = styled.div`
 type ReviewEditorPropsType = {
   id?: string;
   defaultText: string;
-  applicantStatus: string;
+  applicantStatus: number;
   setIsEditMode: Dispatch<React.SetStateAction<boolean>>;
   toggler?: () => void;
   isEditMode: boolean;

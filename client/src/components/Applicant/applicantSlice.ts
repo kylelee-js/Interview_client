@@ -1,4 +1,5 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { fetchApplicantById } from "../../api/fetchApplicant";
 import { ApplicantReviewDataType } from "./reviewSlice";
 
 export type TagDataType = {
@@ -16,6 +17,12 @@ export type InterviewerDataType = {
   image: string;
 };
 
+export type fileDataType = {
+  id: number;
+  file: string;
+  applicant: number;
+};
+
 export type ApplicantDataType = {
   id: number;
   applicantName: string;
@@ -24,12 +31,12 @@ export type ApplicantDataType = {
   department: string;
   job: string;
   status: string;
-  filePath?: string;
+  file?: fileDataType[];
   isFailed?: boolean;
   board?: number[];
   interviewer?: InterviewerDataType[];
   isFixed?: boolean;
-  order: number;
+  order?: number;
 };
 
 // 면접관 리뷰 정보
@@ -44,17 +51,27 @@ const fakeApplicantData: ApplicantType = {
   applicantReview: null,
 };
 
+export const fetchApplicant = createAsyncThunk(
+  "FETCH_APPLICANT",
+  async (id: string) => {
+    const applicantData = await fetchApplicantById(id);
+    return applicantData;
+  }
+);
 const applicantSlice = createSlice({
   name: "APPLICANT",
   initialState: fakeApplicantData,
-  reducers: {
-    // FIXME: 이니셜 상태 수정 이후 코드 수정 요망!
-    onSetState(state, action: PayloadAction<ApplicantDataType>) {
-      state.applicantInfo = action.payload;
-      return state;
-    },
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(
+      fetchApplicant.fulfilled,
+      (state, action: PayloadAction<ApplicantDataType>) => {
+        state.applicantInfo = action.payload;
+        return state;
+      }
+    );
   },
 });
 
 export default applicantSlice.reducer;
-export const { onSetState } = applicantSlice.actions;
+export const {} = applicantSlice.actions;

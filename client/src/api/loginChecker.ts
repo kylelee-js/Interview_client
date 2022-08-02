@@ -43,7 +43,6 @@ export const onSilentRefresh = async () => {
     return res.data;
   } catch (error) {
     console.log(error);
-    delete axios.defaults.headers.common["Authorization"];
     // TODO: 에러 핸들링은 createAsyncThunk 안에서 reject로 감싸줘야한다.
     // 리로드에 문제 발생 시 로커스토리지를 비운다. - isLogin 없애기
     sessionStorage.setItem("persist:root", "");

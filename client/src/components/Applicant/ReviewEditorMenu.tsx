@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 
 export type ReviewEditorMenuPropsType = {
   menuShown: boolean;
-  applicantStatus: string;
+  applicantStatus: number;
   setIsEditMode: Dispatch<React.SetStateAction<boolean>>;
 };
 

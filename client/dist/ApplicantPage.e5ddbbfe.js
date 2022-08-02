@@ -1,17 +1,11 @@
-import styled from "styled-components";
-
-// PDFViewer Styles
-
-export const PDFWrapper = styled.div`
+import{s as i,r as u,j as a,d as o,an as f,R as g,ao as m,ap as b,u as x,a as h,aq as v,ar as y,N as w}from"./index--9c8d4173.js";import{D as k,a as A,b as D,c as C,d as I}from"./DialogTitle.07f5712b.js";import{c as P}from"./Modal.f0fc0fd1.js";const q=i.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100%;
   max-width: 700px;
-`;
-
-export const FilePageNavWrapper = styled.div`
+`,L=i.div`
   width: 90%;
   border: 0.1rem solid #cfd1d0;
   border-radius: 5px;
@@ -19,14 +13,10 @@ export const FilePageNavWrapper = styled.div`
   background-color: #f2f7fa;
   padding: 10px 20px;
   margin-bottom: 20px;
-`;
-
-export const FilePageContainer = styled.span`
+`,M=i.span`
   margin-top: 5px;
   padding: 5px;
-`;
-
-export const FilePageButton = styled.button`
+`,Y=i.button`
   align-items: center;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -60,9 +50,7 @@ export const FilePageButton = styled.button`
     color: rgba(0, 0, 0, 0.65);
     transform: translateY(-1px);
   }
-`;
-
-export const PDFViewerWrapper = styled.div`
+`,$=i.div`
   position: relative;
   border-radius: 5px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
@@ -72,18 +60,13 @@ export const PDFViewerWrapper = styled.div`
   margin-left: 50px;
   margin-bottom: 100px;
   background-color: #c4c3c2;
-`;
-
-export const StickyDivIntersectingTop = styled.div`
+`,G=i.div`
   height: 1px;
   visibility: hidden;
-`;
-
-export const StickyDivIntersectingBottom = styled.div`
+`,J=i.div`
   height: 1px;
   visibility: hidden;
-`;
-export const DocStickyDiv = styled.div`
+`,K=i.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -92,9 +75,7 @@ export const DocStickyDiv = styled.div`
   /* TODO: media-query: 사용자 디바이스 높이에 따라 50px과 rem 중에서 선택 */
   /* top: 0.5rem; */
   top: 50px;
-`;
-
-export const PaginationMenu = styled.div`
+`,Q=i.div`
   position: relative;
   top: 0px;
   margin-top: 0.5rem;
@@ -118,11 +99,7 @@ export const PaginationMenu = styled.div`
       top: 0px;
     }
   }
-`;
-
-// InterviewerNav Styles
-
-export const InterviewerNavWrapper = styled.div`
+`,_=i.div`
   width: 90%;
   border: 0.1rem solid #cfd1d0;
   border-radius: 5px;
@@ -130,14 +107,10 @@ export const InterviewerNavWrapper = styled.div`
   background-color: #f2f7fa;
   padding: 10px 20px;
   margin-bottom: 20px;
-`;
-
-export const InterviewerContainer = styled.span`
+`,S=i.span`
   margin-top: 5px;
   padding: 5px;
-`;
-
-export const InterviewerButton = styled.button`
+`,j=i.button`
   align-items: center;
   background-color: #ffffff;
   border: 1px solid rgba(0, 0, 0, 0.1);
@@ -171,4 +144,16 @@ export const InterviewerButton = styled.button`
     color: rgba(0, 0, 0, 0.65);
     transform: translateY(-1px);
   }
-`;
+`;function F({interviewers:p}){const[e,c]=u.exports.useState(),[s,r]=u.exports.useState(!1),l=()=>{r(!0)},d=()=>{r(!1)},n=t=>{t.currentTarget.src="/default.png"};return p?a(_,{children:[p.map(t=>o(S,{children:a(j,{onClick:()=>{c(t),l()},children:[t.name," - ",t.nickname]})},t.pk)),a(k,{open:s,onClose:d,scroll:"paper","aria-labelledby":"scroll-dialog-title","aria-describedby":"scroll-dialog-description",fullWidth:!0,children:[a(A,{id:"scroll-dialog-title",children:[e==null?void 0:e.name," - ",e==null?void 0:e.nickname]}),o(D,{dividers:!0,children:a(C,{id:"scroll-dialog-description",tabIndex:-1,children:[o(f,{src:e==null?void 0:e.image,alt:"\uBA74\uC811\uAD00 \uC0AC\uC9C4",onError:n}),a("p",{children:["Email : ",e==null?void 0:e.email]}),a("p",{children:["\uBD80\uC11C : ",e==null?void 0:e.department]})]})}),o(I,{children:o(P,{onClick:d,children:"\uD655\uC778"})})]})]}):null}const z=g.lazy(()=>m(()=>import("./ApplicantPDFViewer.233b0572.js"),["ApplicantPDFViewer.233b0572.js","index--9c8d4173.js","_commonjsHelpers.6312ac27.js","Modal.f0fc0fd1.js","index.34b83dad.js","tiny-invariant.esm.d11e6c56.js","DialogTitle.07f5712b.js"])),E=g.lazy(()=>m(()=>import("./ReviewAccordion.bdfdf8b5.js"),["ReviewAccordion.bdfdf8b5.js","ReviewAccordion.7cbbcfdf.css","jsx-runtime_commonjs-proxy.8dbca415.js","index--9c8d4173.js","Modal.f0fc0fd1.js","_commonjsHelpers.6312ac27.js","Tooltip.d6380d7d.js","IconButton.f763a0f2.js","index.34b83dad.js","useDidMountEffect.4c9ce36e.js"])),O=i.div`
+  display: flex;
+  width: 100vw;
+  gap: 60px;
+`,T=i.div`
+  display: flex;
+  box-sizing: border-box;
+  width: 100%;
+  margin: 0px 20px;
+  margin-right: 50px;
+  align-items: center;
+  flex-direction: column;
+`;function B(p){const{fileData:e,interviewers:c,reviewData:s,amIAnAuthor:r}=p;return a(O,{children:[o(z,{fileData:e}),a(T,{children:[o(F,{interviewers:c}),o(E,{reviewData:s,amIAnAuthor:r})]})]})}function R(){const e=b().applicantId,c=x(n=>{var t;return(t=n.auth.user)==null?void 0:t.pk}),s=x(n=>{var t;return(t=n.applicant.applicantInfo)==null?void 0:t.file}),r=x(n=>n.review.reviewData),l=x(n=>{var t;return(t=n.applicant.applicantInfo)==null?void 0:t.interviewer}),d=h();return u.exports.useEffect(()=>{(async()=>{await d(v(e)),await d(y(e)),console.log("Asd")})()},[]),console.log(r),s&&r?o(u.exports.Suspense,{fallback:o("div",{children:"loading..."}),children:o(B,{fileData:s,interviewers:l,reviewData:r,amIAnAuthor:Boolean(l==null?void 0:l.find(n=>n.pk==c))})}):null}function N(){return o(w,{children:o(R,{})})}var U=Object.freeze(Object.defineProperty({__proto__:null,default:N},Symbol.toStringTag,{value:"Module"}));export{U as A,K as D,L as F,q as P,G as S,M as a,Y as b,$ as c,Q as d,J as e};
