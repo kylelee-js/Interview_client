@@ -66,7 +66,6 @@ export default function InterviewerNav({
         </DialogTitle>
         <DialogContent dividers={true}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
-            {/* TODO: 면접관 사진 보이기 */}
             <ProfileImg
               src={interviewerData?.image}
               alt="면접관 사진"

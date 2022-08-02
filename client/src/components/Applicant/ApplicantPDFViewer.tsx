@@ -84,6 +84,7 @@ export default function ApplicantPDFViewer({
         <DocStickyDiv id="stickyDoc">
           <Document
             file={{
+              // url: fileData[fileNumber].file,
               url:
                 fileData[fileNumber].file.slice(0, 18) +
                 ":8080" +
@@ -95,7 +96,6 @@ export default function ApplicantPDFViewer({
             }}
             onLoadSuccess={onDocumentLoadSuccess}
           >
-            fileData[fileNumber].file
             <Page pageNumber={pageNumber} />
           </Document>
           <PaginationMenu ref={pagDiv}>

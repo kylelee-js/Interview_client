@@ -1,3 +1,0 @@
-import{d as t,s as r}from"./index--9c8d4173.js";import{K as i}from"./KanBanContainer.08325963.js";import"./Modal.f0fc0fd1.js";import"./tiny-invariant.esm.d11e6c56.js";import"./KebabMenu.f4004a43.js";import"./jsx-runtime_commonjs-proxy.8dbca415.js";import"./_commonjsHelpers.6312ac27.js";import"./DialogTitle.07f5712b.js";import"./TextField.d7e6286b.js";import"./Tooltip.d6380d7d.js";import"./useDidMountEffect.4c9ce36e.js";import"./IconButton.f763a0f2.js";const o=r.div`
-  width: 100%;
-`;function p(){return t(o,{children:t(i,{type:"myapplicants"})})}function x(){return t(p,{})}export{x as default};
