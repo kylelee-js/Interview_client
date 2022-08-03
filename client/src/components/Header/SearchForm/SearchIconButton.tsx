@@ -1,7 +1,13 @@
 import { IconButton } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 
-export default function SearchIconButton() {
+type SearchIconButtonPropsType = {
+  isDate: boolean;
+};
+
+export default function SearchIconButton({
+  isDate,
+}: SearchIconButtonPropsType) {
   return (
     <IconButton type="submit" aria-label="delete">
       <SearchIcon
@@ -9,7 +15,7 @@ export default function SearchIconButton() {
           position: "absolute",
           color: "#1876d1",
           top: "-3px",
-          left: "-50px",
+          left: isDate ? "-87px" : "-50px",
         }}
       />
     </IconButton>

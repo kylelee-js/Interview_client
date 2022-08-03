@@ -43,6 +43,16 @@ export const patchApplicantById = async (
   }
 };
 
+export const patchApplicanDatetById = async (id: number, date: string) => {
+  try {
+    await axios.patch(`/applicant/date/${id}/`, {
+      interviewDate: date,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const deleteApplicantById = async (id: string) => {
   try {
     const res = await axios.delete(`/applicant/${id}/`);

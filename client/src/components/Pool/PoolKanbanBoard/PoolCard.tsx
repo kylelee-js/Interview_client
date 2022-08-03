@@ -13,6 +13,7 @@ import Checkbox from "@mui/material/Checkbox";
 import CheckIcon from "@mui/icons-material/Check";
 import { setApplicantMine } from "../../../api/fetchApplicant";
 import { useAppDispatch, useAppSelector } from "../../../store";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {
   CardWrapper,
   CheckBoxDiv,
@@ -44,6 +45,7 @@ export default React.memo(function Card({
   interviewer,
   isFailed = false,
   isFixed = false,
+  interviewDate = null,
 }: CardProps) {
   // TODO: 각 지원자 별로 setMine bool 값을 받아오기
   const userPk = useAppSelector((state) => state.auth.user?.pk);
@@ -144,6 +146,23 @@ export default React.memo(function Card({
                 </TagNote>
               ))}
             </Typography>
+
+            {interviewDate && (
+              <Typography
+                sx={{ fontSize: "12px", marginTop: 2, marginBottom: 0 }}
+                color="text.secondary"
+              >
+                면접예정일 :{" "}
+                {new Date(+interviewDate)?.toLocaleString("ko-KR", {
+                  year: "numeric",
+                  month: "numeric",
+                  day: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  hour12: true,
+                })}
+              </Typography>
+            )}
           </CardContent>
 
           <Menu

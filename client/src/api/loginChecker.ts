@@ -7,7 +7,9 @@ const JWT_EXPIRY_TIME = 5 * 60 * 1000;
 export const onLogin = async (data: LoginFormData) => {
   try {
     const res = await axios.post("/user/login/", data);
-    await onLoginSuccess(res);
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${res.data.access}`;
     return res;
   } catch (error) {
     const errors = error as AxiosError;
@@ -32,14 +34,18 @@ export const onLogout = async () => {
 };
 
 // 화면 새로고침 시에 최상단 루트인 App의 useEffect에서 호출해서 새로 토큰 발행
-export const onSilentRefresh = async () => {
-  const storage = JSON.parse("" + sessionStorage.getItem("persist:root"));
-  const authData = JSON.parse(storage.auth);
+export const onSilentRefresh = async (access: string) => {
   try {
     // Django simpleJWT에서는 헤더에 있으면 오류 상태를 구별을 못하기 때문에 지워주고 다시 넣음
     delete axios.defaults.headers.common["Authorization"];
-    const res = await axios.post("/user/refresh/", { access: authData.access });
-    onLoginSuccess(res);
+    const res = await axios.post("/user/refresh/", { access: access });
+    if (!res.data) {
+      console.log("서버가 아무것도 안줬어요 200인데");
+    }
+    axios.defaults.headers.common[
+      "Authorization"
+    ] = `Bearer ${res.data.access}`;
+    // onLoginSuccess(res);
     return res.data;
   } catch (error) {
     console.log(error);
@@ -49,8 +55,9 @@ export const onSilentRefresh = async () => {
   }
 };
 
-export const onLoginSuccess = async (response: AxiosResponse) => {
-  const { access } = await response.data;
-  axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
-  setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // 일분 전에 refresh
-};
+// 리덕스로 폴링
+// export const onLoginSuccess = (response: AxiosResponse) => {
+//   const { access } = response.data;
+//   axios.defaults.headers.common["Authorization"] = `Bearer ${access}`;
+//   setTimeout(onSilentRefresh, JWT_EXPIRY_TIME - 60000); // 일분 전에 refresh
+// };

@@ -67,7 +67,6 @@ export default function ApplicantPDFViewer({
   }, []);
 
   return (
-    // TODO: 여기에 번호 네이게이션
     <PDFWrapper>
       <FilePageNavWrapper>
         {fileData.map((file, index) => (

@@ -66,15 +66,13 @@ export default function LoginForm() {
       console.log(res);
       // FIXME: 타입 단언 -> 타입 가드로 수정하기!
       const response = res as AxiosResponse;
-      const { access } = response.data;
-      const { isLogin, name, nickname, pk } = response.data;
+      const { access, isLogin, name, nickname, pk } = response.data;
       dispatch(onAuth({ user: { isLogin, name, nickname, pk }, access }));
     } else if (res?.status == "403") {
       console.log(res);
       const { response } = res as AxiosError;
       // TODO: unknown 타입에 타입 선언하기 -> 어떻게?
       const data = response?.data as VerificationPk;
-      // if (isVerificationPk(response?.data)) {
       if (data) {
         setReverificationPk(data.verificationPk!);
         setEmailRevierfication(true);
@@ -101,8 +99,6 @@ export default function LoginForm() {
   };
 
   const onReverification = () => {
-    // TODO: 서버로 재전송 api /user/resend/
-    // pk : reverificationPk
     resendEmailVerification(reverificationPk);
     navigate("/verification");
   };

@@ -32,8 +32,6 @@ export default function InterviewerNav({
   };
 
   useEffect(() => {
-    // const storage = JSON.parse("" + sessionStorage.getItem("persist:root"));
-    // const { access } = JSON.parse(storage.auth);
     const onFetch = async () => {
       const url = await fetch(
         interviewerData?.image.slice(0, 18) +
@@ -42,7 +40,6 @@ export default function InterviewerNav({
         // interviewerData?.image!,
         {
           headers: new Headers({
-            // Authorization: `Bearer ${access}`,
             Authorization: `${axios.defaults.headers.common["Authorization"]}`,
           }),
         }
@@ -55,7 +52,6 @@ export default function InterviewerNav({
       setSrc(url);
     };
     onFetch();
-    console.log(src);
   }, [interviewerData]);
 
   const handleClose = () => {
@@ -97,7 +93,6 @@ export default function InterviewerNav({
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ProfileImg
               ref={ref}
-              // 강제로 에러를 발생시켜야함
               src={src}
               // src={
               //   interviewerData?.image.slice(0, 18) +

@@ -8,6 +8,7 @@ import {
 } from "@mui/material";
 import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { BoardGrid, MenuButtonDiv, TagNote } from "../../styles/boardStyle";
 import KebabMenu from "../KanBanBoard/KebabMenu";
@@ -78,6 +79,7 @@ export default function Search() {
           isFixed,
           tags,
           id,
+          interviewDate = null,
         } = result;
         return (
           <Box
@@ -147,6 +149,22 @@ export default function Search() {
                     </TagNote>
                   ))}
                 </Typography>
+                {interviewDate && (
+                  <Typography
+                    sx={{ fontSize: "12px", marginTop: 2, marginBottom: 0 }}
+                    color="text.secondary"
+                  >
+                    면접예정일 :{" "}
+                    {new Date(+interviewDate)?.toLocaleString("ko-KR", {
+                      year: "numeric",
+                      month: "numeric",
+                      day: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      hour12: true,
+                    })}
+                  </Typography>
+                )}
               </CardContent>
               <MenuButtonDiv>
                 <CardActions>

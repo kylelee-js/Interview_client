@@ -23,9 +23,17 @@ function App() {
 
   useEffect(() => {
     if (isLogin) {
+      console.log("login success");
       dispatch(reAuthUser());
+      const scheduler = setInterval(
+        () => dispatch(reAuthUser()),
+        4 * 60 * 1000
+      );
+      return () => {
+        clearInterval(scheduler);
+      };
     }
-  }, []);
+  }, [isLogin]);
 
   return (
     <Router>

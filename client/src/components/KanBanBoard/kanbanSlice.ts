@@ -74,7 +74,6 @@ const kanbanSlice = createSlice({
       return state;
     },
     onTagWrite(state, action) {
-      // TODO: post res로 받아온 id로 설정
       const { boardStatus, applicantIndex, tagId, tagText } = action.payload;
       const targetApplicant =
         state[+boardStatus - 1].applicants[applicantIndex];
@@ -89,7 +88,6 @@ const kanbanSlice = createSlice({
       }
     },
     onTagDelete(state, action) {
-      // TODO: post res로 받아온 id로 설정
       const { boardStatus, applicantIndex, tagId } = action.payload;
       const targetApplicant =
         state[+boardStatus - 1].applicants[applicantIndex];
@@ -97,6 +95,14 @@ const kanbanSlice = createSlice({
         (tag) => tag.id == tagId
       );
       targetApplicant.tags?.splice(targetTagIndex!, 1);
+      state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
+      return state;
+    },
+    onDateUpdate(state, action) {
+      const { boardStatus, applicantIndex, interviewDate } = action.payload;
+      const targetApplicant =
+        state[+boardStatus - 1].applicants[applicantIndex];
+      targetApplicant.interviewDate = interviewDate;
       state[+boardStatus - 1].applicants[applicantIndex] = targetApplicant;
       return state;
     },
@@ -117,4 +123,5 @@ export const {
   onToggleFixApplicant,
   onTagWrite,
   onTagDelete,
+  onDateUpdate,
 } = kanbanSlice.actions;

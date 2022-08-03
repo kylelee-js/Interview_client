@@ -37,6 +37,7 @@ export type ApplicantDataType = {
   interviewer?: InterviewerDataType[];
   isFixed?: boolean;
   order?: number;
+  interviewDate?: string | null;
 };
 
 // 면접관 리뷰 정보

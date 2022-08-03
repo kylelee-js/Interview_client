@@ -1,7 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
+import { AxiosResponse } from "axios";
 import { on } from "events";
 import { onUserNotice } from "../../api/boardUpdate";
 import { onSilentRefresh } from "../../api/loginChecker";
+import { RootState } from "../../store";
 
 type UserState = {
   pk: number;
@@ -21,15 +23,20 @@ const fake_User: UserAuthState = {
   user: null,
   access: null,
 };
-export const reAuthUser = createAsyncThunk("REAUTH", async () => {
-  try {
-    const res = await onSilentRefresh();
-    return res;
-  } catch (error) {
-    console.log(error);
-    onDeauth();
+export const reAuthUser = createAsyncThunk(
+  "REAUTH",
+  async (_, { getState }) => {
+    try {
+      // TODO: typescript로 넣기
+      const state = getState() as RootState;
+      const res = await onSilentRefresh(state.auth.access!);
+      return res;
+    } catch (error) {
+      console.log(error);
+      onDeauth();
+    }
   }
-});
+);
 
 export const noticeAfterLogin = createAsyncThunk(
   "NOTICE_AFTER_LOGIN",

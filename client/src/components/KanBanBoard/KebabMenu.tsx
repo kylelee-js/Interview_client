@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 import FailApplicantPopup from "../Popup/FailApplicantPopup";
 import TagNotePopup from "../Popup/TagNotePopup";
 import { TagDataType } from "../Applicant/applicantSlice";
+import DatePickerPopup from "../Popup/DatePickerPopup";
 
 const RedSpan = styled.span`
   color: red;
@@ -80,6 +81,17 @@ export default React.memo(function KebabMenu({
 
   const tagModalClose = () => {
     setTagOpen(false);
+    setAnchorEl(null);
+  };
+
+  const [dateOpen, setDateOpen] = useState(false);
+
+  const dateModalOpen = () => {
+    setDateOpen(true);
+  };
+
+  const dateModalClose = () => {
+    setDateOpen(false);
     setAnchorEl(null);
   };
 
@@ -175,6 +187,9 @@ export default React.memo(function KebabMenu({
               )}
             </div>
           )}
+          <MenuItem disabled={tags?.length == 3} onClick={dateModalOpen}>
+            면접일정 선택
+          </MenuItem>
         </Menu>
       )}
 
@@ -191,6 +206,13 @@ export default React.memo(function KebabMenu({
         boardStatus={status}
         applicantIndex={applicantIndex}
         tags={tags}
+      />
+      <DatePickerPopup
+        open={dateOpen}
+        applicantId={id}
+        boardStatus={status}
+        applicantIndex={applicantIndex}
+        dateModalClose={dateModalClose}
       />
     </div>
   );

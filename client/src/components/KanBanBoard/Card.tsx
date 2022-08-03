@@ -7,6 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
+import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import KebabMenu from "./KebabMenu";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { Tooltip } from "@mui/material";
@@ -36,6 +37,7 @@ export default React.memo(function Card({
   job,
   isFailed = false,
   isFixed = false,
+  interviewDate = null,
 }: CardProps) {
   const userPk = useAppSelector((state) => state.auth.user?.pk);
   const dispatch = useAppDispatch();
@@ -123,6 +125,23 @@ export default React.memo(function Card({
                       </TagNote>
                     ))}
                   </Typography>
+
+                  {interviewDate && (
+                    <Typography
+                      sx={{ fontSize: "12px", marginTop: 2, marginBottom: 0 }}
+                      color="text.secondary"
+                    >
+                      면접예정일 :{" "}
+                      {new Date(+interviewDate)?.toLocaleString("ko-KR", {
+                        year: "numeric",
+                        month: "numeric",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </Typography>
+                  )}
                 </CardContent>
 
                 <Menu

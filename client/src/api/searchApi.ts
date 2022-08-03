@@ -16,8 +16,17 @@ export const fetchSearchResult = async ({
   searchKeyword,
 }: SearchDataType) => {
   try {
-    const res = await axios.get(`/search/${option}/${searchKeyword}/`);
-    return res.data;
+    if (option == "date") {
+      const res = await axios.get(
+        `/search/${option}/${searchKeyword.split("~")[0]}/${
+          searchKeyword.split("~")[1]
+        }/`
+      );
+      return res.data;
+    } else {
+      const res = await axios.get(`/search/${option}/${searchKeyword}/`);
+      return res.data;
+    }
   } catch (error) {
     console.log(error);
   }
