@@ -56,7 +56,7 @@ export default function InterviewerNav({
     };
     onFetch();
     console.log(src);
-  }, []);
+  }, [interviewerData]);
 
   const handleClose = () => {
     setOpen(false);
