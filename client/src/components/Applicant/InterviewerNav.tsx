@@ -7,7 +7,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 import axios from "axios";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { ProfileImg } from "../../styles/formStyle";
 import {
   InterviewerButton,
@@ -25,26 +25,25 @@ export default function InterviewerNav({
 }: InterviewerNavPropsType) {
   const [interviewerData, setInterviewerData] = useState<InterviewerDataType>();
   const [open, setOpen] = useState(false);
-  // const ref = useRef<HTMLImageElement>(null)
+  const [src, setSrc] = useState<string>("");
+  const ref = useRef<HTMLImageElement>(null);
   const handleClickOpen = () => {
     setOpen(true);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  const handleError = async (e: React.SyntheticEvent<HTMLImageElement>) => {
-    const storage = JSON.parse("" + sessionStorage.getItem("persist:root"));
-    const { access } = JSON.parse(storage.auth);
-    try {
+  useEffect(() => {
+    // const storage = JSON.parse("" + sessionStorage.getItem("persist:root"));
+    // const { access } = JSON.parse(storage.auth);
+    const onFetch = async () => {
       const url = await fetch(
         interviewerData?.image.slice(0, 18) +
           ":8080" +
           interviewerData?.image.slice(18),
+        // interviewerData?.image!,
         {
           headers: new Headers({
-            Authorization: `Bearer ${access}`,
+            // Authorization: `Bearer ${access}`,
+            Authorization: `${axios.defaults.headers.common["Authorization"]}`,
           }),
         }
       )
@@ -53,10 +52,18 @@ export default function InterviewerNav({
           console.log(URL.createObjectURL(blob));
           return URL.createObjectURL(blob);
         });
-      e.currentTarget.src = url;
-    } catch (error) {
-      e.currentTarget.src = "/default.png";
-    }
+      setSrc(url);
+    };
+    onFetch();
+    console.log(src);
+  }, []);
+
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  const handleError = (e: React.SyntheticEvent<HTMLImageElement>) => {
+    e.currentTarget.src = "/default.png";
   };
 
   if (!interviewers) return null;
@@ -89,9 +96,9 @@ export default function InterviewerNav({
         <DialogContent dividers={true}>
           <DialogContentText id="scroll-dialog-description" tabIndex={-1}>
             <ProfileImg
-              // ref={ref}
+              ref={ref}
               // 강제로 에러를 발생시켜야함
-              src={interviewerData?.image}
+              src={src}
               // src={
               //   interviewerData?.image.slice(0, 18) +
               //   ":8080" +

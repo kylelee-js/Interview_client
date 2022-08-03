@@ -32,7 +32,7 @@ function App() {
       {/* TODO: 로딩 폴백 UI <스켈레론 뷰> 추가하기 */}
       <Suspense fallback={<>loading fallback suspense</>}>
         <Routes>
-          {/* <Route path="*" element={<NotFoundPage />} /> */}
+          <Route path="*" element={<NotFoundPage />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
           <Route path="/verification" element={<EmailVerificationPage />} />
