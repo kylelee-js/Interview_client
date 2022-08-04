@@ -41,6 +41,7 @@ export default React.memo(function KebabMenu({
   const [popupOpened, setPopupOpened] = useState(false);
   const [isPending, startTransition] = useTransition();
   const { handleFail, handleFix } = useMenu({
+    id: id,
     status: "" + (+status - 1),
     applicantIndex,
     isFailed: Boolean(isFailed),
@@ -187,9 +188,7 @@ export default React.memo(function KebabMenu({
               )}
             </div>
           )}
-          <MenuItem disabled={tags?.length == 3} onClick={dateModalOpen}>
-            면접일정 선택
-          </MenuItem>
+          <MenuItem onClick={dateModalOpen}>면접일정 선택</MenuItem>
         </Menu>
       )}
 

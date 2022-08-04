@@ -1,6 +1,7 @@
 // TODO:  이걸 커스텀 훅으로 만들어야하는데...
 
 import { useState } from "react";
+import { updateApplicantFixAndFailById } from "../api/fetchApplicant";
 import {
   ApplicantActionType,
   onToggleRemoveApplicant,
@@ -12,27 +13,43 @@ import {
 } from "../components/Search/searchSlice";
 import { useAppDispatch, useAppSelector } from "../store";
 
-export default function useMenu(props: ApplicantActionType) {
+type useMenuPropsType = {
+  id: number;
+  status: string;
+  applicantIndex: number;
+  isFailed: boolean;
+  isFixed: boolean;
+};
+export default function useMenu({
+  id,
+  status,
+  applicantIndex,
+  isFailed,
+  isFixed,
+}: useMenuPropsType) {
   const type = useAppSelector((state) => state.pageType.type);
-  const { isFailed, isFixed } = props;
   const [Fixed, setFixed] = useState<boolean>(isFixed);
   const [failed, setFailed] = useState<boolean>(isFailed);
   const dispatch = useAppDispatch();
-  const handleFail = () => {
+  const handleFail = async () => {
     if (type == "myapplicants") {
-      dispatch(onToggleRemoveApplicant(props));
+      dispatch(
+        onToggleRemoveApplicant({ status, applicantIndex, isFailed, isFixed })
+      );
     } else if (type == "search") {
-      const { applicantIndex, isFailed } = props;
       dispatch(onToggleRemoveApplicantSearch({ applicantIndex, isFailed }));
     }
+    await updateApplicantFixAndFailById(id, !isFixed, !isFailed);
   };
-  const handleFix = () => {
+  const handleFix = async () => {
     if (type == "myapplicants") {
-      dispatch(onToggleFixApplicant(props));
+      dispatch(
+        onToggleFixApplicant({ status, applicantIndex, isFailed, isFixed })
+      );
     } else if (type == "search") {
-      const { applicantIndex, isFixed } = props;
       dispatch(onToggleFixApplicantSearch({ applicantIndex, isFailed }));
     }
+    await updateApplicantFixAndFailById(id, !isFixed, isFailed);
   };
   return { handleFix, handleFail };
 }

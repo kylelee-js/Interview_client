@@ -43,10 +43,25 @@ export const patchApplicantById = async (
   }
 };
 
-export const patchApplicanDatetById = async (id: number, date: string) => {
+export const updateApplicanDatetById = async (id: number, date: string) => {
   try {
-    await axios.patch(`/applicant/date/${id}/`, {
+    await axios.patch(`/applicant/update/${id}/`, {
       interviewDate: date,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateApplicantFixAndFailById = async (
+  id: number,
+  isFixed: boolean,
+  isFailed: boolean
+) => {
+  try {
+    await axios.patch(`/applicant/update/${id}/`, {
+      isFixed: isFixed,
+      isFailed: isFailed,
     });
   } catch (error) {
     console.log(error);

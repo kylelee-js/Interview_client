@@ -11,7 +11,7 @@ import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
 import { ChangeEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { patchApplicanDatetById } from "../../api/fetchApplicant";
+import { updateApplicanDatetById } from "../../api/fetchApplicant";
 import { onDateUpdate } from "../KanBanBoard/kanbanSlice";
 import { onDateUpdateSearch } from "../Search/searchSlice";
 
@@ -41,7 +41,7 @@ export default function DatePickerPopup({
   const onPatchDate = async () => {
     if (interviewDate) {
       console.log(new Date(interviewDate).toISOString());
-      await patchApplicanDatetById(
+      await updateApplicanDatetById(
         applicantId,
         new Date(interviewDate).toISOString()
       );
