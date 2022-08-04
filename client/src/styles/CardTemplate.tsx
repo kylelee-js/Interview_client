@@ -1,9 +1,12 @@
 import {
+  Alert,
   Card,
   CardActions,
   CardContent,
+  Checkbox,
   Menu,
   MenuItem,
+  Snackbar,
   Tooltip,
   Typography,
 } from "@mui/material";
@@ -11,10 +14,10 @@ import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
 import PersonPinCircleIcon from "@mui/icons-material/PersonPinCircle";
 import styled from "styled-components";
-
+import CheckIcon from "@mui/icons-material/Check";
 import { ApplicantDataType } from "../components/Applicant/applicantSlice";
 import KebabMenu from "../components/KanBanBoard/KebabMenu";
-import { MenuButtonDiv, TagNote } from "./boardStyle";
+import { CheckBoxDiv, MenuButtonDiv, TagNote } from "./boardStyle";
 import { useState } from "react";
 import { onDeleteTag } from "../api/boardUpdate";
 import { onTagDelete } from "../components/KanBanBoard/kanbanSlice";
@@ -199,6 +202,40 @@ export default function CardTemplate({
           태그 삭제하기
         </MenuItem>
       </Menu>
+      {/* {type == "pool" && (
+            // TODO: 체크박스
+            <CheckBoxDiv>
+              <Checkbox
+                checked={isMine}
+                color="default"
+                sx={{ "& .MuiSvgIcon-root": { fontSize: 28 } }}
+                onClick={onCheckClick}
+              />
+              <Snackbar
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                open={open}
+                onClose={() => setOpen(false)}
+                autoHideDuration={2000}
+              >
+                <Alert
+                  icon={<CheckIcon fontSize="inherit" />}
+                  severity="success"
+                >
+                  해당 지원자의 면접관으로 등록하셨습니다.
+                </Alert>
+              </Snackbar>
+              <Snackbar
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+                open={openOpp}
+                onClose={() => setOpenOpp(false)}
+                autoHideDuration={2000}
+              >
+                <Alert icon={<CheckIcon fontSize="inherit" />} severity="info">
+                  해당 지원자의 면접관 등록을 해제하셨습니다.
+                </Alert>
+              </Snackbar>
+            </CheckBoxDiv>
+          )} */}
 
       <MenuButtonDiv>
         <CardActions>
