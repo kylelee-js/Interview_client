@@ -18,6 +18,7 @@ import {
 import { onTrigger } from "./triggerFetchSlice";
 import styled from "styled-components";
 import SearchInput from "./SearchForm/SearchInput";
+import useInterval from "../../hooks/useInterval";
 
 const LinkAnchor = styled.button`
   cursor: pointer;
@@ -46,20 +47,16 @@ export default function HeaderLayout() {
     (state) => state.auth.user?.onLoginChange
   );
 
-  useEffect(() => {
+  const onFetch = async () => {
+    const notice = await onUserNotice();
+    dispatch(onNotice(notice));
+  };
+
+  useInterval(() => {
     if (!loginChangeAlarm) {
-      // TODO: RTK Query -> polling 으로 변경
-      const onFetch = async () => {
-        const notice = await onUserNotice();
-        dispatch(onNotice(notice));
-      };
       onFetch();
-      const scheduler = setInterval(onFetch, 10000);
-      return () => {
-        clearInterval(scheduler);
-      };
     }
-  }, []);
+  }, 10000);
 
   const onNoticeClick = () => {
     dispatch(onTrigger());

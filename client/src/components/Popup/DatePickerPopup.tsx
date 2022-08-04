@@ -9,10 +9,11 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { useState } from "react";
+import { ChangeEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { patchApplicanDatetById } from "../../api/fetchApplicant";
 import { onDateUpdate } from "../KanBanBoard/kanbanSlice";
+import { onDateUpdateSearch } from "../Search/searchSlice";
 
 type DatePickerPopupPropsType = {
   open: boolean;
@@ -30,6 +31,7 @@ export default function DatePickerPopup({
   dateModalClose,
 }: DatePickerPopupPropsType) {
   const [interviewDate, setInterviewDate] = useState<Date | null>(new Date());
+  const type = useAppSelector((state) => state.pageType.type);
   const dispatch = useAppDispatch();
 
   const handleChange = (newValue: Date | null) => {
@@ -37,18 +39,31 @@ export default function DatePickerPopup({
   };
 
   const onPatchDate = async () => {
-    console.log(new Date(interviewDate!));
-    await patchApplicanDatetById(
-      applicantId,
-      "" + new Date(interviewDate!).getTime()
-    );
-    dispatch(
-      onDateUpdate({
-        boardStatus,
-        applicantIndex,
-        interviewDate: "" + new Date(interviewDate!).getTime(),
-      })
-    );
+    if (interviewDate) {
+      console.log(new Date(interviewDate).toISOString());
+      await patchApplicanDatetById(
+        applicantId,
+        new Date(interviewDate).toISOString()
+      );
+      if (type == "myapplicants") {
+        dispatch(
+          onDateUpdate({
+            boardStatus,
+            applicantIndex,
+            interviewDate: new Date(interviewDate).toISOString(),
+          })
+        );
+      } else if (type == "search") {
+        dispatch(
+          onDateUpdateSearch({
+            applicantIndex,
+            interviewDate: new Date(interviewDate).toISOString(),
+          })
+        );
+      }
+    } else {
+      console.log("interviewDate가 없어요!");
+    }
     dateModalClose();
   };
 

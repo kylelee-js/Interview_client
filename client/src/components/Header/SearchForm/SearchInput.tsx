@@ -22,7 +22,6 @@ export default function SearchInput() {
   const [fromDate, setfromDate] = useState<Date | null>(new Date());
   const [toDate, setToDate] = useState<Date | null>(new Date());
 
-  console.log(fromDate, toDate);
   const handleFromChange = (newValue: Date | null) => {
     setfromDate(newValue);
   };
@@ -45,7 +44,7 @@ export default function SearchInput() {
       navigate(
         `./search/?option=${data.option}&searchKeyword=${new Date(
           fromDate!
-        ).getTime()}~${new Date(toDate!).getTime()}`
+        ).toISOString()}~${new Date(toDate!).toISOString()}`
       );
     }
   };
@@ -55,7 +54,6 @@ export default function SearchInput() {
         <FormControl>
           <NativeSelect
             id="demo-simple-select"
-            // value={option}
             sx={{ fontSize: "15px", textAlign: "center", color: "black" }}
             disableUnderline
             defaultValue={"applicant"}

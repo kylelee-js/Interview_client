@@ -13,6 +13,7 @@ import { useAppDispatch, useAppSelector } from "../../store";
 import { TagDataType } from "../Applicant/applicantSlice";
 import { onTagWrite } from "../KanBanBoard/kanbanSlice";
 import { onTagWrite as onTagWritePool } from "../Pool/poolSlice";
+import { onTagWriteSearch } from "../Search/searchSlice";
 
 type TagNotePopupPropsType = {
   open: boolean;
@@ -58,10 +59,18 @@ export default function TagNotePopup({
         dispatch(
           onTagWrite({ boardStatus, applicantIndex, tagId, tagText: tagText })
         );
-      } else {
+      } else if (type == "pool") {
         dispatch(
           onTagWritePool({
             boardStatus,
+            applicantIndex,
+            tagId,
+            tagText: tagText,
+          })
+        );
+      } else if (type == "search") {
+        dispatch(
+          onTagWriteSearch({
             applicantIndex,
             tagId,
             tagText: tagText,
@@ -84,8 +93,6 @@ export default function TagNotePopup({
             지원자당 태그는 3개까지 작성하실 수 있습니다.
           </DialogContentText>
           <TextField
-            // FIXME: error validation 코드 작성하기
-            // error={overlapAlert}
             inputProps={{ maxLength: 8 }}
             helperText="태그는 8글자까지 가능합니다."
             onChange={onChange}

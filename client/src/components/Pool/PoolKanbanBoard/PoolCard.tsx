@@ -13,7 +13,6 @@ import Checkbox from "@mui/material/Checkbox";
 import CheckIcon from "@mui/icons-material/Check";
 import { setApplicantMine } from "../../../api/fetchApplicant";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
 import {
   CardWrapper,
   CheckBoxDiv,
@@ -153,7 +152,7 @@ export default React.memo(function Card({
                 color="text.secondary"
               >
                 면접예정일 :{" "}
-                {new Date(+interviewDate)?.toLocaleString("ko-KR", {
+                {new Date(interviewDate)?.toLocaleString("ko-KR", {
                   year: "numeric",
                   month: "numeric",
                   day: "numeric",

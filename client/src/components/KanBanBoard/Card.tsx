@@ -7,7 +7,7 @@ import CardContent from "@mui/material/CardContent";
 import Typography from "@mui/material/Typography";
 import LockIcon from "@mui/icons-material/Lock";
 import BlockIcon from "@mui/icons-material/Block";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import PersonPinCircleIcon from "@mui/icons-material/PersonPinCircle";
 import KebabMenu from "./KebabMenu";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { Tooltip } from "@mui/material";
@@ -15,6 +15,7 @@ import { CardWrapper, MenuButtonDiv, TagNote } from "../../styles/boardStyle";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { onTagDelete } from "./kanbanSlice";
 import { onDeleteTag } from "../../api/boardUpdate";
+import CardTemplate from "../../styles/CardTemplate";
 
 const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
 const poolPageBoards = ["개발", "마케팅", "경영지원", "디자인"];
@@ -25,20 +26,22 @@ interface CardProps extends ApplicantDataType {
   type: string;
 }
 
-export default React.memo(function Card({
-  id,
-  applicantName,
-  applicantIndex,
-  tags,
-  department,
-  boardStatus,
-  interviewer,
-  type,
-  job,
-  isFailed = false,
-  isFixed = false,
-  interviewDate = null,
-}: CardProps) {
+export default React.memo(function Card(props: CardProps) {
+  const {
+    id,
+    applicantName,
+    applicantIndex,
+    tags,
+    department,
+    boardStatus,
+    status,
+    interviewer,
+    type,
+    job,
+    isFailed = false,
+    isFixed = false,
+    interviewDate = null,
+  } = props;
   const userPk = useAppSelector((state) => state.auth.user?.pk);
   const dispatch = useAppDispatch();
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -86,7 +89,7 @@ export default React.memo(function Card({
               {...provided.dragHandleProps}
               style={style}
             >
-              <MuiCard variant="outlined">
+              {/* <MuiCard variant="outlined">
                 <CardContent>
                   <Typography
                     sx={{ fontSize: 14 }}
@@ -112,7 +115,9 @@ export default React.memo(function Card({
                     )}
                   </Typography>
                   <Typography sx={{ mb: 1.5 }} color="text.secondary">
-                    {myPageBoards[+boardStatus]}
+                    {type == "myapplicants"
+                      ? myPageBoards[+boardStatus]
+                      : myPageBoards[+status]}
                   </Typography>
                   <Typography variant="body2">
                     {tags?.map((tag) => (
@@ -128,18 +133,46 @@ export default React.memo(function Card({
 
                   {interviewDate && (
                     <Typography
-                      sx={{ fontSize: "12px", marginTop: 2, marginBottom: 0 }}
+                      sx={{
+                        position: "relative",
+                        fontSize: "12px",
+                        marginTop: 2,
+                        marginBottom: 0,
+                      }}
                       color="text.secondary"
                     >
-                      면접예정일 :{" "}
-                      {new Date(+interviewDate)?.toLocaleString("ko-KR", {
-                        year: "numeric",
-                        month: "numeric",
-                        day: "numeric",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        hour12: true,
-                      })}
+                      <span
+                        style={{
+                          color:
+                            new Date() > new Date(interviewDate)
+                              ? "red"
+                              : "inherit",
+                        }}
+                      >
+                        면접예정일 :{" "}
+                        {new Date(interviewDate)?.toLocaleString("ko-KR", {
+                          year: "numeric",
+                          month: "numeric",
+                          day: "numeric",
+                          hour: "2-digit",
+                          minute: "2-digit",
+                          hour12: true,
+                        })}
+                      </span>
+
+                      {new Date().getDate() ==
+                        new Date(interviewDate).getDate() &&
+                        new Date().getMonth() ==
+                          new Date(interviewDate).getMonth() && (
+                          <PersonPinCircleIcon
+                            style={{
+                              position: "absolute",
+                              top: "-3px",
+                              right: "0px",
+                            }}
+                            fontSize="small"
+                          />
+                        )}
                     </Typography>
                   )}
                 </CardContent>
@@ -185,7 +218,13 @@ export default React.memo(function Card({
                     />
                   </CardActions>
                 </MenuButtonDiv>
-              </MuiCard>
+              </MuiCard> */}
+              <CardTemplate
+                {...props}
+                type={type}
+                userPk={userPk}
+                keyword={"🚔"}
+              />
             </Box>
           </CardWrapper>
         );

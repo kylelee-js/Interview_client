@@ -5,6 +5,8 @@ import { reAuthUser } from "../components/Login/authSlice";
 
 import EmailVerificationPage from "../pages/EmailVerificationPage";
 import NotFoundPage from "../pages/NotFoundPage";
+import useInterval from "../hooks/useInterval";
+import useDidMountEffect from "../hooks/useDidMountEffect";
 
 const LoginPage = React.lazy(() => import("../pages/LoginPage"));
 const MainPage = React.lazy(() => import("../pages/MainPage"));
@@ -21,17 +23,17 @@ function App() {
   const isLogin = useAppSelector((state) => state.auth.user?.isLogin);
   const dispatch = useAppDispatch();
 
-  useEffect(() => {
+  useInterval(() => {
+    if (isLogin) {
+      dispatch(reAuthUser());
+    }
+  }, 4 * 60 * 1000);
+
+  // 최초 로그인시
+  useDidMountEffect(() => {
     if (isLogin) {
       console.log("login success");
       dispatch(reAuthUser());
-      const scheduler = setInterval(
-        () => dispatch(reAuthUser()),
-        4 * 60 * 1000
-      );
-      return () => {
-        clearInterval(scheduler);
-      };
     }
   }, [isLogin]);
 

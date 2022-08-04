@@ -6,25 +6,33 @@ import {
   onToggleRemoveApplicant,
   onToggleFixApplicant,
 } from "../components/KanBanBoard/kanbanSlice";
-import { useAppDispatch } from "../store";
+import {
+  onToggleFixApplicantSearch,
+  onToggleRemoveApplicantSearch,
+} from "../components/Search/searchSlice";
+import { useAppDispatch, useAppSelector } from "../store";
 
 export default function useMenu(props: ApplicantActionType) {
+  const type = useAppSelector((state) => state.pageType.type);
   const { isFailed, isFixed } = props;
   const [Fixed, setFixed] = useState<boolean>(isFixed);
   const [failed, setFailed] = useState<boolean>(isFailed);
   const dispatch = useAppDispatch();
   const handleFail = () => {
-    dispatch(onToggleRemoveApplicant(props));
+    if (type == "myapplicants") {
+      dispatch(onToggleRemoveApplicant(props));
+    } else if (type == "search") {
+      const { applicantIndex, isFailed } = props;
+      dispatch(onToggleRemoveApplicantSearch({ applicantIndex, isFailed }));
+    }
   };
   const handleFix = () => {
-    dispatch(onToggleFixApplicant(props));
+    if (type == "myapplicants") {
+      dispatch(onToggleFixApplicant(props));
+    } else if (type == "search") {
+      const { applicantIndex, isFixed } = props;
+      dispatch(onToggleFixApplicantSearch({ applicantIndex, isFailed }));
+    }
   };
-  // const handleUnfix = () => {
-  //   dispatch(onToggleFixApplicant(props));
-  // };
-  // const handleRollBack = () => {
-  //   dispatch(onToggleRemoveApplicant(props));
-  // };
-
   return { handleFix, handleFail };
 }

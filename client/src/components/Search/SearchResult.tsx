@@ -1,40 +1,24 @@
-import {
-  Box,
-  Card,
-  CardActions,
-  CardContent,
-  Tooltip,
-  Typography,
-} from "@mui/material";
-import LockIcon from "@mui/icons-material/Lock";
-import BlockIcon from "@mui/icons-material/Block";
-import AccessTimeIcon from "@mui/icons-material/AccessTime";
+import { Box, Typography } from "@mui/material";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { BoardGrid, MenuButtonDiv, TagNote } from "../../styles/boardStyle";
-import KebabMenu from "../KanBanBoard/KebabMenu";
+import { BoardGrid } from "../../styles/boardStyle";
 import { useLocation } from "react-router-dom";
 import { fetchSearchData } from "./searchSlice";
 import { SearchDataType } from "../../api/searchApi";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { onSetPage } from "../KanBanBoard/pageTypeSlice";
+import CardTemplate from "../../styles/CardTemplate";
 
 export const BoardWrapper = styled.div`
   padding: 5px 15px;
   box-sizing: border-box;
   display: flex;
   justify-content: center;
-  /* align-items: center; */
   min-height: 80vh;
   width: 100%;
   background-color: #d9dedb;
   border-radius: 3px;
   box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
-`;
-
-const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
-
-const HighlightSpan = styled.span<{ match: boolean }>`
-  background-color: ${(props) => (props.match ? "yellow" : "transparent")};
 `;
 
 export default function Search() {
@@ -46,6 +30,7 @@ export default function Search() {
   const [opt, setOpt] = useState<string>("");
 
   useEffect(() => {
+    dispatch(onSetPage("search"));
     const option = new URLSearchParams(search).get("option");
     const searchKeyword = new URLSearchParams(search).get("searchKeyword");
     setKeyword(searchKeyword!);
@@ -69,18 +54,7 @@ export default function Search() {
   return (
     <BoardGrid boardLength={4}>
       {searchSlice.map((result, index) => {
-        const {
-          status,
-          department,
-          job,
-          interviewer,
-          applicantName,
-          isFailed,
-          isFixed,
-          tags,
-          id,
-          interviewDate = null,
-        } = result;
+        const { id } = result;
         return (
           <Box
             key={id}
@@ -93,7 +67,7 @@ export default function Search() {
               boxSizing: "border-box",
             }}
           >
-            <Card variant="outlined">
+            {/* <Card variant="outlined">
               <CardContent>
                 <Typography
                   sx={{
@@ -151,18 +125,45 @@ export default function Search() {
                 </Typography>
                 {interviewDate && (
                   <Typography
-                    sx={{ fontSize: "12px", marginTop: 2, marginBottom: 0 }}
+                    sx={{
+                      position: "relative",
+                      fontSize: "12px",
+                      marginTop: 2,
+                      marginBottom: 0,
+                    }}
                     color="text.secondary"
                   >
-                    면접예정일 :{" "}
-                    {new Date(+interviewDate)?.toLocaleString("ko-KR", {
-                      year: "numeric",
-                      month: "numeric",
-                      day: "numeric",
-                      hour: "2-digit",
-                      minute: "2-digit",
-                      hour12: true,
-                    })}
+                    <span
+                      style={{
+                        color:
+                          new Date() > new Date(interviewDate)
+                            ? "red"
+                            : "inherit",
+                      }}
+                    >
+                      면접예정일 :{" "}
+                      {new Date(interviewDate)?.toLocaleString("ko-KR", {
+                        year: "numeric",
+                        month: "numeric",
+                        day: "numeric",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        hour12: true,
+                      })}
+                    </span>
+                    {new Date().getDate() ==
+                      new Date(interviewDate).getDate() &&
+                      new Date().getMonth() ==
+                        new Date(interviewDate).getMonth() && (
+                        <PersonPinCircleIcon
+                          style={{
+                            position: "absolute",
+                            top: "-3px",
+                            right: "0px",
+                          }}
+                          fontSize="small"
+                        />
+                      )}
                   </Typography>
                 )}
               </CardContent>
@@ -184,7 +185,15 @@ export default function Search() {
                   />
                 </CardActions>
               </MenuButtonDiv>
-            </Card>
+            </Card> */}
+            <CardTemplate
+              {...result}
+              type={"search"}
+              userPk={userPk}
+              keyword={keyword}
+              applicantIndex={index}
+              boardStatus={"0"}
+            />
           </Box>
         );
       })}

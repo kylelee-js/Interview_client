@@ -34,10 +34,10 @@ export default function InterviewerNav({
   useEffect(() => {
     const onFetch = async () => {
       const url = await fetch(
-        interviewerData?.image.slice(0, 18) +
-          ":8080" +
-          interviewerData?.image.slice(18),
-        // interviewerData?.image!,
+        // interviewerData?.image.slice(0, 18) +
+        //   ":8080" +
+        //   interviewerData?.image.slice(18),
+        interviewerData?.image!,
         {
           headers: new Headers({
             Authorization: `${axios.defaults.headers.common["Authorization"]}`,
@@ -94,11 +94,6 @@ export default function InterviewerNav({
             <ProfileImg
               ref={ref}
               src={src}
-              // src={
-              //   interviewerData?.image.slice(0, 18) +
-              //   ":8080" +
-              //   interviewerData?.image.slice(18)
-              // }
               alt="면접관 사진"
               onError={handleError}
             />
