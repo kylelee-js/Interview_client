@@ -9,7 +9,7 @@ import axios from "axios";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 
-// localStorage에 redux state 저장
+// sessionStorage에 redux state 저장
 const persistor = persistStore(store);
 
 axios.defaults.withCredentials = true;

@@ -5,13 +5,11 @@ import Button from "@mui/material/Button";
 export type ReviewEditorMenuPropsType = {
   menuShown: boolean;
   applicantStatus: number;
-  setIsEditMode: Dispatch<React.SetStateAction<boolean>>;
 };
 
 export default React.memo(function ReviewEditorMenu({
   menuShown,
   applicantStatus,
-  setIsEditMode,
 }: ReviewEditorMenuPropsType) {
   const [reviewButton, setReviewButton] = useState<boolean>(true);
   const [editorShown, setEditorShown] = useState<boolean>(false);
@@ -37,7 +35,7 @@ export default React.memo(function ReviewEditorMenu({
       {editorShown && (
         <>
           <ReviewEditor
-            setIsEditMode={setIsEditMode}
+            setIsEditMode={() => {}}
             applicantStatus={applicantStatus}
             defaultText=""
             toggler={toggleShownEditor}

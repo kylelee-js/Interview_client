@@ -9,7 +9,7 @@ import {
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { ChangeEvent, useState } from "react";
+import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { updateApplicanDatetById } from "../../api/fetchApplicant";
 import { onDateUpdate } from "../KanBanBoard/kanbanSlice";

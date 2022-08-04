@@ -3,7 +3,6 @@
 import { useState } from "react";
 import { updateApplicantFixAndFailById } from "../api/fetchApplicant";
 import {
-  ApplicantActionType,
   onToggleRemoveApplicant,
   onToggleFixApplicant,
 } from "../components/KanBanBoard/kanbanSlice";
@@ -28,8 +27,8 @@ export default function useMenu({
   isFixed,
 }: useMenuPropsType) {
   const type = useAppSelector((state) => state.pageType.type);
-  const [Fixed, setFixed] = useState<boolean>(isFixed);
-  const [failed, setFailed] = useState<boolean>(isFailed);
+  // const [Fixed, setFixed] = useState<boolean>(isFixed);
+  // const [failed, setFailed] = useState<boolean>(isFailed);
   const dispatch = useAppDispatch();
   const handleFail = async () => {
     if (type == "myapplicants") {
@@ -39,7 +38,7 @@ export default function useMenu({
     } else if (type == "search") {
       dispatch(onToggleRemoveApplicantSearch({ applicantIndex, isFailed }));
     }
-    await updateApplicantFixAndFailById(id, !isFixed, !isFailed);
+    await updateApplicantFixAndFailById(id, !isFailed, !isFailed);
   };
   const handleFix = async () => {
     if (type == "myapplicants") {

@@ -3,8 +3,6 @@ import styled from "styled-components";
 import { fileDataType, InterviewerDataType } from "./applicantSlice";
 import InterviewerNav from "./InterviewerNav";
 import { ReviewDataType } from "./reviewSlice";
-// import ApplicantPDFViewer from "./ApplicantPDFViewer";
-// import ReviewAccordion from "./ReviewAccordion";
 const ApplicantPDFViewer = React.lazy(() => import("./ApplicantPDFViewer"));
 const ReviewAccordion = React.lazy(() => import("./ReviewAccordion"));
 

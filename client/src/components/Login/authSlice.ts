@@ -1,11 +1,9 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { AxiosResponse } from "axios";
-import { on } from "events";
 import { onUserNotice } from "../../api/boardUpdate";
 import { onSilentRefresh } from "../../api/loginChecker";
 import { RootState } from "../../store";
 
-type UserState = {
+export type UserState = {
   pk: number;
   name: string;
   nickname: string;

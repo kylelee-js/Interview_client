@@ -27,7 +27,7 @@ const rootReducer = combineReducers({
   search: search,
 });
 
-// 로컬스토리지 저장 - redux-persist
+// 세션스토리지 저장 - redux-persist
 const persistConfig = {
   key: "root",
   storage,

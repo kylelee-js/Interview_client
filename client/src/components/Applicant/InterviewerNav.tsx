@@ -7,7 +7,8 @@ import {
   DialogTitle,
 } from "@mui/material";
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useRef, useState } from "react";
+import useDidMountEffect from "../../hooks/useDidMountEffect";
 import { ProfileImg } from "../../styles/formStyle";
 import {
   InterviewerButton,
@@ -31,7 +32,7 @@ export default function InterviewerNav({
     setOpen(true);
   };
 
-  useEffect(() => {
+  useDidMountEffect(() => {
     const onFetch = async () => {
       const url = await fetch(
         interviewerData?.image.slice(0, 18) +

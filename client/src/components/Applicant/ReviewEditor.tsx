@@ -1,19 +1,16 @@
-// Quill 에디터
 import styled from "styled-components";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import React, { Dispatch, useRef, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { onEdit, onReview } from "./reviewSlice";
+import { editReviewData, writeReviewData } from "./reviewSlice";
 import Button from "@mui/material/Button";
 import SendIcon from "@mui/icons-material/Send";
-import { reviewApi } from "../../api/reviewApi";
 import { useParams } from "react-router-dom";
 import ReviewNullWarningPopup from "../Popup/ReviewNullWarningPopup";
 
 const Wrapper = styled.div`
   display: flex;
-  /* align-items: center; */
   flex-direction: column;
   gap: 20px;
   width: 99%;
@@ -55,44 +52,27 @@ export default function ReviewEditor({
     if (text == "<p><br></p>") {
       showPopup();
     } else if (isEditMode) {
-      // TODO: 로컬 상태랑 서버에서 받아온 데이터 업데이트의 충돌은?
-      await reviewApi.onEditReview("" + id!, {
-        applicantStatus: +applicantStatus,
-        applicantId: +applicantId!,
-        reviewText: text,
-      });
       dispatch(
-        onEdit({
-          applicantStatus: applicantStatus,
-          statusReviewData: {
-            id: id!,
-            userId: user?.pk!,
-            userName: user!.name,
-            userNickname: user!.nickname,
-            reviewText: text,
-          },
+        editReviewData({
+          applicantStatus,
+          id: id!,
+          user: user!,
+          reviewText: text,
+          applicantId: +applicantId!,
         })
       );
       setIsEditMode(false);
     } else {
-      const { id } = await reviewApi.onWriteReview({
-        applicantStatus: +applicantStatus,
-        applicantId: +applicantId!,
-        reviewText: text,
-      });
       dispatch(
-        onReview({
-          applicantStatus: applicantStatus,
-          statusReviewData: {
-            id: id,
-            userId: user!.pk,
-            userName: user!.name,
-            userNickname: user!.nickname,
-            reviewText: text,
-          },
+        writeReviewData({
+          applicantStatus,
+          user: user!,
+          // 사용하지 않는 가짜 타입
+          id: id!,
+          reviewText: text,
+          applicantId: +applicantId!,
         })
       );
-      console.log("Review write");
       setReview("");
 
       // 삭제시 리뷰창 닫아주는 함수
@@ -111,7 +91,6 @@ export default function ReviewEditor({
             QuillRef.current = element;
           }
         }}
-        // value={review}
         defaultValue={review}
         placeholder="공정한 리뷰를 작성해주세요."
       />

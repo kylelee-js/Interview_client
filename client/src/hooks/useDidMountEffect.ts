@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { ApplicantBoardType } from "../components/KanBanBoard/kanbanSlice";
 
 // 첫 렌더 함수 실행 제어 훅
+// const useDidMountEffect = <Type extends {}> (func: () => void, deps: Type) => {
 const useDidMountEffect = (func: () => void, deps: any) => {
   const didMount = useRef(false);
 

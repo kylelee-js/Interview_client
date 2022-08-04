@@ -6,14 +6,6 @@ import PoolKanBan from "../components/Pool/PoolKanbanBoard/PoolKanban";
 import { fetchPoolBoard } from "../components/Pool/poolSlice";
 import { useAppDispatch, useAppSelector } from "../store";
 
-/**
- * KanBanPropsType
- * @param {string} kanbanSlice 항목에 대한 고유 식별자
- * @param {string} applicantType? 항목 아이콘
- * @param {string} title 항목 타이틀
- * @returns {boolean} 성공 여부
- */
-
 type KanBanContainerPropsType = {
   type: string;
 };

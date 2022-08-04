@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { reviewApi } from "../../api/reviewApi";
+import { UserState } from "../Login/authSlice";
 
 export type StatusReviewDataType = {
   id: string;
@@ -20,9 +21,18 @@ export type ApplicantReviewDataType = {
   reviewData: ReviewDataType[];
 };
 
+// 액션 타입 설정
+type DeleteReviewDataActionType = {
+  status: string;
+  id: string;
+  userId: number;
+};
 type ReviewDataActionType = {
   applicantStatus: number;
-  statusReviewData: StatusReviewDataType;
+  applicantId: number;
+  reviewText: string;
+  id: string;
+  user: UserState;
 };
 
 export const fetchReviewData = createAsyncThunk(
@@ -36,95 +46,74 @@ export const fetchReviewData = createAsyncThunk(
     return applicantReviewData;
   }
 );
+export const writeReviewData = createAsyncThunk(
+  "WRITE_REVIEW_DATA",
+  async ({
+    applicantStatus,
+    user,
+    reviewText,
+    applicantId,
+  }: ReviewDataActionType) => {
+    const { id } = await reviewApi.onWriteReview({
+      applicantStatus: applicantStatus,
+      applicantId: applicantId,
+      reviewText: reviewText,
+    });
+    return {
+      applicantStatus: applicantStatus,
+      statusReviewData: {
+        id: id!,
+        userId: user.pk,
+        userName: user.name,
+        userNickname: user.nickname,
+        reviewText: reviewText,
+      },
+    };
+  }
+);
+export const editReviewData = createAsyncThunk(
+  "EDIT_REVIEW_DATA",
+  async ({
+    applicantStatus,
+    id,
+    user,
+    reviewText,
+    applicantId,
+  }: ReviewDataActionType) => {
+    await reviewApi.onEditReview("" + id!, {
+      applicantStatus: applicantStatus,
+      applicantId: applicantId,
+      reviewText: reviewText,
+    });
+    return {
+      applicantStatus: applicantStatus,
+      statusReviewData: {
+        id: id!,
+        userId: user.pk,
+        userName: user.name,
+        userNickname: user.nickname,
+        reviewText: reviewText,
+      },
+    };
+  }
+);
+export const deleteReviewData = createAsyncThunk(
+  "DELETE_REVIEW_DATA",
+  async ({ status, id, userId }: DeleteReviewDataActionType) => {
+    await reviewApi.onDeleteReview(id);
+    return { status, id, userId };
+  }
+);
 
-// TODO: 이니셜 상태 null로 만들기
 const fakeReviewDate: ApplicantReviewDataType | null = {
   applicantId: 0,
-  reviewData: [
-    {
-      applicantStatus: 1,
-      statusReviewData: [],
-    },
-    {
-      applicantStatus: 2,
-      statusReviewData: [
-        {
-          id: "1",
-          userId: 120,
-          userName: "윤귀남",
-          userNickname: "좀비",
-          reviewText: "좀비월드",
-        },
-        {
-          id: "2",
-          userId: 1300,
-          userName: "송하영",
-          userNickname: "광주",
-          reviewText: "배",
-        },
-      ],
-    },
-    {
-      applicantStatus: 3,
-      statusReviewData: [
-        {
-          id: "3",
-          userId: 999,
-          userName: "면접관",
-          userNickname: "구관",
-          reviewText: "좀비월드",
-        },
-        {
-          id: "4",
-          userId: 130,
-          userName: "장규리",
-          userNickname: "금발",
-          reviewText: "사과",
-        },
-      ],
-    },
-  ],
+  reviewData: [],
 };
 
 const reviewSlice = createSlice({
   name: "REVIEW",
   initialState: fakeReviewDate,
-  reducers: {
-    onReview(state, action: PayloadAction<ReviewDataActionType>) {
-      const { applicantStatus, statusReviewData } = action.payload;
-      state.reviewData[+applicantStatus - 1].statusReviewData.push(
-        statusReviewData
-      );
-      return state;
-    },
-    onRemove(state, action: PayloadAction<{ status: string; id: number }>) {
-      const { status, id } = action.payload;
-      const editReviewIndex = state.reviewData[
-        +status - 1
-      ].statusReviewData.findIndex((review) => review.userId == id);
-      state.reviewData[+status - 1].statusReviewData.splice(editReviewIndex, 1);
-      return state;
-    },
-    onEdit(state, action: PayloadAction<ReviewDataActionType>) {
-      // TODO: findIndex 한번더?
-      const { applicantStatus, statusReviewData } = action.payload;
-      const editReviewIndex = state.reviewData[
-        +applicantStatus - 1
-      ].statusReviewData.findIndex(
-        (review) => review.userId == statusReviewData.userId
-      );
-      state.reviewData[+applicantStatus - 1].statusReviewData.splice(
-        editReviewIndex,
-        1
-      );
-      state.reviewData[+applicantStatus - 1].statusReviewData.splice(
-        editReviewIndex,
-        0,
-        statusReviewData
-      );
-      return state;
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder.addCase(
       fetchReviewData.fulfilled,
@@ -133,8 +122,35 @@ const reviewSlice = createSlice({
         return state;
       }
     );
+    builder.addCase(writeReviewData.fulfilled, (state, action) => {
+      const { applicantStatus, statusReviewData } = action.payload;
+      state.reviewData[+applicantStatus - 1].statusReviewData.push(
+        statusReviewData
+      );
+      return state;
+    });
+    builder.addCase(editReviewData.fulfilled, (state, action) => {
+      const { applicantStatus, statusReviewData } = action.payload;
+      const targetReview =
+        state.reviewData[+applicantStatus - 1].statusReviewData;
+      const editReviewIndex = targetReview.findIndex(
+        (review) => review.userId == statusReviewData.userId
+      );
+      targetReview.splice(editReviewIndex, 1);
+      targetReview.splice(editReviewIndex, 0, statusReviewData);
+      state.reviewData[+applicantStatus - 1].statusReviewData = targetReview;
+      return state;
+    });
+    builder.addCase(deleteReviewData.fulfilled, (state, action) => {
+      const { status, userId } = action.payload;
+      const editReviewIndex = state.reviewData[
+        +status - 1
+      ].statusReviewData.findIndex((review) => review.userId == userId);
+      state.reviewData[+status - 1].statusReviewData.splice(editReviewIndex, 1);
+      return state;
+    });
   },
 });
 
 export default reviewSlice.reducer;
-export const { onRemove, onReview, onEdit } = reviewSlice.actions;
+export const {} = reviewSlice.actions;

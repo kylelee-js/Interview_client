@@ -43,7 +43,6 @@ export default function TagNotePopup({
   const onWriteTag = async () => {
     const overlap = tags?.find((tag) => tag.tagText == tagText);
     if (overlap) {
-      // TODO: 입력 튕겨내기
       setOverlapAlert(true);
     } else {
       setOverlapAlert(false);
@@ -53,6 +52,7 @@ export default function TagNotePopup({
         applicantIndex,
         tagText: tagText,
       });
+      // FIXME: 이것도 createAsyncThunk로 리팩토링?
       const res = await onPostTag(tagText, applicantId);
       const { tagId } = res;
       if (type == "myapplicants") {

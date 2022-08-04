@@ -70,7 +70,6 @@ export default React.memo(function ReviewAccordion({
   reviewData,
   amIAnAuthor,
 }: ReviewAccordionPropsType) {
-  const [isEditMode, setIsEditMode] = useState<boolean>(false);
   const [expanded, setExpanded] = useState<string | false>(
     reviewData.length > 0 ? "" + reviewData[0].applicantStatus : false
   );
@@ -79,16 +78,13 @@ export default React.memo(function ReviewAccordion({
     (panel: string) => (event: React.SyntheticEvent, newExpanded: boolean) => {
       setExpanded(newExpanded ? panel : false);
     };
-
-  // dispatch 시 화면 리렌더
   const [updatedReview, setupdatedReview] =
     useState<ReviewDataType[]>(reviewData);
   const checkReview = useAppSelector((state) => state.review.reviewData);
+
   useDidMountEffect(() => {
     setupdatedReview(checkReview);
   }, [checkReview]);
-
-  console.log(user?.pk, reviewData);
 
   if (reviewData.length == 0) return <>노 리뷰</>;
   return (
@@ -111,7 +107,6 @@ export default React.memo(function ReviewAccordion({
             </AccordionSummary>
             <AccordionDetails>
               {data.statusReviewData.length == 0 && (
-                // TODO: 리뷰 없을 경우 알림 카드 스타일링 하기
                 <Typography>아직 리뷰가 없습니다.</Typography>
               )}
               {data.statusReviewData.map((statusReviewData) => (
@@ -125,7 +120,6 @@ export default React.memo(function ReviewAccordion({
               ))}
               <ReviewEditorMenu
                 applicantStatus={data.applicantStatus}
-                setIsEditMode={setIsEditMode}
                 menuShown={
                   amIAnAuthor ? (Boolean(hadReviewed) ? false : true) : false
                 }

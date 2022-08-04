@@ -1,7 +1,7 @@
 import React, { Dispatch, useState } from "react";
 import styled from "styled-components";
 import parse from "html-react-parser";
-import { onRemove, StatusReviewDataType } from "./reviewSlice";
+import { deleteReviewData, StatusReviewDataType } from "./reviewSlice";
 import { useAppDispatch } from "../../store";
 import { Divider, Typography } from "@mui/material";
 import { IconButton } from "@mui/material/";
@@ -12,7 +12,6 @@ import Box from "@mui/material/Box";
 import Card from "@mui/material/Card";
 import CardActions from "@mui/material/CardActions";
 import CardContent from "@mui/material/CardContent";
-import { reviewApi } from "../../api/reviewApi";
 
 const ReviewWrapper = styled.div`
   background-color: whitesmoke;
@@ -37,9 +36,8 @@ export default function ReviewCard({
   const dispatch = useAppDispatch();
 
   const onDeleteClick = (status: string, userId: number) => {
-    dispatch(onRemove({ status, id: userId }));
+    dispatch(deleteReviewData({ status, id, userId }));
     setIsEditMode(false);
-    reviewApi.onDeleteReview(id);
   };
   return (
     <ReviewWrapper>
