@@ -91,11 +91,11 @@ export const DocStickyDiv = styled.div`
   position: sticky;
   transition: top ease-in 0.5s;
   /* TODO: media-query: 사용자 vh에 따라 유동적으로 top 높이 변경 - ex: clac() */
-  /* top: 50px; */
-  &.stuck {
+  top: 50px;
+  /* &.stuck {
     top: 50%;
     transform: translateY(-50%);
-  }
+  } */
 `;
 
 export const PaginationMenu = styled.div`
