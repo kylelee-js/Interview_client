@@ -35,10 +35,10 @@ export default function InterviewerNav({
   useDidMountEffect(() => {
     const onFetch = async () => {
       const url = await fetch(
-        // interviewerData?.image.slice(0, 18) +
-        //   ":8080" +
-        //   interviewerData?.image.slice(18),
-        interviewerData?.image!,
+        interviewerData?.image.slice(0, 18) +
+          ":8080" +
+          interviewerData?.image.slice(18),
+        // interviewerData?.image!,
         {
           headers: new Headers({
             Authorization: `${axios.defaults.headers.common["Authorization"]}`,

@@ -1,6 +1,6 @@
 import { Alert, Checkbox, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { CheckBoxDiv } from "../../../styles/boardStyle";
 import { useAppDispatch, useAppSelector } from "../../../store";
 import { setApplicantMine } from "../../../api/fetchApplicant";
@@ -54,10 +54,17 @@ export default function PoolCheckbox({
   };
 
   const onCheckClick = () => {
-    if (!isMine) setOpen(true);
-    if (isMine) setOpen(false);
-    if (!isMine) setOpenOpp(false);
-    if (isMine) setOpenOpp(true);
+    if (!isMine) {
+      setOpen(true);
+      setOpenOpp(false);
+    } else {
+      setOpen(false);
+      setOpenOpp(true);
+    }
+    // if (!isMine) setOpen(true);
+    // if (isMine) setOpen(false);
+    // if (!isMine) setOpenOpp(false);
+    // if (isMine) setOpenOpp(true);
     setIsMine((prev) => !prev);
     onSetMine();
   };
