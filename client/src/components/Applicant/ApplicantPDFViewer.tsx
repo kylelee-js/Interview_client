@@ -88,11 +88,11 @@ export default function ApplicantPDFViewer({
         <DocStickyDiv id="stickyDoc">
           <Document
             file={{
-              // url: fileData[fileNumber].file,
-              url:
-                fileData[fileNumber].file.slice(0, 18) +
-                ":8080" +
-                fileData[fileNumber].file.slice(18),
+              url: fileData[fileNumber].file,
+              // url:
+              //   fileData[fileNumber].file.slice(0, 18) +
+              //   ":8080" +
+              //   fileData[fileNumber].file.slice(18),
               httpHeaders: {
                 Authorization: axios.defaults.headers.common["Authorization"],
               },

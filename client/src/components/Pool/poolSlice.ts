@@ -21,23 +21,26 @@ const poolSlice = createSlice({
   // TODO: 지원자 상태에서 불러와서 칸반 보드를 형성해야함!
   initialState: fakeBoards,
   reducers: {
-    onToggleMyApplicant(state, action) {
+    onSetMyApplicant(state, action) {
       // FIXME: 토글 bool 상태 하나 넣어서 토글
-      const { boardStatus, applicantIndex, userPk, isMine } = action.payload;
+      const { boardStatus, applicantIndex, user } = action.payload;
       const applicantList = [...state[+boardStatus - 1].applicants];
-      if (!isMine) {
-        applicantList[applicantIndex].interviewer?.push(userPk);
-        state[+boardStatus - 1].applicants = applicantList;
-        return state;
-      } else {
-        const userIndex = applicantList[applicantIndex].interviewer?.findIndex(
-          (viewer) => viewer == userPk
-        );
-        applicantList[applicantIndex].interviewer?.splice(userIndex!, 1);
-        state[+boardStatus - 1].applicants = applicantList;
-        return state;
-      }
+      applicantList[applicantIndex].interviewer?.push(user);
+      state[+boardStatus - 1].applicants = applicantList;
+      return state;
     },
+    onUnsetMyApplicant(state, action) {
+      // FIXME: 토글 bool 상태 하나 넣어서 토글
+      const { boardStatus, applicantIndex, userPk } = action.payload;
+      const applicantList = [...state[+boardStatus - 1].applicants];
+      const userIndex = applicantList[applicantIndex].interviewer?.findIndex(
+        (viewer) => viewer.pk == userPk
+      );
+      applicantList[applicantIndex].interviewer?.splice(userIndex!, 1);
+      state[+boardStatus - 1].applicants = applicantList;
+      return state;
+    },
+
     onTagWrite(state, action) {
       // TODO: post res로 받아온 id로 설정
       const { boardStatus, applicantIndex, tagId, tagText } = action.payload;
@@ -75,5 +78,5 @@ const poolSlice = createSlice({
 });
 
 export default poolSlice.reducer;
-export const { onToggleMyApplicant, onTagWrite, onTagDelete } =
+export const { onSetMyApplicant, onUnsetMyApplicant, onTagWrite, onTagDelete } =
   poolSlice.actions;

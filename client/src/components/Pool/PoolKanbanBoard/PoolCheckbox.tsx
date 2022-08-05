@@ -2,9 +2,9 @@ import { Alert, Checkbox, Snackbar } from "@mui/material";
 import CheckIcon from "@mui/icons-material/Check";
 import React, { useEffect, useState } from "react";
 import { CheckBoxDiv } from "../../../styles/boardStyle";
-import { useAppDispatch } from "../../../store";
+import { useAppDispatch, useAppSelector } from "../../../store";
 import { setApplicantMine } from "../../../api/fetchApplicant";
-import { onToggleMyApplicant } from "../poolSlice";
+import { onSetMyApplicant, onUnsetMyApplicant } from "../poolSlice";
 import { InterviewerDataType } from "../../Applicant/applicantSlice";
 
 type PoolCheckboxPropsType = {
@@ -21,27 +21,39 @@ export default function PoolCheckbox({
   userPk,
   interviewer,
 }: PoolCheckboxPropsType) {
-  // TODO: 기본값은 isMine을 따른다 Alert 띄우는 모달
   const [open, setOpen] = useState(false);
   const [openOpp, setOpenOpp] = useState(false);
   const dispatch = useAppDispatch();
-  const [isMine, setIsMine] = useState(false);
+  const [isMine, setIsMine] = useState(
+    Boolean(interviewer?.find((viewer) => viewer.pk == userPk))
+  );
+  const user = useAppSelector((state) => state.auth.user);
 
   const onSetMine = () => {
+    console.log(isMine);
     if (!isMine) {
       dispatch(
-        onToggleMyApplicant({ boardStatus, applicantIndex, userPk, isMine })
+        onSetMyApplicant({
+          boardStatus,
+          applicantIndex,
+          user: user,
+          isMine,
+        })
       );
     } else {
       dispatch(
-        onToggleMyApplicant({ boardStatus, applicantIndex, userPk, isMine })
+        onUnsetMyApplicant({
+          boardStatus,
+          applicantIndex,
+          userPk,
+          isMine,
+        })
       );
     }
     setApplicantMine("" + id, !isMine);
   };
 
   const onCheckClick = () => {
-    // TODO:  set Toggler - 지금 개판임..
     if (!isMine) setOpen(true);
     if (isMine) setOpen(false);
     if (!isMine) setOpenOpp(false);
@@ -49,14 +61,6 @@ export default function PoolCheckbox({
     setIsMine((prev) => !prev);
     onSetMine();
   };
-
-  useEffect(() => {
-    if (interviewer?.find((viewer) => viewer.pk == userPk)) {
-      setIsMine(true);
-    } else {
-      setIsMine(false);
-    }
-  }, []);
 
   return (
     <CheckBoxDiv>

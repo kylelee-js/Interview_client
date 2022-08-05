@@ -38,7 +38,7 @@ export default React.memo(function Board({
               {applicants.map((person, index) => (
                 // FIXME: key는 이름이면 안돼!! -> 나중에 pk<고유값>으로 바꾸기
                 <Card
-                  type={type}
+                  type={"myapplicants"}
                   key={person.id}
                   // FIXME: index를 order로 교체해야한다!
                   // {person.order?}
