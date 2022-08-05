@@ -7,7 +7,6 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Logout from "../Login/Logout";
 import NavMenuButton from "./NavMenuButton";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { useEffect } from "react";
 import { onUserNotice } from "../../api/boardUpdate";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {
@@ -56,9 +55,10 @@ export default function HeaderLayout() {
     if (!loginChangeAlarm) {
       onFetch();
     }
-  }, 10000);
+  }, 11000);
 
   const onNoticeClick = () => {
+    // 칸반보드 reFetch
     dispatch(onTrigger());
     dispatch(onNoticeFalse());
     navigate("/");

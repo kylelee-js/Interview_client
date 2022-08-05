@@ -9,6 +9,7 @@ export type UserState = {
   nickname: string;
   isLogin: boolean;
   isChanged?: boolean;
+  justLogin?: boolean;
   onLoginChange?: boolean;
 };
 
@@ -69,6 +70,10 @@ const authSlice = createSlice({
       state.user!.isChanged = false;
       return state;
     },
+    onAfterLogin(state) {
+      state.user!.justLogin = false;
+      return state;
+    },
   },
   extraReducers: (builder) => {
     builder.addCase(
@@ -90,5 +95,11 @@ const authSlice = createSlice({
 });
 
 export default authSlice.reducer;
-export const { onAuth, onDeauth, onNotice, onNoticeFalse, onLoginNoticeFalse } =
-  authSlice.actions;
+export const {
+  onAuth,
+  onDeauth,
+  onNotice,
+  onNoticeFalse,
+  onLoginNoticeFalse,
+  onAfterLogin,
+} = authSlice.actions;

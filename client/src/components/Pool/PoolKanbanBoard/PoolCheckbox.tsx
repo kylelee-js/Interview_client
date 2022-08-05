@@ -61,10 +61,6 @@ export default function PoolCheckbox({
       setOpen(false);
       setOpenOpp(true);
     }
-    // if (!isMine) setOpen(true);
-    // if (isMine) setOpen(false);
-    // if (!isMine) setOpenOpp(false);
-    // if (isMine) setOpenOpp(true);
     setIsMine((prev) => !prev);
     onSetMine();
   };

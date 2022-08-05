@@ -3,7 +3,7 @@ import { useEffect, useRef } from "react";
 const useInterval = (callback: () => unknown, delay: number | null) => {
   const savedCallback = useRef(callback);
 
-  // Remember the latest callback.
+  // 콜백함수가 달라져도 대처 가능. -> Ref기 때문에
   useEffect(() => {
     savedCallback.current = callback;
   }, [callback]);

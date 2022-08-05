@@ -1,7 +1,7 @@
-import React, { Suspense, useEffect } from "react";
+import React, { Suspense, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../store";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { reAuthUser } from "../components/Login/authSlice";
+import { onAfterLogin, reAuthUser } from "../components/Login/authSlice";
 
 import EmailVerificationPage from "../pages/EmailVerificationPage";
 import NotFoundPage from "../pages/NotFoundPage";
@@ -21,19 +21,23 @@ const HeaderLayout = React.lazy(
 
 function App() {
   const isLogin = useAppSelector((state) => state.auth.user?.isLogin);
+  const justLogin = useAppSelector((state) => state.auth.user?.justLogin);
   const dispatch = useAppDispatch();
+  const [delay, setDelay] = useState<number | null>(4 * 60 * 1000);
 
   useInterval(() => {
     if (isLogin) {
       dispatch(reAuthUser());
     }
-  }, 4 * 60 * 1000);
+  }, delay);
 
-  // 최초 로그인시
+  // 최초 로그인시에는 작동하지 않지만 새로고침시에는 작동해야한다
   useDidMountEffect(() => {
-    if (isLogin) {
-      console.log("login success");
+    if (!justLogin) {
       dispatch(reAuthUser());
+    } else {
+      console.log("login success");
+      dispatch(onAfterLogin());
     }
   }, [isLogin]);
 

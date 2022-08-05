@@ -12,7 +12,6 @@ interface CardProps extends ApplicantDataType {
 }
 
 export default React.memo(function Card(props: CardProps) {
-  console.log(props.interviewer);
   const userPk = useAppSelector((state) => state.auth.user?.pk);
   return (
     <CardWrapper>

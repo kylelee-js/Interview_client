@@ -52,7 +52,7 @@ export default function LoginForm() {
     setPasswordShown(passwordShown ? false : true);
   };
 
-  // login 후 notice가 myapplicant보다 먼저 실행됨
+  // login 후 notice가 myapplicant보다 먼저 실행되야함
   useDidMountEffect(() => {
     dispatch(noticeAfterLogin());
     navigate("/", { replace: true });
@@ -67,7 +67,12 @@ export default function LoginForm() {
       // FIXME: 타입 단언 -> 타입 가드로 수정하기!
       const response = res as AxiosResponse;
       const { access, isLogin, name, nickname, pk } = response.data;
-      dispatch(onAuth({ user: { isLogin, name, nickname, pk }, access }));
+      dispatch(
+        onAuth({
+          user: { isLogin, name, nickname, pk, justLogin: true },
+          access,
+        })
+      );
     } else if (res?.status == "403") {
       console.log(res);
       const { response } = res as AxiosError;
