@@ -72,7 +72,10 @@ export default function SignupForm() {
     fileData.append("email", data.email);
     fileData.append("password", data.password);
     fileData.append("passwordChecker", data.passwordChecker);
-    fileData.append("image", data.image[0]);
+    if (data.image[0]) {
+      fileData.append("image", data.image[0]);
+    }
+
     console.log(fileData);
     const res = await sendSignUp(fileData);
     console.log(res);
