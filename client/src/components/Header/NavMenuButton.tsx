@@ -1,4 +1,4 @@
-import React, { useRef, useTransition } from "react";
+import React, { useTransition } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -8,9 +8,7 @@ import waitForMenuDown from "../../utils/waitForMenuDown";
 export default function NavMenuButton() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
-  const ref = useRef<null | HTMLDivElement>(null);
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
-  const [path, setPath] = React.useState<string>(pathname);
   const open = Boolean(anchorEl);
   const [isPending, startTransition] = useTransition();
 
@@ -20,20 +18,16 @@ export default function NavMenuButton() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-  const handleNavigate = (destination: string) => {
+  const handleNavigate = async (destination: string) => {
     handleClose();
-    setPath(destination);
-  };
-
-  useDidMountEffect(async () => {
     // mui menu 엘리먼트가 사라진 후에 네비게이트
     const isMenuDown = await waitForMenuDown("#basic-menu");
     if (isMenuDown) {
       startTransition(() => {
-        navigate(`/${path}`);
+        navigate(`/${destination}`);
       });
     }
-  }, [path]);
+  };
 
   return (
     <div>
@@ -53,7 +47,6 @@ export default function NavMenuButton() {
       </IconButton>
 
       <Menu
-        ref={ref}
         id="basic-menu"
         anchorEl={anchorEl}
         open={open}
