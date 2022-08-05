@@ -89,9 +89,13 @@ export const DocStickyDiv = styled.div`
   justify-content: center;
   align-items: center;
   position: sticky;
-  /* TODO: media-query: 사용자 디바이스 높이에 따라 50px과 rem 중에서 선택 */
-  /* top: 0.5rem; */
+  transition: top ease-in 0.5s;
+  /* TODO: media-query: 사용자 vh에 따라 유동적으로 top 높이 변경 - ex: clac() */
   top: 50px;
+  /* &.stuck {
+    top: 50%;
+    transform: translateY(-50%);
+  } */
 `;
 
 export const PaginationMenu = styled.div`

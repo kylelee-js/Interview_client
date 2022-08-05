@@ -9,6 +9,7 @@ const ReviewAccordion = React.lazy(() => import("./ReviewAccordion"));
 const Wrapper = styled.div`
   display: flex;
   width: 100vw;
+  height: 100%;
   gap: 60px;
 `;
 

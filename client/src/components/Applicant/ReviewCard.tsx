@@ -56,7 +56,9 @@ export default function ReviewCard({
             </Typography>
             <Divider />
             <Typography component={"div"} sx={{ marginTop: "20px" }}>
-              <div>{parse(statusReviewData.reviewText)}</div>{" "}
+              <div style={{ wordBreak: "break-all" }}>
+                {parse(statusReviewData.reviewText)}
+              </div>{" "}
             </Typography>
           </CardContent>
           <CardActions>

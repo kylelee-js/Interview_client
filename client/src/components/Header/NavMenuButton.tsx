@@ -1,8 +1,9 @@
-import React, { useCallback, useEffect, useRef, useTransition } from "react";
+import React, { useRef, useTransition } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
+import waitForMenuDown from "../../utils/waitForMenuDown";
 
 export default function NavMenuButton() {
   const { pathname } = useLocation();
@@ -24,33 +25,15 @@ export default function NavMenuButton() {
     setPath(destination);
   };
 
-  useDidMountEffect(() => {
-    if (anchorEl == null) {
+  useDidMountEffect(async () => {
+    // mui menu 엘리먼트가 사라진 후에 네비게이트
+    const isMenuDown = await waitForMenuDown("#basic-menu");
+    if (isMenuDown) {
       startTransition(() => {
         navigate(`/${path}`);
       });
-      // setTimeout(() => {
-      //   // TODO: 0.3초 후에도 unmount가 안되었다면?
-      //   if (ref.current == null) {
-      //     navigate(`/${path}`);
-      //   }
-      // }, 300);
     }
   }, [path]);
-
-  // useEffect(() => {
-  //   if (ref.current) {
-  //     const observer = new MutationObserver(() => {
-  //       if (ref.current == null) {
-  //         navigate(`/${path}`);
-  //       }
-  //     });
-  //     observer.observe(ref.current, { childList: false });
-  //     return () => {
-  //       observer.disconnect();
-  //     };
-  //   }
-  // }, [ref.current]);
 
   return (
     <div>

@@ -9,7 +9,6 @@ import {
   FilePageNavWrapper,
   PaginationMenu,
   PDFViewerWrapper,
-  PDFWrapper,
   StickyDivIntersectingBottom,
   StickyDivIntersectingTop,
 } from "../../styles/reviewViewerStyle";
@@ -29,6 +28,7 @@ export default function ApplicantPDFViewer({
   const stickyDivTop = useRef<HTMLDivElement>(null);
   const stickyDivBottom = useRef<HTMLDivElement>(null);
   const pagDiv = useRef<HTMLDivElement>(null);
+  const stickyDiv = useRef<HTMLDivElement>(null);
 
   function onDocumentLoadSuccess({ numPages }: any) {
     setNumPages(numPages);
@@ -39,8 +39,10 @@ export default function ApplicantPDFViewer({
       ([e]) => {
         if (e.intersectionRatio == 0) {
           pagDiv.current?.classList.add("stuck");
+          stickyDiv.current?.classList.add("stuck");
         } else if (e.intersectionRatio == 1) {
           pagDiv.current?.classList.remove("stuck");
+          stickyDiv.current?.classList.remove("stuck");
         }
       },
       { threshold: [1] }
@@ -67,7 +69,7 @@ export default function ApplicantPDFViewer({
   }, []);
 
   return (
-    <PDFWrapper>
+    <PDFViewerWrapper onContextMenu={(e) => e.preventDefault()}>
       <FilePageNavWrapper>
         {fileData.map((file, index) => (
           <FilePageContainer key={file.id}>
@@ -82,10 +84,9 @@ export default function ApplicantPDFViewer({
           </FilePageContainer>
         ))}
       </FilePageNavWrapper>
-
-      <PDFViewerWrapper onContextMenu={(e) => e.preventDefault()}>
-        <StickyDivIntersectingTop ref={stickyDivTop} />
-        <DocStickyDiv id="stickyDoc">
+      <StickyDivIntersectingTop ref={stickyDivTop} />
+      <DocStickyDiv ref={stickyDiv} id="stickyDoc">
+        <div>
           <Document
             file={{
               // url: fileData[fileNumber].file,
@@ -126,8 +127,8 @@ export default function ApplicantPDFViewer({
             </Button>
           </PaginationMenu>
           <StickyDivIntersectingBottom ref={stickyDivBottom} />
-        </DocStickyDiv>
-      </PDFViewerWrapper>
-    </PDFWrapper>
+        </div>
+      </DocStickyDiv>
+    </PDFViewerWrapper>
   );
 }

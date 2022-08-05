@@ -130,19 +130,33 @@ export default function CardTemplate({
           {myPageBoards[+status]}
         </Typography>
         <Typography variant="body2">
-          {tags?.map((tag) => (
-            <TagNote key={tag.id} id={"" + tag.id} onClick={onTagClick}>
-              <HighlightSpan
-                style={{
-                  color:
-                    tag.tagText.indexOf(keyword) > -1 ? "black" : "inherit",
-                }}
-                match={tag.tagText.indexOf(keyword) > -1}
-              >
-                #{tag.tagText}
-              </HighlightSpan>
-            </TagNote>
-          ))}
+          {tags?.map((tag) =>
+            type == "pool" ? (
+              <TagNote key={tag.id} id={"" + tag.id}>
+                <HighlightSpan
+                  style={{
+                    color:
+                      tag.tagText.indexOf(keyword) > -1 ? "black" : "inherit",
+                  }}
+                  match={tag.tagText.indexOf(keyword) > -1}
+                >
+                  #{tag.tagText}
+                </HighlightSpan>
+              </TagNote>
+            ) : (
+              <TagNote key={tag.id} id={"" + tag.id} onClick={onTagClick}>
+                <HighlightSpan
+                  style={{
+                    color:
+                      tag.tagText.indexOf(keyword) > -1 ? "black" : "inherit",
+                  }}
+                  match={tag.tagText.indexOf(keyword) > -1}
+                >
+                  #{tag.tagText}
+                </HighlightSpan>
+              </TagNote>
+            )
+          )}
         </Typography>
         {interviewDate && (
           <Typography
