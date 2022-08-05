@@ -234,7 +234,7 @@ export default function CardTemplate({
           <KebabMenu
             type={type}
             id={id}
-            status={type == "myapplicants" ? boardStatus : status}
+            status={boardStatus}
             isMine={Boolean(
               interviewer?.find((interviewer) => interviewer.pk === userPk!)
             )}
