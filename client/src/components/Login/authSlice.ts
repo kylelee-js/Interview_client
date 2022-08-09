@@ -1,6 +1,6 @@
 import { createSlice, PayloadAction, createAsyncThunk } from "@reduxjs/toolkit";
-import { onUserNotice } from "../../api/boardUpdate";
-import { onSilentRefresh } from "../../api/loginChecker";
+import { onNoticeUser } from "../../api/boardApi";
+import { onSilentRefresh } from "../../api/loginApi";
 import { RootState } from "../../store";
 
 export type UserState = {
@@ -40,7 +40,7 @@ export const reAuthUser = createAsyncThunk(
 export const noticeAfterLogin = createAsyncThunk(
   "NOTICE_AFTER_LOGIN",
   async () => {
-    const notice = await onUserNotice();
+    const notice = await onNoticeUser();
     return notice;
   }
 );

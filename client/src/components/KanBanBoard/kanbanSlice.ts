@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchApplicants } from "../../api/fetchApplicant";
+import { onFetchAllApplicants } from "../../api/applicantApi";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 import { CardCoordinateType } from "./Kanban";
 
@@ -23,7 +23,7 @@ const fakeBoards: ApplicantBoardType[] | null = [];
 export const fetchKanbanBoard = createAsyncThunk(
   "FETCH_KANBAN_BOARD",
   async () => {
-    const kanbanBoardData = await fetchApplicants();
+    const kanbanBoardData = await onFetchAllApplicants();
     return kanbanBoardData;
   }
 );

@@ -1,6 +1,6 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { onFileUpload } from "../../api/applicantUploadChecker";
+import { onUploadFile } from "../../api/uploadApi";
 import {
   Form,
   FormWrapper,
@@ -54,7 +54,7 @@ export default function ApplicantUploadForm() {
     }
 
     console.log(fileData);
-    const res = await onFileUpload(fileData);
+    const res = await onUploadFile(fileData);
     if (res) {
       navigate("/pool");
     } else {

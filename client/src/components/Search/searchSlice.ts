@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchSearchResult, SearchDataType } from "../../api/searchApi";
+import { onFetchSearchResult, SearchDataType } from "../../api/searchApi";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
 
 export const fetchSearchData = createAsyncThunk(
   "FETCH_SEARCH_DATA",
   async (data: SearchDataType) => {
-    const searchData = await fetchSearchResult(data);
+    const searchData = await onFetchSearchResult(data);
     return searchData;
   }
 );

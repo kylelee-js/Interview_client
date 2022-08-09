@@ -38,7 +38,7 @@ type ReviewDataActionType = {
 export const fetchReviewData = createAsyncThunk(
   "FETCH_REVIEW_DATA",
   async (id: string) => {
-    const res = await reviewApi.fetchReviewById(id);
+    const res = await reviewApi.onFetchReviewById(id);
     const applicantReviewData: ApplicantReviewDataType = {
       applicantId: +id,
       reviewData: res.reviewData,

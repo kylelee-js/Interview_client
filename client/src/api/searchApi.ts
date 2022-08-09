@@ -11,7 +11,7 @@ export type SearchDataType = {
   searchKeyword: string;
 };
 
-export const fetchSearchResult = async ({
+export const onFetchSearchResult = async ({
   option,
   searchKeyword,
 }: SearchDataType) => {
@@ -27,6 +27,15 @@ export const fetchSearchResult = async ({
       const res = await axios.get(`/search/${option}/${searchKeyword}/`);
       return res.data;
     }
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const onFetchAutoCompleteData = async (searchKeyword: string) => {
+  try {
+    const res = await axios.get(`/search/applicant/auto/${searchKeyword}/`);
+    return res.data;
   } catch (error) {
     console.log(error);
   }

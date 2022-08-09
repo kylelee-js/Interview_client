@@ -13,7 +13,7 @@ export type ReviewDataType = {
 };
 
 export const reviewApi = {
-  fetchReviewById: async (id: string) => {
+  onFetchReviewById: async (id: string) => {
     try {
       const res = await axios.get(`/review/${id}/`);
       console.log(res.data.reviewData);

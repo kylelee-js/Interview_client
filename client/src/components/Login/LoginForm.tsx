@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import { onLogin } from "../../api/loginChecker";
+import { onLogin } from "../../api/loginApi";
 import { useAppDispatch, useAppSelector } from "../../store";
 import {
   SubmitButton,
@@ -17,7 +17,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye } from "@fortawesome/free-solid-svg-icons";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
 import { AxiosError, AxiosResponse } from "axios";
-import { resendEmailVerification } from "../../api/signupChecker";
+import { onResendEmailVerification } from "../../api/signupApi";
 
 type VerificationPk = {
   verificationPk: string;
@@ -104,7 +104,7 @@ export default function LoginForm() {
   };
 
   const onReverification = () => {
-    resendEmailVerification(reverificationPk);
+    onResendEmailVerification(reverificationPk);
     navigate("/verification");
   };
 
@@ -112,6 +112,7 @@ export default function LoginForm() {
     <FormWrapper>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          aria-label="email"
           type="text"
           placeholder="이메일 주소를 입력해주세요."
           {...register("email", { required: "필수 입력칸입니다." })}
@@ -121,6 +122,7 @@ export default function LoginForm() {
         )}
         <PassWrapper>
           <Input
+            aria-label="password"
             type={passwordShown ? "text" : "password"}
             placeholder="비밀번호를 입력해주세요."
             {...register("password", { required: "필수 입력칸입니다." })}

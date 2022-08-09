@@ -1,5 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
-import { sendSignUp } from "../../api/signupChecker";
+import { onSignUp } from "../../api/signupApi";
 import {
   SubmitButton,
   Form,
@@ -77,7 +77,7 @@ export default function SignupForm() {
     }
 
     console.log(fileData);
-    const res = await sendSignUp(fileData);
+    const res = await onSignUp(fileData);
     console.log(res);
     // TODO: 에러 필드 값 확인!
     if (res.email) {

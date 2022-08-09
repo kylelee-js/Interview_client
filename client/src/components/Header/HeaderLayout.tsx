@@ -7,7 +7,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import Logout from "../Login/Logout";
 import NavMenuButton from "./NavMenuButton";
 import { useAppDispatch, useAppSelector } from "../../store";
-import { onUserNotice } from "../../api/boardUpdate";
+import { onNoticeUser } from "../../api/boardApi";
 import CancelIcon from "@mui/icons-material/Cancel";
 import {
   onLoginNoticeFalse,
@@ -47,7 +47,7 @@ export default function HeaderLayout() {
   );
 
   const onFetch = async () => {
-    const notice = await onUserNotice();
+    const notice = await onNoticeUser();
     dispatch(onNotice(notice));
   };
 

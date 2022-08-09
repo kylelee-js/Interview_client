@@ -7,6 +7,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import SearchIconButton from "./SearchIconButton";
+import { onFetchAutoCompleteData } from "../../../api/searchApi";
 
 const SearchFormWrapper = styled.form`
   display: flex;
@@ -15,13 +16,46 @@ const SearchFormWrapper = styled.form`
   position: relative;
 `;
 
+const AutoCompleteBox = styled.div`
+  border: 1px solid black;
+  position: absolute;
+  width: 50%;
+  top: 30px;
+  left: 90px;
+  padding: 10px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+`;
+const SearchResultsUList = styled.li`
+  margin: 0;
+  padding: 0;
+`;
+const SearchResults = styled.p`
+  color: black;
+  margin: 5px 0px;
+  padding-right: 5px;
+  border-bottom: 1px solid black;
+`;
+
 export default function SearchInput() {
   const [dateSearch, setDateSearch] = useState<boolean>(false);
+  const [autoComplete, setAutoComplete] = useState<string[]>([]);
   const { register, handleSubmit } = useForm();
   const navigate = useNavigate();
   const [fromDate, setfromDate] = useState<Date | null>(new Date());
   const [toDate, setToDate] = useState<Date | null>(new Date());
 
+  const handleAutoComplete = async (e: ChangeEvent<HTMLInputElement>) => {
+    if (e.currentTarget.value == "") {
+      setAutoComplete([]);
+      return;
+    }
+    const result: string[] = await onFetchAutoCompleteData(
+      e.currentTarget.value
+    );
+    setAutoComplete(result);
+  };
   const handleFromChange = (newValue: Date | null) => {
     setfromDate(newValue);
   };
@@ -126,7 +160,7 @@ export default function SearchInput() {
         </LocalizationProvider>
       ) : (
         <TextField
-          {...register("searchKeyword")}
+          {...register("searchKeyword", { onChange: handleAutoComplete })}
           required
           style={{
             backgroundColor: "white",
@@ -137,6 +171,15 @@ export default function SearchInput() {
           placeholder="검색"
           size="small"
         />
+      )}
+      {autoComplete.length !== 0 && (
+        <AutoCompleteBox>
+          <SearchResultsUList>
+            {autoComplete.map((result, index) => (
+              <SearchResults key={index}>{result}</SearchResults>
+            ))}
+          </SearchResultsUList>
+        </AutoCompleteBox>
       )}
 
       <SearchIconButton isDate={dateSearch} />

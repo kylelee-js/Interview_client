@@ -8,7 +8,7 @@ import {
   TextField,
 } from "@mui/material";
 import { useState } from "react";
-import { onPostTag } from "../../api/boardUpdate";
+import { onPostTag } from "../../api/boardApi";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { TagDataType } from "../Applicant/applicantSlice";
 import { onTagWrite } from "../KanBanBoard/kanbanSlice";

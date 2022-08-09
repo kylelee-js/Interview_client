@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchApplicantById } from "../../api/fetchApplicant";
+import { onFetchApplicantById } from "../../api/applicantApi";
 import { ApplicantReviewDataType } from "./reviewSlice";
 
 export type TagDataType = {
@@ -55,7 +55,7 @@ const fakeApplicantData: ApplicantType = {
 export const fetchApplicant = createAsyncThunk(
   "FETCH_APPLICANT",
   async (id: string) => {
-    const applicantData = await fetchApplicantById(id);
+    const applicantData = await onFetchApplicantById(id);
     return applicantData;
   }
 );

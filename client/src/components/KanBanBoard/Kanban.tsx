@@ -10,7 +10,7 @@ import {
 import { useAppDispatch } from "../../store";
 import styled from "styled-components";
 import useDidMountEffect from "../../hooks/useDidMountEffect";
-import { patchApplicantById } from "../../api/fetchApplicant";
+import { onPatchApplicantById } from "../../api/applicantApi";
 import { BoardGrid } from "../../styles/boardStyle";
 
 // Id는 보드 위치이며 Index는 카드 배열 순서이다.
@@ -43,7 +43,7 @@ export default function KanBan({ kanbanSlice }: KanBanPropsType) {
   useDidMountEffect(() => {
     const onFetch = async () => {
       // TODO: applicantId 찾기
-      await patchApplicantById(applicantCoordinate!);
+      await onPatchApplicantById(applicantCoordinate!);
     };
     onFetch();
   }, [applicantCoordinate]);

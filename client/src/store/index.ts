@@ -8,7 +8,7 @@ import kanban from "../components/KanBanBoard/kanbanSlice";
 import auth from "../components/Login/authSlice";
 import review from "../components/Applicant/reviewSlice";
 import applicant from "../components/Applicant/applicantSlice";
-import { queryApi } from "../api/queryApi";
+import { queryApi } from "../api/RTKQueryApi";
 import pageType from "../components/KanBanBoard/pageTypeSlice";
 import pool from "../components/Pool/poolSlice";
 import triggerFetch from "../components/Header/triggerFetchSlice";
@@ -16,7 +16,7 @@ import search from "../components/Search/searchSlice";
 
 // 루트리듀서 - 모든 리듀서 하나로
 const rootReducer = combineReducers({
-  [queryApi.reducerPath]: queryApi.reducer,
+  // [queryApi.reducerPath]: queryApi.reducer,
   pageType: pageType,
   kanban: kanban,
   auth: auth,
@@ -39,8 +39,9 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 // 스토어
 const store = configureStore({
   reducer: persistedReducer,
-  // middlewart: []  // 그때 미들웨어에서 문제가 있어서 -> redux-persist 문제
-  middleware: (gDM) => gDM().concat(queryApi.middleware),
+  // middleware: [], // 그때 미들웨어에서 문제가 있어서 -> redux-persist 문제
+  // middleware: (gDM) => gDM().concat(queryApi.middleware),
+  middleware: (gDM) => gDM().concat(),
 });
 
 export default store;

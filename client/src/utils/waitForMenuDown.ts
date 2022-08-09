@@ -6,7 +6,6 @@ export default function waitForMenuDown(selector: string) {
 
     const observer = new MutationObserver((mutations) => {
       if (!document.querySelector(selector)) {
-        // resolve(document.querySelector(selector));
         resolve(true);
         observer.disconnect();
       }

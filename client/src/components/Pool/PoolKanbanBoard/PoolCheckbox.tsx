@@ -3,7 +3,7 @@ import CheckIcon from "@mui/icons-material/Check";
 import { useState } from "react";
 import { CheckBoxDiv } from "../../../styles/boardStyle";
 import { useAppDispatch, useAppSelector } from "../../../store";
-import { setApplicantMine } from "../../../api/fetchApplicant";
+import { onSetApplicantMine } from "../../../api/applicantApi";
 import { onSetMyApplicant, onUnsetMyApplicant } from "../poolSlice";
 import { InterviewerDataType } from "../../Applicant/applicantSlice";
 
@@ -50,7 +50,7 @@ export default function PoolCheckbox({
         })
       );
     }
-    setApplicantMine("" + id, !isMine);
+    onSetApplicantMine("" + id, !isMine);
   };
 
   const onCheckClick = () => {

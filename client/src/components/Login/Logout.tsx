@@ -1,6 +1,6 @@
 import { Button } from "@mui/material";
 import React from "react";
-import { onLogout } from "../../api/loginChecker";
+import { onLogout } from "../../api/loginApi";
 import { useAppDispatch } from "../../store";
 import { onDeauth } from "./authSlice";
 

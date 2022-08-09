@@ -16,7 +16,7 @@ import { ApplicantDataType } from "../components/Applicant/applicantSlice";
 import KebabMenu from "../components/KanBanBoard/KebabMenu";
 import { MenuButtonDiv, TagNote } from "./boardStyle";
 import { useState } from "react";
-import { onDeleteTag } from "../api/boardUpdate";
+import { onDeleteTag } from "../api/boardApi";
 import { onTagDelete } from "../components/KanBanBoard/kanbanSlice";
 import { useAppDispatch } from "../store";
 import { onTagDeleteSearch } from "../components/Search/searchSlice";

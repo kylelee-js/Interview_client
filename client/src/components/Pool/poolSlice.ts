@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { fetchPool } from "../../api/poolFetch";
+import { onFetchPoolData } from "../../api/poolApi";
 import { ApplicantBoardType } from "../KanBanBoard/kanbanSlice";
 
 type ApplicantActionType = {
@@ -12,7 +12,7 @@ const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "
 const fakeBoards: ApplicantBoardType[] | null = [];
 
 export const fetchPoolBoard = createAsyncThunk("FETCH_POOL_BOARD", async () => {
-  const poolBoardData = await fetchPool();
+  const poolBoardData = await onFetchPoolData();
   return poolBoardData;
 });
 

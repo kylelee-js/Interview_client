@@ -1,7 +1,7 @@
 // TODO:  이걸 커스텀 훅으로 만들어야하는데...
 
 import { useState } from "react";
-import { updateApplicantFixAndFailById } from "../api/fetchApplicant";
+import { onUpdateApplicantFixAndFailById } from "../api/applicantApi";
 import {
   onToggleRemoveApplicant,
   onToggleFixApplicant,
@@ -38,7 +38,7 @@ export default function useMenu({
     } else if (type == "search") {
       dispatch(onToggleRemoveApplicantSearch({ applicantIndex, isFailed }));
     }
-    await updateApplicantFixAndFailById(id, !isFailed, !isFailed);
+    await onUpdateApplicantFixAndFailById(id, !isFailed, !isFailed);
   };
   const handleFix = async () => {
     if (type == "myapplicants") {
@@ -48,7 +48,7 @@ export default function useMenu({
     } else if (type == "search") {
       dispatch(onToggleFixApplicantSearch({ applicantIndex, isFailed }));
     }
-    await updateApplicantFixAndFailById(id, !isFixed, isFailed);
+    await onUpdateApplicantFixAndFailById(id, !isFixed, isFailed);
   };
   return { handleFix, handleFail };
 }
