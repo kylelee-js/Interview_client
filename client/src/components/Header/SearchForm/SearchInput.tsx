@@ -2,7 +2,7 @@ import { Box, FormControl, NativeSelect, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import { ChangeEvent, useState } from "react";
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -19,9 +19,9 @@ const SearchFormWrapper = styled.form`
 const AutoCompleteBox = styled.div`
   border: 1px solid black;
   position: absolute;
-  width: 50%;
+  width: 60%;
   top: 30px;
-  left: 90px;
+  left: 73px;
   padding: 10px;
   background-color: white;
   display: flex;
@@ -31,24 +31,36 @@ const SearchResultsUList = styled.li`
   margin: 0;
   padding: 0;
 `;
-const SearchResults = styled.p`
+const SearchResults = styled.p<{ none: boolean }>`
+  cursor: ${(props) => (props.none ? "auto" : "pointer")};
   color: black;
   margin: 5px 0px;
   padding-right: 5px;
   border-bottom: 1px solid black;
+
+  &.selected {
+    color: white;
+    background-color: blue;
+  }
 `;
 
 export default function SearchInput() {
   const [dateSearch, setDateSearch] = useState<boolean>(false);
   const [autoComplete, setAutoComplete] = useState<string[]>([]);
-  const { register, handleSubmit } = useForm();
-  const navigate = useNavigate();
   const [fromDate, setfromDate] = useState<Date | null>(new Date());
   const [toDate, setToDate] = useState<Date | null>(new Date());
+  const [showAutocomplete, setShowAutocomplete] = useState<boolean>(false);
+  const [seletecSearch, setSelectedSearch] = useState<number>(-1);
+  const [isComposing, setIsComposing] = useState(false);
+
+  const { register, handleSubmit } = useForm();
+  const navigate = useNavigate();
 
   const handleAutoComplete = async (e: ChangeEvent<HTMLInputElement>) => {
+    setShowAutocomplete(true);
     if (e.currentTarget.value == "") {
       setAutoComplete([]);
+      setShowAutocomplete(false);
       return;
     }
     const result: string[] = await onFetchAutoCompleteData(
@@ -69,6 +81,15 @@ export default function SearchInput() {
       setDateSearch(false);
     }
   };
+  const onBlur = () => {
+    // FIXME: 이벤트 순서 제어를 setTimeout으로 하고 있다.
+    setTimeout(() => {
+      setShowAutocomplete(false);
+    }, 100);
+  };
+  const onFocus = () => {
+    setShowAutocomplete(true);
+  };
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
     if (!dateSearch) {
       navigate(
@@ -82,6 +103,33 @@ export default function SearchInput() {
       );
     }
   };
+
+  const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    // TODO: 어떻게 배열을 순회할 것인가?
+    if (isComposing) return;
+    if (event.key === "ArrowDown" && autoComplete.length - 1 > seletecSearch) {
+      setSelectedSearch((prev) => prev + 1);
+      console.log(seletecSearch);
+    } else if (event.key === "ArrowUp" && seletecSearch > -1) {
+      setSelectedSearch((prev) => prev - 1);
+      console.log(seletecSearch);
+    } else if (event.key === "Enter") {
+      // TODO: submit이 네비게이션보다 먼저 일어나고 있다...
+      navigate(
+        `./search/?option=applicant&searchKeyword=${autoComplete[seletecSearch]}`
+      );
+      setSelectedSearch(-1);
+      setShowAutocomplete(false);
+      console.log(seletecSearch);
+    }
+  };
+  const onSearchClick = (event: React.MouseEvent<HTMLParagraphElement>) => {
+    // FIXME: option값을 하드코딩해서 주고 있다.
+    navigate(
+      `./search/?option=applicant&searchKeyword=${event.currentTarget.innerText}`
+    );
+  };
+
   return (
     <SearchFormWrapper onSubmit={handleSubmit(onSubmit)}>
       <Box sx={{ marginRight: "10px" }}>
@@ -138,6 +186,7 @@ export default function SearchInput() {
               const inputprops = { ...params.inputProps };
               return (
                 <TextField
+                  autoComplete="off"
                   style={{
                     backgroundColor: "white",
                     marginRight: "20px",
@@ -162,6 +211,7 @@ export default function SearchInput() {
         <TextField
           {...register("searchKeyword", { onChange: handleAutoComplete })}
           required
+          autoComplete="off"
           style={{
             backgroundColor: "white",
             marginRight: "20px",
@@ -170,14 +220,31 @@ export default function SearchInput() {
           InputProps={{ sx: { height: 30 } }}
           placeholder="검색"
           size="small"
+          onBlur={onBlur}
+          onFocus={onFocus}
+          onCompositionStart={() => setIsComposing(true)}
+          onCompositionEnd={() => setIsComposing(false)}
+          onKeyDown={onKeydown}
         />
       )}
-      {autoComplete.length !== 0 && (
+      {showAutocomplete && (
         <AutoCompleteBox>
+          {/* TODO: 키보드 마우스 인풋 받기 */}
           <SearchResultsUList>
-            {autoComplete.map((result, index) => (
-              <SearchResults key={index}>{result}</SearchResults>
-            ))}
+            {autoComplete.length == 0 ? (
+              <SearchResults none={true}>검색결과가 없습니다.</SearchResults>
+            ) : (
+              autoComplete.map((result, index) => (
+                <SearchResults
+                  key={index}
+                  none={false}
+                  onClick={onSearchClick}
+                  className={seletecSearch === index ? "selected" : ""}
+                >
+                  {result}
+                </SearchResults>
+              ))
+            )}
           </SearchResultsUList>
         </AutoCompleteBox>
       )}

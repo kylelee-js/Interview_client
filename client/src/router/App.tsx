@@ -18,6 +18,7 @@ const UploadPage = React.lazy(() => import("../pages/UploadPage"));
 const HeaderLayout = React.lazy(
   () => import("../components/Header/HeaderLayout")
 );
+const CanvasPage = React.lazy(() => import("../pages/CanvasPage"));
 
 function App() {
   const isLogin = useAppSelector((state) => state.auth.user?.isLogin);
@@ -56,6 +57,7 @@ function App() {
             <Route path="/pool" element={<PoolPage />} />
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/canvas" element={<CanvasPage />} />
           </Route>
         </Routes>
       </Suspense>
