@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { Draggable } from "react-beautiful-dnd";
 import { Box } from "@mui/material/";
 import { ApplicantDataType } from "../Applicant/applicantSlice";
@@ -12,7 +12,7 @@ interface CardProps extends ApplicantDataType {
   type: string;
 }
 
-export default React.memo(function Card(props: CardProps) {
+export default memo(function Card(props: CardProps) {
   const { id, applicantIndex, type, isFixed = false } = props;
   const userPk = useAppSelector((state) => state.auth.user?.pk);
   return (

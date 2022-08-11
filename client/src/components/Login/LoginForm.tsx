@@ -63,7 +63,6 @@ export default function LoginForm() {
     const res = await onLogin(data);
     console.log(res);
     if (res?.status == "200") {
-      console.log(res);
       // FIXME: 타입 단언 -> 타입 가드로 수정하기!
       const response = res as AxiosResponse;
       const { access, isLogin, name, nickname, pk } = response.data;
@@ -74,7 +73,6 @@ export default function LoginForm() {
         })
       );
     } else if (res?.status == "403") {
-      console.log(res);
       const { response } = res as AxiosError;
       // TODO: unknown 타입에 타입 선언하기 -> 어떻게?
       const data = response?.data as VerificationPk;
@@ -112,6 +110,7 @@ export default function LoginForm() {
     <FormWrapper>
       <Form onSubmit={handleSubmit(onSubmit)}>
         <Input
+          id="emailInput"
           aria-label="email"
           type="text"
           placeholder="이메일 주소를 입력해주세요."

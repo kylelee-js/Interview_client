@@ -59,7 +59,7 @@ export default function Canvas() {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null); // 뷰포트 해상도를 담을 수 있어야함
-  const requestAnimationRef = useRef<number | null>(null); // clear 해주기 위해서 값을 기억하는 ref
+  const requestAnimationRef = useRef<number | null>(null); // clear 해주기 위해서 requestID 값을 기억하는 ref
   const fixedTextRef = useRef<HTMLDivElement>(null); // 스크롤에 따른 인터렉션을 주기 위한 ref
 
   // 뷰포트 (100vw, 100vh)를 통해 resize로 인한 캔버스 해상도를 자동 변경
@@ -131,6 +131,8 @@ export default function Canvas() {
         frameCount[0] - 1,
         Math.floor(scrollFraction * frameCount[0])
       );
+
+      // requestID 값을 반환한다.
       requestAnimationRef.current = requestAnimationFrame((time) => {
         updateCanvas(frameIndex);
       });

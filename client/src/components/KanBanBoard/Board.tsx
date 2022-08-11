@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import { Droppable } from "react-beautiful-dnd";
 import { useAppSelector } from "../../store";
 import { BoardDiv, BoardWrapper, boxStyle } from "../../styles/boardStyle";
@@ -20,7 +20,7 @@ const processStatus = [
   "2차 인터뷰",
   "최종 면접",
 ];
-export default React.memo(function Board({
+export default memo(function Board({
   name,
   applicants,
   droppableId,

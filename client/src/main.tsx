@@ -8,6 +8,12 @@ import store from "./store";
 import axios from "axios";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
+import { worker } from "./mocks/worker";
+
+// 개발환경에서 MSW 사용할 시 활성화
+if (import.meta.env.DEV) {
+  worker.start();
+}
 
 // sessionStorage에 redux state 저장
 const persistor = persistStore(store);

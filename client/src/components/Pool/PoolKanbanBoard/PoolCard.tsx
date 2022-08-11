@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { Box } from "@mui/material/";
 import { ApplicantDataType } from "../../Applicant/applicantSlice";
 import { useAppSelector } from "../../../store";
@@ -11,7 +11,7 @@ interface CardProps extends ApplicantDataType {
   type: string;
 }
 
-export default React.memo(function Card(props: CardProps) {
+export default memo(function Card(props: CardProps) {
   const userPk = useAppSelector((state) => state.auth.user?.pk);
   return (
     <CardWrapper>

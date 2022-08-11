@@ -1,4 +1,4 @@
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, memo } from "react";
 import styled from "styled-components";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
@@ -28,7 +28,7 @@ type MenuType = {
   tags: TagDataType[] | undefined;
 };
 
-export default React.memo(function KebabMenu({
+export default memo(function KebabMenu({
   id,
   status,
   tags,

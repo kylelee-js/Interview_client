@@ -1,4 +1,4 @@
-import{r,e as f,j as y,s as g}from"./index--19262b5d.js";function A(t){const[h,d]=r.exports.useState(0),[p,i]=r.exports.useState(0);return r.exports.useEffect(()=>{const a=()=>{t.current&&(d(t.current.clientWidth),i(t.current.clientHeight))};return a(),window.addEventListener("resize",a),()=>{window.removeEventListener("resize",a)}},[]),{width:h,height:p}}const $=g.div`
+import{r,e as f,j as y,s as g}from"./index--5cec4531.js";function A(t){const[h,d]=r.exports.useState(0),[p,i]=r.exports.useState(0);return r.exports.useEffect(()=>{const a=()=>{t.current&&(d(t.current.clientWidth),i(t.current.clientHeight))};return a(),window.addEventListener("resize",a),()=>{window.removeEventListener("resize",a)}},[]),{width:h,height:p}}const $=g.div`
   /* 한 백배로 넣어서 캔버스 전환? */
   height: 14000px;
   /* height: 100vh; */

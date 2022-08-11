@@ -3,7 +3,7 @@ import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
-import { Outlet, useNavigate } from "react-router-dom";
+import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logout from "../Login/Logout";
 import NavMenuButton from "./NavMenuButton";
 import { useAppDispatch, useAppSelector } from "../../store";
@@ -18,6 +18,7 @@ import { onTrigger } from "./triggerFetchSlice";
 import styled from "styled-components";
 import SearchInput from "./SearchForm/SearchInput";
 import useInterval from "../../hooks/useInterval";
+import { FC } from "react";
 
 const LinkAnchor = styled.button`
   cursor: pointer;
@@ -36,7 +37,9 @@ const LinkAnchor = styled.button`
   }
 `;
 
-export default function HeaderLayout() {
+const HeaderLayout: FC = () => {
+  const location = useLocation();
+  console.log(location);
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
   // 활동중 상태 변경이 감지되었을 때
@@ -117,4 +120,6 @@ export default function HeaderLayout() {
       </main>
     </>
   );
-}
+};
+
+export default HeaderLayout;

@@ -1,5 +1,5 @@
 import { Box, Typography } from "@mui/material";
-import React, { useState } from "react";
+import React, { useState, memo } from "react";
 import styled from "styled-components";
 import { useAppSelector } from "../../../store";
 import { BoardDiv, BoardWrapper, boxStyle } from "../../../styles/boardStyle";
@@ -13,7 +13,7 @@ type BoardPropsType = {
   droppableId: string;
 };
 
-export default React.memo(function PoolBoard({
+export default memo(function PoolBoard({
   name,
   applicants,
   droppableId,
