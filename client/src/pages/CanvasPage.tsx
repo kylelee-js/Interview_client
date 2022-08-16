@@ -1,6 +1,4 @@
-import React, { useState } from "react";
-import styled from "styled-components";
-import Canvas from "../components/Canvas/Canvas";
+import CanvasContainer from "../components/Canvas/CanvasContaier";
 export default function CanvasPage() {
-  return <Canvas />;
+  return <CanvasContainer />;
 }

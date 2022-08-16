@@ -63,7 +63,10 @@ const authSlice = createSlice({
       return state;
     },
     onNotice(state, action: PayloadAction<{ isChanged: boolean }>) {
-      state.user!.isChanged = action.payload.isChanged;
+      if (state.user) {
+        state.user.isChanged = action.payload.isChanged;
+        return state;
+      }
       return state;
     },
     onNoticeFalse(state) {
@@ -87,7 +90,10 @@ const authSlice = createSlice({
     builder.addCase(
       noticeAfterLogin.fulfilled,
       (state, action: PayloadAction<{ isChanged: boolean }>) => {
-        state.user!.onLoginChange = action.payload.isChanged;
+        if (state.user) {
+          state.user.onLoginChange = action.payload.isChanged;
+          return state;
+        }
         return state;
       }
     );

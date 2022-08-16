@@ -2,10 +2,9 @@ import React, { useState, useTransition } from "react";
 import MenuIcon from "@mui/icons-material/Menu";
 import { IconButton, Menu, MenuItem } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
-import useDidMountEffect from "../../hooks/useDidMountEffect";
 import waitForMenuDown from "../../utils/waitForMenuDown";
 
-export default function NavMenuButton() {
+export default function NavMenu() {
   const { pathname } = useLocation();
   const navigate = useNavigate();
   const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
@@ -70,6 +69,9 @@ export default function NavMenuButton() {
             지원자 신규 등록하기
           </MenuItem>
         )}
+        <MenuItem onClick={() => handleNavigate("canvas")}>
+          에어팟 프로 보러가기
+        </MenuItem>
       </Menu>
     </div>
   );

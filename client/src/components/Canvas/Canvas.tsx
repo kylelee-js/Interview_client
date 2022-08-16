@@ -1,17 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import useResize from "../../hooks/useResize";
+import { BASE_IMAGE_URL } from "./CanvasContaier";
 
-const Wrapper = styled.div`
-  /* 한 백배로 넣어서 캔버스 전환? */
-  height: 14000px;
-  /* height: 100vh; */
-  width: 100%;
-`;
-
-const CanvasWrapper = styled.div`
+const CanvasWrapper = styled.div<{ zIndex: number; opacity: number }>`
   position: fixed;
-  z-index: -10;
+  /* z-index: ${(props) => props.zIndex}; */
+  opacity: ${(props) => props.opacity};
   left: 50%;
   top: 50%;
   width: 100vw;
@@ -26,21 +21,8 @@ const AirPodsCanvas = styled.canvas`
   height: 100%;
 `;
 
-const FixedText = styled.div<{ scrollHeight: number }>`
-  color: white;
-  font-size: 40px;
-  font-weight: 600;
-  position: fixed;
-  left: 50%;
-  top: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 0;
-`;
-
-const BASE_IMAGE_URL =
-  "https://www.apple.com/105/media/us/airpods-pro/2019/1299e2f5_9206_4470_b28e_08307a42f19b/anim/sequence/large";
-
 const frameCount: number[] = [148, 132, 89, 139, 140, 177, 69, 90, 235, 290];
+const frameSum = frameCount.reduce((a, b) => a + b);
 
 const imageTag: string[] = [
   "01-hero-lightpass",
@@ -55,24 +37,36 @@ const imageTag: string[] = [
   "10-fall-into-case",
 ];
 
-export default function Canvas() {
+type CanvasPropsType = {
+  // imageTag: string;
+  // frameCount: number;
+  children: React.ReactNode;
+  canvasIdx: number;
+  startY: number;
+  endY: number;
+};
+export default function Canvas({
+  // imageTag,
+  // frameCount,
+  startY,
+  children,
+  canvasIdx,
+  endY,
+}: CanvasPropsType) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const wrapperRef = useRef<HTMLDivElement>(null);
   const canvasWrapperRef = useRef<HTMLDivElement>(null); // 뷰포트 해상도를 담을 수 있어야함
   const requestAnimationRef = useRef<number | null>(null); // clear 해주기 위해서 requestID 값을 기억하는 ref
-  const fixedTextRef = useRef<HTMLDivElement>(null); // 스크롤에 따른 인터렉션을 주기 위한 ref
 
   // 뷰포트 (100vw, 100vh)를 통해 resize로 인한 캔버스 해상도를 자동 변경
   const { width, height } = useResize(canvasWrapperRef);
 
   useEffect(() => {
     const ctx = canvasRef.current?.getContext("2d");
-    document.body.style.backgroundColor = "black";
 
     const image = new Image();
     // TODO: 스크롤 단계에 따라 어떻게 ? 태그 전환? - 여러개의 캔버스로 노가다? 10개인데...
     const index: number = 1;
-    image.src = `${BASE_IMAGE_URL}/${imageTag[0]}/${index
+    image.src = `${BASE_IMAGE_URL}/${imageTag[canvasIdx]}/${index
       .toString()
       .padStart(4, "0")}.jpg`;
 
@@ -80,10 +74,10 @@ export default function Canvas() {
     image.onload = () => {
       ctx?.drawImage(
         image,
-        canvasRef.current?.width! / 5 / 2,
-        canvasRef.current?.height! / 5 / 2,
-        (canvasRef.current?.width! * 4) / 5,
-        (canvasRef.current?.height! * 4) / 5
+        0,
+        0,
+        canvasRef.current?.width!,
+        canvasRef.current?.height!
       );
     };
 
@@ -95,48 +89,52 @@ export default function Canvas() {
 
     // requestAnimationFrame이 호출하는 콜백 함수 -> 실질적인 애니메이션 업데이트 함수
     const updateCanvas = (index: number) => {
-      if (index == 0) {
-        image.src = `${BASE_IMAGE_URL}/${imageTag[0]}/${(1)
-          .toString()
-          .padStart(4, "0")}.jpg`;
-      } else {
-        image.src = `${BASE_IMAGE_URL}/${imageTag[0]}/${index
-          .toString()
-          .padStart(4, "0")}.jpg`;
-      }
-
-      // 텍스트 인터렉션
-      if (fixedTextRef.current) {
-        fixedTextRef.current.style.opacity =
-          // TODO: 로그 함수 등을 활용해서 인터렉션 강화하기
-          (1 - Math.abs((74 - index) / 74)).toString();
-        fixedTextRef.current.style.top = "" + (index + 200) + "px";
-        // fixedTextRef.current.style.left = "" + (index + 200) + "px";
-      }
+      // if (canvasWrapperRef.current) {
+      //   const currentScrollY = window.scrollY;
+      //   const start = startY;
+      //   const interval = endY - startY;
+      //   // TODO: 로그 함수 등을 활용해서 처음과 끝에만 페이드 효과주기 - 지금은 정규화 함수
+      //   const normalized = (interval - (currentScrollY - start)) / interval;
+      //   canvasWrapperRef.current.style.opacity = (
+      //     1 - Math.abs(normalized)
+      //   ).toString();
+      //   canvasWrapperRef.current.style.transform = `matrix(1, 0, 0, 1, 0, ${
+      //     40 * normalized
+      //   })`;
+      // }
+      image.src = `${BASE_IMAGE_URL}/${imageTag[canvasIdx]}/${(index < 1
+        ? 1
+        : index
+      )
+        .toString()
+        .padStart(4, "0")}.jpg`;
       ctx?.drawImage(
         image,
-        canvasRef.current?.width! / 5 / 2,
-        canvasRef.current?.height! / 5 / 2,
-        (canvasRef.current?.width! * 4) / 5,
-        (canvasRef.current?.height! * 4) / 5
+        0,
+        0,
+        canvasRef.current?.width!,
+        canvasRef.current?.height!
       );
     };
 
     const handleScroll = () => {
-      const scrollTop = window.scrollY;
-      const maxScrollTop =
-        wrapperRef.current?.scrollHeight! - window.innerHeight;
+      const scrollTop = window.scrollY - startY;
+      const maxScrollTop = endY - startY;
       const scrollFraction = scrollTop / maxScrollTop;
       const frameIndex = Math.min(
-        frameCount[0] - 1,
-        Math.floor(scrollFraction * frameCount[0])
+        frameCount[canvasIdx] - 1,
+        Math.floor(scrollFraction * frameCount[canvasIdx])
       );
 
+      console.log(`
+        scrollTop : ${scrollTop} (${window.scrollY} - ${startY})
+        maxScroll : ${maxScrollTop}
+        frameIndex : ${frameIndex}
+      `);
       // requestID 값을 반환한다.
       requestAnimationRef.current = requestAnimationFrame((time) => {
         updateCanvas(frameIndex);
       });
-      console.log(scrollTop);
     };
 
     window.addEventListener("scroll", handleScroll);
@@ -144,22 +142,13 @@ export default function Canvas() {
     return () => {
       window.removeEventListener("scroll", handleScroll);
       cancelAnimationFrame(requestAnimationRef.current!);
-      document.body.style.backgroundColor = "white";
     };
-  }, [width, height]);
+  }, [width, height, canvasIdx]);
 
   return (
-    <Wrapper ref={wrapperRef}>
-      <CanvasWrapper ref={canvasWrapperRef}>
-        <AirPodsCanvas ref={canvasRef} />
-        <FixedText
-          ref={fixedTextRef}
-          id="FixedText"
-          scrollHeight={frameCount[0]}
-        >
-          스크롤에 따라 사라지는 텍스트
-        </FixedText>
-      </CanvasWrapper>
-    </Wrapper>
+    <CanvasWrapper ref={canvasWrapperRef} zIndex={10 - canvasIdx} opacity={1}>
+      <AirPodsCanvas ref={canvasRef} />
+      {children}
+    </CanvasWrapper>
   );
 }

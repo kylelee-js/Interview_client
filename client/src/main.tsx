@@ -10,8 +10,13 @@ import { PersistGate } from "redux-persist/integration/react";
 import { persistStore } from "redux-persist";
 import { worker } from "./mocks/worker";
 
-// 개발환경에서 MSW 사용할 시 활성화
-if (import.meta.env.DEV) {
+// 로컬 개발환경에서 MSW 사용할 시 활성화
+// if (import.meta.env.DEV) {
+//   worker.start();
+// }
+
+// 테스트시 MSW 활성화
+if (process.env.NODE_ENV === "test") {
   worker.start();
 }
 

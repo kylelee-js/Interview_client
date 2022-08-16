@@ -9,7 +9,99 @@ type ApplicantActionType = {
 };
 const myPageBoards = ["미등록", "서류합격", "1차합격", "2차합격", "최종합격"];
 // 칸반보드 객체 배열
-const fakeBoards: ApplicantBoardType[] | null = [];
+// const fakeBoards: ApplicantBoardType[] | null = [];
+
+const fakeBoards: ApplicantBoardType[] | null = [
+  {
+    boardName: "개발",
+    boardStatus: 1,
+    applicants: [],
+    pk: 123,
+  },
+  {
+    boardName: "경영지원",
+    boardStatus: 2,
+    pk: 124,
+    applicants: [
+      {
+        id: 34,
+        applicantName: "검색지원자2",
+        birth: "121212",
+        department: "경영지원",
+        job: "서무",
+        file: [
+          {
+            id: 24,
+            file: "/media/applicant/2022/08/09/sample2.pdf",
+            applicant: 34,
+          },
+        ],
+        status: "0",
+        isFailed: false,
+        isFixed: false,
+        board: [],
+        interviewer: [],
+        tags: [],
+        interviewDate: null,
+      },
+      {
+        id: 35,
+        applicantName: "검색지원자3",
+        birth: "121212",
+        department: "경영지원",
+        job: "도급",
+        file: [
+          {
+            id: 25,
+            file: "/media/applicant/2022/08/09/sample3.pdf",
+            applicant: 35,
+          },
+        ],
+        status: "0",
+        isFailed: false,
+        isFixed: false,
+        board: [],
+        interviewer: [],
+        tags: [],
+        interviewDate: null,
+      },
+    ],
+  },
+  {
+    boardName: "마케팅",
+    boardStatus: 3,
+    pk: 125,
+    applicants: [
+      {
+        id: 33,
+        applicantName: "검색지원자1",
+        birth: "121121",
+        department: "마케팅",
+        job: "마케터",
+        file: [
+          {
+            id: 23,
+            file: "/media/applicant/2022/08/09/sample1.pdf",
+            applicant: 33,
+          },
+        ],
+        status: "0",
+        isFailed: false,
+        isFixed: false,
+        board: [],
+        interviewer: [],
+        tags: [],
+        interviewDate: null,
+      },
+    ],
+  },
+  {
+    boardName: "디자인",
+    boardStatus: 4,
+    pk: 126,
+    applicants: [],
+  },
+];
 
 export const fetchPoolBoard = createAsyncThunk("FETCH_POOL_BOARD", async () => {
   const poolBoardData = await onFetchPoolData();

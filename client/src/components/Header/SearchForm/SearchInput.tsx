@@ -125,6 +125,7 @@ export default function SearchInput() {
   };
   const onSearchClick = (event: React.MouseEvent<HTMLParagraphElement>) => {
     // FIXME: option값을 하드코딩해서 주고 있다.
+    console.log("search click");
     navigate(
       `./search/?option=applicant&searchKeyword=${event.currentTarget.innerText}`
     );

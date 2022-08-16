@@ -5,7 +5,7 @@ import Typography from "@mui/material/Typography";
 import IconButton from "@mui/material/IconButton";
 import { Outlet, useLocation, useNavigate } from "react-router-dom";
 import Logout from "../Login/Logout";
-import NavMenuButton from "./NavMenuButton";
+import NavMenu from "./NavMenu";
 import { useAppDispatch, useAppSelector } from "../../store";
 import { onNoticeUser } from "../../api/boardApi";
 import CancelIcon from "@mui/icons-material/Cancel";
@@ -19,6 +19,7 @@ import styled from "styled-components";
 import SearchInput from "./SearchForm/SearchInput";
 import useInterval from "../../hooks/useInterval";
 import { FC } from "react";
+import process from "process";
 
 const LinkAnchor = styled.button`
   cursor: pointer;
@@ -79,7 +80,7 @@ const HeaderLayout: FC = () => {
         <Box sx={{ flexGrow: 1 }}>
           <AppBar position="static">
             <Toolbar>
-              <NavMenuButton />
+              <NavMenu />
 
               <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
                 Jobreeting
