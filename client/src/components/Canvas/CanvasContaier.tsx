@@ -36,7 +36,7 @@ const wordFlip = keyframes`
     opacity: 0;
   }
   50%, 80%{
-    opacity: 1; 
+    opacity: 1;
   }
   100%{
     opacity: 0;
@@ -44,8 +44,9 @@ const wordFlip = keyframes`
 `;
 const IntroWord = styled.p`
   position: absolute;
-  top: 30%;
-  left: 27%;
+  top: 40%;
+  left: 50%;
+  transform: translate(-50%, -50%);
   opacity: 0;
   z-index: 1000;
   color: white;
@@ -126,19 +127,16 @@ export default function CanvasContainer() {
   useEffect(() => {
     document.body.style.backgroundColor = "black";
 
-    // 이미지 프리 로딩 - 캐싱까지
+    // 이미지 프리 로딩
     (() => {
-      // persistent context
-      // (window as any).preloadImage = [];
+      // persistent context - in memory : detached HTMLImageElement
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < frameCount[i]; j++) {
           const image = new Image();
-          // image.onload;
           image.src = `${BASE_IMAGE_URL}/${imageTag[i]}/${j
             .toString()
             .padStart(4, "0")}.jpg`;
           setImageArr((prev) => [...prev, image]);
-          // (window as any).preloadImage.push(image);
         }
       }
     })();
@@ -148,7 +146,6 @@ export default function CanvasContainer() {
       document.body.style.backgroundColor = "white";
       cancelAnimationFrame(requestAnimationRef.current!);
       window.removeEventListener("scroll", handleScroll);
-      // delete (window as any).preloadImage;
     };
   }, []);
 

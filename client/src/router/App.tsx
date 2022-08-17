@@ -8,15 +8,17 @@ import NotFoundPage from "../pages/NotFoundPage";
 import useInterval from "../hooks/useInterval";
 import useDidMountEffect from "../hooks/useDidMountEffect";
 
-const LoginPage = lazy(() => import("../pages/LoginPage"));
-const MainPage = lazy(() => import("../pages/MainPage"));
-const ApplicantPage = lazy(() => import("../pages/ApplicantPage"));
-const PoolPage = lazy(() => import("../pages/PoolPage"));
-const SignupPage = lazy(() => import("../pages/SignupPage"));
-const SearchPage = lazy(() => import("../pages/SearchPage"));
-const UploadPage = lazy(() => import("../pages/UploadPage"));
-const HeaderLayout = lazy(() => import("../components/Header/HeaderLayout"));
-const CanvasPage = lazy(() => import("../pages/CanvasPage"));
+const LoginPage = React.lazy(() => import("../pages/LoginPage"));
+const MainPage = React.lazy(() => import("../pages/MainPage"));
+const ApplicantPage = React.lazy(() => import("../pages/ApplicantPage"));
+const PoolPage = React.lazy(() => import("../pages/PoolPage"));
+const SignupPage = React.lazy(() => import("../pages/SignupPage"));
+const SearchPage = React.lazy(() => import("../pages/SearchPage"));
+const UploadPage = React.lazy(() => import("../pages/UploadPage"));
+const HeaderLayout = React.lazy(
+  () => import("../components/Header/HeaderLayout")
+);
+const CanvasPage = React.lazy(() => import("../pages/CanvasPage"));
 
 function App() {
   const isLogin = useAppSelector((state) => state.auth.user?.isLogin);

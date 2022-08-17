@@ -2,7 +2,13 @@ import { Box, FormControl, NativeSelect, TextField } from "@mui/material";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterMoment } from "@mui/x-date-pickers/AdapterMoment";
 import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
-import React, { ChangeEvent, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+} from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
@@ -92,7 +98,7 @@ export default function SearchInput() {
     setShowAutocomplete(true);
   };
   const onSubmit: SubmitHandler<FieldValues> = async (data) => {
-    if (!dateSearch) {
+    if (!dateSearch && !showAutocomplete) {
       navigate(
         `./search/?option=${data.option}&searchKeyword=${data.searchKeyword}`
       );
@@ -104,15 +110,16 @@ export default function SearchInput() {
       );
     }
   };
-
   const onKeydown = (event: React.KeyboardEvent<HTMLInputElement>) => {
     // TODO: 어떻게 배열을 순회할 것인가?
     if (isComposing) return;
     if (event.key === "ArrowDown" && autoComplete.length - 1 > seletecSearch) {
       setSelectedSearch((prev) => prev + 1);
+      event.currentTarget.value = autoComplete[seletecSearch];
       console.log(seletecSearch);
     } else if (event.key === "ArrowUp" && seletecSearch > -1) {
       setSelectedSearch((prev) => prev - 1);
+      event.currentTarget.value = autoComplete[seletecSearch];
       console.log(seletecSearch);
     } else if (event.key === "Enter") {
       // TODO: submit이 네비게이션보다 먼저 일어나고 있다...

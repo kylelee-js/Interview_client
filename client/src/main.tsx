@@ -24,9 +24,9 @@ if (process.env.NODE_ENV === "test") {
 const persistor = persistStore(store);
 
 axios.defaults.withCredentials = true;
-axios.defaults.baseURL = import.meta.env.DEV
-  ? "http://localhost:8000"
-  : "http://3.39.22.167:8080";
+axios.defaults.baseURL = import.meta.env.PROD
+  ? "http://3.39.22.167:8080"
+  : "http://localhost:8000";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   // dnd 라이브러리와 충돌이 있어 React.StrictMode를 제거함
