@@ -123,8 +123,6 @@ export default function CanvasContainer() {
     });
   };
 
-  const handleFadeIn = () => {};
-
   useEffect(() => {
     document.body.style.backgroundColor = "black";
 

@@ -18,6 +18,7 @@ const SearchFormWrapper = styled.form`
 
 const AutoCompleteBox = styled.div`
   border: 1px solid black;
+  z-index: 9999;
   position: absolute;
   width: 60%;
   top: 30px;
