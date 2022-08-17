@@ -1,5 +1,6 @@
+import { Typography } from "@mui/material";
 import React, { useEffect, useRef, useState } from "react";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import Canvas from "./Canvas";
 import TextContainer from "./TextContainer";
 
@@ -30,11 +31,36 @@ const imageTag: string[] = [
   "10-fall-into-case",
 ];
 
+const wordFlip = keyframes`
+  0%{
+    opacity: 0;
+  }
+  50%, 80%{
+    opacity: 1; 
+  }
+  100%{
+    opacity: 0;
+  }
+`;
+const IntroWord = styled.p`
+  position: absolute;
+  top: 30%;
+  left: 27%;
+  opacity: 0;
+  z-index: 1000;
+  color: white;
+  font-weight: 700;
+  letter-spacing: 0.2rem;
+  animation: ${wordFlip} 3s;
+  animation-delay: calc(0.2s * var(--i));
+`;
+
 export default function CanvasContainer() {
   const wrapperRef = useRef<HTMLDivElement>(null);
   const requestAnimationRef = useRef<number | null>(null);
   const [canvasIdx, setCanvasIdx] = useState<number>(-1);
   const [triggerd, setTriggered] = useState<boolean>(false);
+  const [imageArr, setImageArr] = useState<HTMLImageElement[]>([]);
   const indexRef = useRef<number>(0);
 
   // requestAnimationFrame이 호출하는 콜백 함수
@@ -97,13 +123,15 @@ export default function CanvasContainer() {
     });
   };
 
+  const handleFadeIn = () => {};
+
   useEffect(() => {
     document.body.style.backgroundColor = "black";
 
     // 이미지 프리 로딩 - 캐싱까지
     (() => {
       // persistent context
-      (window as any).preloadImage = [];
+      // (window as any).preloadImage = [];
       for (let i = 0; i < 10; i++) {
         for (let j = 0; j < frameCount[i]; j++) {
           const image = new Image();
@@ -111,7 +139,8 @@ export default function CanvasContainer() {
           image.src = `${BASE_IMAGE_URL}/${imageTag[i]}/${j
             .toString()
             .padStart(4, "0")}.jpg`;
-          (window as any).preloadImage.push(image);
+          setImageArr((prev) => [...prev, image]);
+          // (window as any).preloadImage.push(image);
         }
       }
     })();
@@ -121,12 +150,15 @@ export default function CanvasContainer() {
       document.body.style.backgroundColor = "white";
       cancelAnimationFrame(requestAnimationRef.current!);
       window.removeEventListener("scroll", handleScroll);
-      delete (window as any).preloadImage;
+      // delete (window as any).preloadImage;
     };
   }, []);
 
   return (
     <Wrapper ref={wrapperRef}>
+      <Typography fontSize={"70px"}>
+        <IntroWord>어서오세요 새로운 에어팟 프로</IntroWord>
+      </Typography>
       {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => {
         return (
           <div key={i}>

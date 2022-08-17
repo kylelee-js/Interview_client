@@ -101,6 +101,11 @@ describe("라우팅 메뉴 테스트", () => {
     const poolText = await screen.findByText("지원자 풀 보러가기");
     userEvent.click(poolText);
 
+    // TODO: 비동기적으로 모달창이 사라짐 관찰하기
+    // await waitForElementToBeRemoved(() => {
+    //   screen.queryByText("지원자 풀 보러가기");
+    // });
+
     const devTitle = await screen.findByText("개발");
     const marketingTitle = await screen.findByText("마케팅");
     const operTitle = await screen.findByText("경영지원");
@@ -111,7 +116,7 @@ describe("라우팅 메뉴 테스트", () => {
     expect(operTitle).toBeInTheDocument();
     expect(designTitle).toBeInTheDocument();
 
-    await new Promise((r) => setTimeout(r, 200));
+    await new Promise((r) => setTimeout(r, 100));
     expect(location.pathname).toBe("/pool");
   });
 });
