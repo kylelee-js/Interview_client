@@ -6,8 +6,10 @@ on:
     branches: [master]
     paths:
       - "dist/**"
-      # - "**.js"
-
+#       - "**.js"
+# .gitignore과 비슷 + path와 동시에 사용은 불가능! "!"를 앞에 붙여서 조건문 식츠로 활용해야한다.
+#     paths-ignore:
+#       - "doc/**"
 # jobs:
 # job의 Id 값이다.
 #   build:
@@ -38,6 +40,7 @@ jobs:
   Explore-GitHub-Actions:
     runs-on: ubuntu-latest
     steps:
+      - run: echo "깃헙 액션 시작"
       - run: echo "🎉 The job was automatically triggered by a ${{ github.event_name }} event."
       - run: echo "🐧 This job is now running on a ${{ runner.os }} server hosted by GitHub!"
       - run: echo "🔎 The name of your branch is ${{ github.ref }} and your repository is ${{ github.repository }}."
