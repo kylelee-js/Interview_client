@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     # The list of steps that the action will go through
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - run: yarn
       - uses: chromaui/action@v1
         # Options required for Chromatic's GitHub Action
