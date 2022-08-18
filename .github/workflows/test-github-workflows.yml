@@ -7,9 +7,9 @@ on:
     paths:
       - "dist/**"
 #       - "**.js"
-    # .gitignore과 비슷
-    paths-ignore:
-      - "doc/**"
+    # .gitignore과 비슷 + path와 동시에 사용은 불가능! "!"를 앞에 붙여서 조건문 식츠로 활용해야한다.
+#     paths-ignore:
+#       - "doc/**"
 # jobs:
 #   build:
 #     strategy:
