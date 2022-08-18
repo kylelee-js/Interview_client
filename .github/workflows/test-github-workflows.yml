@@ -6,7 +6,7 @@ on:
     branches: [master]
     paths:
       - "dist/**"
-      - "**.js"
+#       - "**.js"
     # .gitignore과 비슷
     paths-ignore:
       - "doc/**"
