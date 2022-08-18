@@ -13,7 +13,9 @@ jobs:
       run:
         working-directory: client
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
       - run: yarn
       - uses: chromaui/action@v1
         # Options required for Chromatic's GitHub Action
@@ -21,4 +23,4 @@ jobs:
           working-directory: client
           #👇 Chromatic projectToken, see https://storybook.js.org/tutorials/design-systems-for-developers/react/en/review/ to obtain it
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          token: ${{ secrets.GITHUB_TOKEN }}
+          # token: ${{ secrets.GITHUB_TOKEN }}
