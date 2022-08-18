@@ -1,6 +1,8 @@
 import React from "react";
-import "./button.css";
+import { StyledButton } from "./buttonStyle";
+// import "./button.css";
 
+// propsType에 주석으로 documentation 가능하다.
 type ButtonProps = {
   /**
    * Is this the principal call to action on the page?
@@ -35,7 +37,7 @@ export const Button = ({
     ? "storybook-button--primary"
     : "storybook-button--secondary";
   return (
-    <button
+    <StyledButton
       type="button"
       className={["storybook-button", `storybook-button--${size}`, mode].join(
         " "
@@ -44,6 +46,6 @@ export const Button = ({
       {...props}
     >
       {label}
-    </button>
+    </StyledButton>
   );
 };
