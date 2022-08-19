@@ -24,14 +24,14 @@ export default function SocketDocs() {
 
   // 자동저장
   const saveFetch = async () => {
-    await reviewApi.updateCoeditContents(39, contents);
+    await reviewApi.updateCoeditContents(3, contents);
   };
   useInterval(saveFetch, 10000, false);
 
   // 소켓 객체 생성
   useEffect(() => {
     (async () => {
-      const res = await reviewApi.getCoedit(39);
+      const res = await reviewApi.getCoedit(3);
       QuillRef.current
         ?.getEditor()
         .clipboard.dangerouslyPasteHTML(res.contents);
