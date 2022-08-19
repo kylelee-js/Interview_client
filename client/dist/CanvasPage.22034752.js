@@ -1,4 +1,4 @@
-import{r as u,j as d,e as t,s as x,T as F,x as l,aW as R}from"./index--4bd2c2be.js";function k(r){const[f,a]=u.exports.useState(0),[g,s]=u.exports.useState(0);return u.exports.useEffect(()=>{const c=()=>{r.current&&(a(r.current.clientWidth),s(r.current.clientHeight))};return c(),window.addEventListener("resize",c),()=>{window.removeEventListener("resize",c)}},[]),{width:f,height:g}}const T=x.div`
+import{r as u,j as d,e as t,s as x,T as F,x as l,aW as R}from"./index--dd59e357.js";function k(r){const[f,a]=u.exports.useState(0),[g,s]=u.exports.useState(0);return u.exports.useEffect(()=>{const c=()=>{r.current&&(a(r.current.clientWidth),s(r.current.clientHeight))};return c(),window.addEventListener("resize",c),()=>{window.removeEventListener("resize",c)}},[]),{width:f,height:g}}const T=x.div`
   position: fixed;
   /* z-index: ${r=>r.zIndex}; */
   opacity: ${r=>r.opacity};
