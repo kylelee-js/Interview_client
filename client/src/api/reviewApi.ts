@@ -52,4 +52,19 @@ export const reviewApi = {
       console.log(error);
     }
   },
+  getCoedit: async (pk: number) => {
+    try {
+      const res = await axios.get(`/review/coedit/${pk}/`);
+      return res.data;
+    } catch (error) {
+      console.log(error);
+    }
+  },
+  updateCoeditContents: async (pk: number, contents: string) => {
+    try {
+      await axios.put(`/review/coedit/${pk}/`, { contents: contents });
+    } catch (error) {
+      console.log(error);
+    }
+  },
 };

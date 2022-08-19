@@ -1,6 +1,10 @@
 import { useEffect, useRef } from "react";
 
-const useInterval = (callback: () => unknown, delay: number | null) => {
+const useInterval = (
+  callback: () => unknown,
+  delay: number | null,
+  init: boolean = true
+) => {
   const savedCallback = useRef(callback);
 
   // 콜백함수가 달라져도 대처 가능. -> Ref기 때문에
@@ -14,7 +18,9 @@ const useInterval = (callback: () => unknown, delay: number | null) => {
     }
 
     // 첫 리로드시 실행
-    savedCallback.current();
+    if (init) {
+      savedCallback.current();
+    }
     const timeId = setInterval(() => savedCallback.current(), delay);
 
     return () => clearInterval(timeId);

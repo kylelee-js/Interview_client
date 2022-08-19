@@ -72,6 +72,9 @@ export default function NavMenu() {
         <MenuItem onClick={() => handleNavigate("canvas")}>
           에어팟 프로 보러가기
         </MenuItem>
+        <MenuItem onClick={() => handleNavigate("socket")}>
+          동시문서편집기
+        </MenuItem>
       </Menu>
     </div>
   );

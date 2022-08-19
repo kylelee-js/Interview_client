@@ -7,6 +7,7 @@ import EmailVerificationPage from "../pages/EmailVerificationPage";
 import NotFoundPage from "../pages/NotFoundPage";
 import useInterval from "../hooks/useInterval";
 import useDidMountEffect from "../hooks/useDidMountEffect";
+import SocketDocsPage from "../pages/SocketDocsPage";
 
 const LoginPage = lazy(() => import("../pages/LoginPage"));
 const MainPage = lazy(() => import("../pages/MainPage"));
@@ -55,6 +56,7 @@ function App() {
             <Route path="/pool" element={<PoolPage />} />
             <Route path="/upload" element={<UploadPage />} />
             <Route path="/search" element={<SearchPage />} />
+            <Route path="/socket" element={<SocketDocsPage />} />
             <Route path="/canvas" element={<CanvasPage />} />
           </Route>
         </Routes>
